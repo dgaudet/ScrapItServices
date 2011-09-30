@@ -1,0 +1,23 @@
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+<html>
+  <body>
+    <p>Enter Business information</p>
+    <form action="/sign" method="post">
+      <div>Business Name:<input type="text" name="name"></div>
+      <div>Yellow pages id:<input type="text" name="yellowpages_id"></div>
+      <div>Website address:<input type="text" name="url"></div>
+      <div><input type="submit" value="Save Business"></div>
+    </form>
+
+    <a href="{{ url }}">{{ url_linktext }}</a>
+    
+    {% for business in businesses %}
+      item:
+      <blockquote>{{ business.name|escape }}</blockquote>
+      <blockquote>{{ business.yellowpages_id|escape }}</blockquote>
+      <blockquote>{{ business.url|escape }}</blockquote>
+    {% endfor %}
+  </body>
+</html>

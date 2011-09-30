@@ -1,0 +1,38 @@
+- Need a way to update a business that already exists in Yellow pages
+-- sequence id - int - automatically assigned
+-- yellow pages id - int
+-- url - string
+- Create Domain object class
+- Create repository class to save the domain objects
+-- don't allow duplicate yellow pages id's
+- Create service to add business to db
+- Create template for adding business
+
+- Need a way to retrieve a business url by yellow pages id
+-- Search for Yellow pages business by business name
+-- add website url
+-- verify it
+-- save it
+
+- Need a way to input completely new business
+-- sequence id - int
+-- Business name - string 
+-- phone number - int
+-- fax number - int
+-- address - string
+-- city - string
+-- province - string
+-- country - string
+-- latitude - float
+-- longitude - float
+-- url - string
+- Need a way to retrieve a complete business by geolocation area or city not sure which, or possibly area
+- Need a country repository
+-- sequence id - int
+-- name - string
+-- code - string
+- Need a province repository
+-- sequence id - int
+-- name - string
+-- code - string
+- Log all users who have logged in
