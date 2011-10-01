@@ -3,8 +3,8 @@
   </head>
 <html>
   <body>
-    <p>Enter Business information</p>
-    <form action="/sign" method="post">
+    <p>Hello, {{ user.nickname|escape }} </br>Enter Business information</p>
+    <form action="/business" method="post">
       <div>Business Name:<input type="text" name="name"></div>
       <div>Yellow pages id:<input type="text" name="yellowpages_id"></div>
       <div>Website address:<input type="text" name="url"></div>

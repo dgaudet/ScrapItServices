@@ -28,6 +28,7 @@ class MainPage(webapp.RequestHandler):
             url_linktext = 'Login'
 
         template_values = {
+            'user': users.get_current_user(),
             'businesses': businesses,
             'url': url,
             'url_linktext': url_linktext,
@@ -36,7 +37,7 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'test.html')
         self.response.out.write(template.render(path, template_values))
 
-class Guestbook(webapp.RequestHandler):
+class BusinessHandler(webapp.RequestHandler):
   def post(self):
     business = Yellowpages_Business()
 
@@ -49,7 +50,7 @@ class Guestbook(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([
   ('/', MainPage),
-  ('/sign', Guestbook)
+  ('/business', BusinessHandler)
 ], debug=True)
 
 
