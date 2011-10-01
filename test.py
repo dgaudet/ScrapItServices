@@ -4,21 +4,16 @@ import urllib
 import wsgiref.handlers
 import os
 
+from domain import Yellowpages_Business
+from repository import Yellowpages_Business_Repository
 from google.appengine.ext.webapp import template
-from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-
-class Yellowpages_Business(db.Model):
-  yellowpages_id = db.StringProperty(multiline=False)
-  name = db.StringProperty(multiline=False)
-  url = db.StringProperty(multiline=False)
-
 class MainPage(webapp.RequestHandler):
     def get(self):
-        businesses = db.GqlQuery("SELECT * FROM Yellowpages_Business");
+        businesses = Yellowpages_Business_Repository().getAllBusinesses();
         
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -44,7 +39,7 @@ class BusinessHandler(webapp.RequestHandler):
     business.name = self.request.get('name')
     business.yellowpages_id = self.request.get('yellowpages_id')
     business.url = self.request.get('url')
-    business.put()
+    Yellowpages_Business_Repository().save(business)
     self.redirect('/')
 
 
