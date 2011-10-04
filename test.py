@@ -14,8 +14,7 @@ from services import YellowpagesBusinessSearchService
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        # businesses = Yellowpages_Business_Repository().getAllBusinesses();
-        businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity('name', 'city')
+        businesses = Yellowpages_Business_Repository().getAllBusinesses();
         
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -44,10 +43,48 @@ class BusinessHandler(webapp.RequestHandler):
     Yellowpages_Business_Repository().save(business)
     self.redirect('/')
 
+class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
+    def get(self):
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+        
+        template_values = {
+            'url_linktext': url_linktext,
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesssearch.html')
+        self.response.out.write(template.render(path, template_values))
+
+    def post(self):
+        name = cgi.escape(self.request.get('name'))
+        city = cgi.escape(self.request.get('city'))
+        businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city)
+        
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+        
+        template_values = {
+            'user': users.get_current_user(),
+            'businesses': businesses,
+            'url': url,
+            'url_linktext': url_linktext,
+        }
+
+        path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesssearch.html')
+        self.response.out.write(template.render(path, template_values))
 
 application = webapp.WSGIApplication([
   ('/', MainPage),
-  ('/business', BusinessHandler)
+  ('/business', BusinessHandler),
+  ('/yellowpagesbussearch', YellowpagesBusinessSearchHandler)
 ], debug=True)
 
 

@@ -9,9 +9,7 @@
       <div>Yellow pages id:<input type="text" name="yellowpages_id"></div>
       <div>Website address:<input type="text" name="url"></div>
       <div><input type="submit" value="Save Business"></div>
-    </form>
-
-    <a href="{{ url }}">{{ url_linktext }}</a>
+    </form>    
     
     {% for business in businesses %}
       item:
@@ -19,5 +17,9 @@
       <blockquote>{{ business.yellowpages_id|escape }}</blockquote>
       <blockquote>{{ business.url|escape }}</blockquote>
     {% endfor %}
+    
+    <a href="{{ url }}">{{ url_linktext }}</a>
+    <a href="/">Home</a>
+    <a href="/yellowpagesbussearch">Search for Business to edit</a>
   </body>
 </html>

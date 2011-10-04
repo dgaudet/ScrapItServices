@@ -1,0 +1,31 @@
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+<html>
+  <body>
+    <p>Hello, {{ user.nickname|escape }} </br>Search for Business</p>
+    <form action="/yellowpagesbussearch" method="post">
+      <div>Business Name:<input type="text" name="name"></div>
+      <div>City:<input type="text" name="city"></div>
+      <div><input type="submit" value="Search"></div>
+    </form>
+    
+    <table>
+        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th>
+        {% for business in businesses %}
+            <tr>
+                <td><blockquote>{{ business.name|escape }}</blockquote></td>
+                <td><blockquote>{{ business.city|escape }}</blockquote></td>
+                <td><blockquote>{{ business.street|escape }}</blockquote></td>
+                <td><blockquote>{{ business.province|escape }}</blockquote></td>
+                <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
+                <td><blockquote>{{ business.url|escape }}</blockquote></td>
+            </tr>
+        {% endfor %}
+    </table>
+    
+    <a href="{{ url }}">{{ url_linktext }}</a>
+    <a href="/">Home</a>
+    <a href="/yellowpagesbussearch">Search for Business to edit</a>
+  </body>
+</html>
