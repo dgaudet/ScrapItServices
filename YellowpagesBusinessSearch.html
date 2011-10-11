@@ -5,13 +5,15 @@
   <body>
     <p>Hello, {{ user.nickname|escape }} </br>Search for Business</p>
     <form action="/yellowpagesbussearch" method="post">
-      <div>Business Name:<input type="text" name="name"></div>
-      <div>City:<input type="text" name="city"></div>
+        <table>
+            <tr><td>Business Name:</td><td><input type="text" name="name"></td></tr>
+            <tr><td>City:</td><td><input type="text" name="city"></td></tr>
+        </table>
       <div><input type="submit" value="Search"></div>
     </form>
     
     <table>
-        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th>
+        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
         {% for business in businesses %}
             <tr>
                 <td><blockquote>{{ business.name|escape }}</blockquote></td>
@@ -20,6 +22,7 @@
                 <td><blockquote>{{ business.province|escape }}</blockquote></td>
                 <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
                 <td><blockquote>{{ business.url|escape }}</blockquote></td>
+                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
             </tr>
         {% endfor %}
     </table>

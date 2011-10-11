@@ -1,0 +1,2 @@
+- Yellowpages Business search
+-- if there are no search results, don't die, display no results message

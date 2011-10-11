@@ -1,5 +1,6 @@
 import json, urllib
 from domain import Business
+from google.appengine.ext import db
 
 BASE_URL = 'http://api.sandbox.yellowapi.com'
 API_KEY = '9k5g4bqucenr9ztnh9x693cw'
@@ -21,11 +22,12 @@ class YellowpagesBusinessSearchService:
                 business.province = address['prov']
                 business.country = 'Canada'
                 business.street = address['street']
-            if 'geocode' in listing:
-                geolocation = listing['geocode']
+            if 'geoCode' in listing:
+                geolocation = listing['geoCode']
                 lat = geolocation['latitude']
                 lon = geolocation['longitude']
-            business.url = 'fake url'
+                business.geolocation = str(lat) + ', ' + str(lon)
+            business.url = 'fake url'            
             businesses.append(business)
         return businesses
             
