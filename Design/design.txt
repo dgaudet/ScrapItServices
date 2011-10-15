@@ -2,7 +2,7 @@
 -- sequence id - int - automatically assigned
 -- yellow pages id - int
 -- url - string
-- Create Domain object class
+- -Create Domain object class-
 - Create repository class to save the domain objects
 -- don't allow duplicate yellow pages id's
 - Create service to add business to db

@@ -1,0 +1,13 @@
+<head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+<html>
+  <body>
+    <p>Hello, {{ user.nickname|escape }} </br>Search for Business</p>
+    {% block content %}{% endblock %}
+    </br>
+    <a href="{{ url }}">{{ url_linktext }}</a>
+    <a href="/">Home</a>
+    <a href="/yellowpagesbussearch">Search for Business to edit</a>
+  </body>
+</html>

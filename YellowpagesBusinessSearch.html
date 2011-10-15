@@ -1,9 +1,6 @@
-<head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-<html>
-  <body>
-    <p>Hello, {{ user.nickname|escape }} </br>Search for Business</p>
+{% extends "base.html" %}
+
+{% block content %}
     <form action="/yellowpagesbussearch" method="post">
         <table>
             <tr><td>Business Name:</td><td><input type="text" name="name"></td></tr>
@@ -12,6 +9,7 @@
       <div><input type="submit" value="Search"></div>
     </form>
     
+    {% if businesses %}
     <table>
         <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
         {% for business in businesses %}
@@ -21,14 +19,10 @@
                 <td><blockquote>{{ business.street|escape }}</blockquote></td>
                 <td><blockquote>{{ business.province|escape }}</blockquote></td>
                 <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
-                <td><blockquote>{{ business.url|escape }}</blockquote></td>
+                <td><blockquote><a href="/addbusinessdetails">Add URL</a></blockquote></td>
                 <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
             </tr>
         {% endfor %}
     </table>
-    
-    <a href="{{ url }}">{{ url_linktext }}</a>
-    <a href="/">Home</a>
-    <a href="/yellowpagesbussearch">Search for Business to edit</a>
-  </body>
-</html>
+    {% endif %}
+{% endblock %}

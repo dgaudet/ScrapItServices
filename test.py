@@ -53,6 +53,7 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
             url_linktext = 'Login'
         
         template_values = {
+            'user': users.get_current_user(),
             'url_linktext': url_linktext,
         }
 
@@ -81,10 +82,28 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesssearch.html')
         self.response.out.write(template.render(path, template_values))
 
+class AddBusinessDetailsHandler(webapp.RequestHandler):
+    def get(self):
+        if users.get_current_user():
+            url = users.create_logout_url(self.request.uri)
+            url_linktext = 'Logout'
+        else:
+            url = users.create_login_url(self.request.uri)
+            url_linktext = 'Login'
+        
+        template_values = {
+            'user': users.get_current_user(),
+            'url_linktext': url_linktext,
+        }
+        path = os.path.join(os.path.dirname(__file__), 'addbusinessdetails.html')
+        self.response.out.write(template.render(path, template_values))
+
 application = webapp.WSGIApplication([
   ('/', MainPage),
   ('/business', BusinessHandler),
-  ('/yellowpagesbussearch', YellowpagesBusinessSearchHandler)
+  ('/yellowpagesbussearch', YellowpagesBusinessSearchHandler),
+  ('/addbusinessdetails', AddBusinessDetailsHandler)
+  
 ], debug=True)
 
 
