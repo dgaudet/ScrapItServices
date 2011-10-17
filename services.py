@@ -1,4 +1,5 @@
 import json, urllib
+import logging
 from domain import Business
 from google.appengine.ext import db
 
@@ -27,7 +28,25 @@ class YellowpagesBusinessSearchService:
                 lat = geolocation['latitude']
                 lon = geolocation['longitude']
                 business.geolocation = str(lat) + ', ' + str(lon)
-            business.url = 'fake url'            
+            # business.url = 'http://google.com'
             businesses.append(business)
         return businesses
-            
+
+class BusinessService:
+    def updateBusinessUrl(self, yellowpages_id, url):
+        business = Business()
+        business.yellowpages_id = yellowpages_id
+        business.url = url
+        business.put()
+    
+    def getBusinesses(self):
+        businesses = db.GqlQuery("SELECT * FROM Business")
+        for business in businesses:
+            logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
+        return businesses
+        
+    def getBusinessByYellowPagesId(self, yellowpages_id):
+        businesses = db.GqlQuery("SELECT * FROM Business where yellowpages_id = :1", yellowpages_id)
+        for business in businesses:
+            logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
+        return businesses
