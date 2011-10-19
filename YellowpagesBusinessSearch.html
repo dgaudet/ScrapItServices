@@ -26,6 +26,8 @@
                 {% else %}
                 <td></td>
                 <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
+                {% endif %}
+                </tr>
             <tr>
                 <form action="/yellowpagesbussearch" method="post">
                     <input type="hidden" name="post_type" value="add">
@@ -36,8 +38,8 @@
                     <td><input type="submit" value="Update Business "></td>
                 </form>
             </tr>
-                {% endif %}
-            </tr>
+                
+            
         {% endfor %}
     </table>
     {% endif %}

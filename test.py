@@ -6,17 +6,16 @@ import os
 import logging
 
 from domain import Yellowpages_Business
-from repository import Yellowpages_Business_Repository
+from repository import Business_Repository
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from services import YellowpagesBusinessSearchService
 from services import BusinessService
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        businesses = Yellowpages_Business_Repository().getAllBusinesses();
+        businesses = Business_Repository().getAllBusinesses();
         
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -42,7 +41,7 @@ class BusinessHandler(webapp.RequestHandler):
     business.name = self.request.get('name')
     business.yellowpages_id = self.request.get('yellowpages_id')
     business.url = self.request.get('url')
-    Yellowpages_Business_Repository().save(business)
+    Business_Repository().save(business)
     self.redirect('/')
 
 class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
@@ -71,7 +70,7 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
         BusinessService().getBusinessByYellowPagesId('7746716')            
         name = cgi.escape(self.request.get('name'))
         city = cgi.escape(self.request.get('city'))
-        businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city)
+        businesses = BusinessService().getBusinessesByNameInCity(name, city)
         
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)

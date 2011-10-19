@@ -1,6 +1,7 @@
 import json, urllib
 import logging
 from domain import Business
+from repository import Business_Repository
 from google.appengine.ext import db
 
 BASE_URL = 'http://api.sandbox.yellowapi.com'
@@ -37,16 +38,23 @@ class BusinessService:
         business = Business()
         business.yellowpages_id = yellowpages_id
         business.url = url
-        business.put()
+        Business_Repository().save(business)
     
     def getBusinesses(self):
-        businesses = db.GqlQuery("SELECT * FROM Business")
+        businesses = Business_Repository().getAllBusinesses()
         for business in businesses:
             logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
         return businesses
         
     def getBusinessByYellowPagesId(self, yellowpages_id):
-        businesses = db.GqlQuery("SELECT * FROM Business where yellowpages_id = :1", yellowpages_id)
-        for business in businesses:
-            logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
-        return businesses
+        return Business_Repository().getBusinessByYellowPagesId(yellowpages_id)
+        
+    def getBusinessesByNameInCity(self, name, city):
+        yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city)
+        combined_businesses = []
+        for business in yellowpages_businesses:
+            repo_business = Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
+            if repo_business:
+                business.url = repo_business.url
+            combined_businesses.append(business)
+        return combined_businesses
