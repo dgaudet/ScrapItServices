@@ -11,10 +11,10 @@
     </form>
     
     {% if businesses %}
-    <table>
+    <table id="searchResults">
         <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
         {% for business in businesses %}
-            <tr>
+            <tr class="data">      
                 <td><blockquote>{{ business.name|escape }}</blockquote></td>
                 <td><blockquote>{{ business.city|escape }}</blockquote></td>
                 <td><blockquote>{{ business.street|escape }}</blockquote></td>
@@ -27,8 +27,8 @@
                 <td></td>
                 <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
                 {% endif %}
-                </tr>
-            <tr>
+            </tr>
+            <tr class="input">
                 <form action="/yellowpagesbussearch" method="post">
                     <input type="hidden" name="post_type" value="add">
                     <input type="hidden" name="yellowpages_id" value="{{ business.yellowpages_id|escape }}">
