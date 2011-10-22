@@ -1,2 +1,4 @@
 - Yellowpages Business search
 -- if there are no search results, don't die, display no results message
+- JsonService
+-- what happens if there is no data for the business you are searching for?

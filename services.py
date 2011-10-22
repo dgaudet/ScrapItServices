@@ -29,7 +29,6 @@ class YellowpagesBusinessSearchService:
                 lat = geolocation['latitude']
                 lon = geolocation['longitude']
                 business.geolocation = str(lat) + ', ' + str(lon)
-            # business.url = 'http://google.com'
             businesses.append(business)
         return businesses
 
@@ -58,3 +57,15 @@ class BusinessService:
                 business.url = repo_business.url
             combined_businesses.append(business)
         return combined_businesses
+
+class JsonService:
+	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
+		business = BusinessService().getBusinessByYellowPagesId(yellowpages_id)
+		return BusinessEncoder().encode(business)
+		
+class BusinessEncoder(json.JSONEncoder):
+	def default(self, business):
+		if not isinstance (business, Business):
+			print 'You cannot use the JSON custom MyClassEncoder for a non-MyClass object.'
+			return
+		return {'name': business.name, 'yellowpages_id': business.yellowpages_id}

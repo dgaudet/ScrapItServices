@@ -67,7 +67,6 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
             yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))
             url = cgi.escape(self.request.get('url'))
             BusinessService().updateBusinessUrl(yellowpages_id, url)
-        BusinessService().getBusinessByYellowPagesId('7746716')            
         name = cgi.escape(self.request.get('name'))
         city = cgi.escape(self.request.get('city'))
         businesses = BusinessService().getBusinessesByNameInCity(name, city)

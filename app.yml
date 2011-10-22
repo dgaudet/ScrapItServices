@@ -10,5 +10,8 @@ handlers:
 - url: /scripts
   static_dir: scripts
 
+- url: /api.*
+  script: api.py
+
 - url: /.*
   script: test.py
