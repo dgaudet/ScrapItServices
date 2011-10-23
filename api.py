@@ -11,17 +11,13 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 class MainPage(webapp.RequestHandler):
-	def get(self):
-		json = JsonService().getJsonForBusinessWithYellowPagesId('2108816')
-		template_values = {
-			'json': json
-		}
-
-		path = os.path.join(os.path.dirname(__file__), 'api.html')
-		self.response.out.write(template.render(path, template_values))
+	def get(self, yellowpages_id):
+		json = JsonService().getJsonForBusinessWithYellowPagesId(yellowpages_id)
+		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
+		self.response.out.write(json)
 
 application = webapp.WSGIApplication([
-  ('/api', MainPage)
+  ('/api/business/(.*)', MainPage)
 ], debug=True)
 
 

@@ -64,6 +64,7 @@ class JsonService:
 		return BusinessEncoder().encode(business)
 		
 class BusinessEncoder(json.JSONEncoder):
+	# json serialization example: http://stackoverflow.com/questions/1531501/json-serialization-of-google-app-engine-models
 	def default(self, business):
 		if not isinstance (business, Business):
 			print 'You cannot use the JSON custom MyClassEncoder for a non-MyClass object.'
