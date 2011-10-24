@@ -69,4 +69,4 @@ class BusinessEncoder(json.JSONEncoder):
 		if not isinstance (business, Business):
 			print 'You cannot use the JSON custom MyClassEncoder for a non-MyClass object.'
 			return
-		return {'name': business.name, 'yellowpages_id': business.yellowpages_id}
+		return {'url': business.url, 'yellowpages_id': business.yellowpages_id}
