@@ -14,4 +14,4 @@ handlers:
   script: api.py
 
 - url: /.*
-  script: test.py
+  script: index.py
