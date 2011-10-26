@@ -1,4 +1,5 @@
-import json, urllib
+from django.utils import simplejson
+import urllib
 import logging
 from domain import Business
 from repository import Business_Repository
@@ -11,7 +12,7 @@ class YellowpagesBusinessSearchService:
     def getBusinessesByNameInCity(self, name, city):
         # http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
         url = BASE_URL + '/FindBusiness/?what=' + name + '&where=' + city + '&fmt=JSON&pgLen=10&apikey=' + API_KEY + '&UID=127.0.0.1'
-        result = json.load(urllib.urlopen(url))
+        result = simplejson.load(urllib.urlopen(url))
         listings = result['listings']   
         businesses = []
         for listing in listings:
@@ -63,7 +64,7 @@ class JsonService:
 		business = BusinessService().getBusinessByYellowPagesId(yellowpages_id)
 		return BusinessEncoder().encode(business)
 		
-class BusinessEncoder(json.JSONEncoder):
+class BusinessEncoder(simplejson.JSONEncoder):
 	# json serialization example: http://stackoverflow.com/questions/1531501/json-serialization-of-google-app-engine-models
 	def default(self, business):
 		if not isinstance (business, Business):

@@ -16,6 +16,7 @@
       <blockquote>{{ business.name|escape }}</blockquote>
       <blockquote>{{ business.yellowpages_id|escape }}</blockquote>
       <blockquote>{{ business.url|escape }}</blockquote>
+      <blockquote><a href="/api/business/{{ business.yellowpages_id|escape }}">Json</a></blockquote>
     {% endfor %}
     
     <a href="{{ url }}">{{ url_linktext }}</a>
