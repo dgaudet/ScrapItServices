@@ -58,7 +58,7 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
             'url_linktext': url_linktext,
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesssearch.html')
+        path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
         self.response.out.write(template.render(path, template_values))
 
     def post(self):
@@ -87,7 +87,7 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
             'search_city': city
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesssearch.html')
+        path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
         self.response.out.write(template.render(path, template_values))
 
 class AddBusinessDetailsHandler(webapp.RequestHandler):
