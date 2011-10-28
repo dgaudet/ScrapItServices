@@ -13,29 +13,30 @@ class YellowpagesBusinessSearchService:
 		# http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
 		encodedName = urllib.quote(name)
 		encodedCity = urllib.quote(city)
+		businesses = []
 		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=10&apikey=' + API_KEY + '&UID=127.0.0.1'
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
-		listings = result['listings']	
-		businesses = []
-		for listing in listings:
-			business = Business()
-			business.yellowpages_id = listing['id']
-			business.name = listing['name']
-			if 'address' in listing:
-				if listing['address']:
-					address = listing['address']
-					business.city = address['city']
-					business.province = address['prov']
-					business.country = 'Canada'
-					business.street = address['street']
-			if 'geoCode' in listing:
-				if listing['geoCode']:
-					geolocation = listing['geoCode']
-					lat = geolocation['latitude']
-					lon = geolocation['longitude']
-					business.geolocation = str(lat) + ', ' + str(lon)
-			businesses.append(business)
+		if 'listings' in result:
+			listings = result['listings']		
+			for listing in listings:
+				business = Business()
+				business.yellowpages_id = listing['id']
+				business.name = listing['name']
+				if 'address' in listing:
+					if listing['address']:
+						address = listing['address']
+						business.city = address['city']
+						business.province = address['prov']
+						business.country = 'Canada'
+						business.street = address['street']
+				if 'geoCode' in listing:
+					if listing['geoCode']:
+						geolocation = listing['geoCode']
+						lat = geolocation['latitude']
+						lon = geolocation['longitude']
+						business.geolocation = str(lat) + ', ' + str(lon)
+				businesses.append(business)
 		return businesses
 
 class BusinessService:

@@ -9,7 +9,6 @@
         </table>
       <div><input type="submit" value="Search"></div>
     </form>
-    
     {% if businesses %}
     <table id="searchResults">
         <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
@@ -40,5 +39,7 @@
             </tr>
         {% endfor %}
     </table>
+	{% else %}
+	<p>Sorry No Businesses found</p>
     {% endif %}
 {% endblock %}
