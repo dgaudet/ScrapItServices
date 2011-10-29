@@ -80,6 +80,7 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
         
         template_values = {
             'user': users.get_current_user(),
+			'search_perfomred': True,
             'businesses': businesses,
             'url': url,
             'url_linktext': url_linktext,

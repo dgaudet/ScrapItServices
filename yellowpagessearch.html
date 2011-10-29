@@ -9,37 +9,39 @@
         </table>
       <div><input type="submit" value="Search"></div>
     </form>
-    {% if businesses %}
-    <table id="searchResults">
-        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
-        {% for business in businesses %}
-            <tr class="data">      
-                <td><blockquote>{{ business.name|escape }}</blockquote></td>
-                <td><blockquote>{{ business.city|escape }}</blockquote></td>
-                <td><blockquote>{{ business.street|escape }}</blockquote></td>
-                <td><blockquote>{{ business.province|escape }}</blockquote></td>
-                <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
-                {% if business.url %}
-                <td><blockquote><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></blockquote></td>
-                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
-                {% else %}
-                <td></td>
-                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
-                {% endif %}
-            </tr>
-            <tr class="input">
-                <form action="/yellowpagesbussearch" method="post">
-                    <input type="hidden" name="post_type" value="add">
-                    <input type="hidden" name="yellowpages_id" value="{{ business.yellowpages_id|escape }}">
-                    <input type="hidden" name="name" value="{{ search_name }}">
-                    <input type="hidden" name="city" value="{{ search_city }}">
-                    <td><blockquote><input type="text" name="url"></blockquote></td>
-                    <td><input type="submit" value="Update Business "></td>
-                </form>
-            </tr>
-        {% endfor %}
-    </table>
-	{% else %}
-	<p>Sorry No Businesses found</p>
-    {% endif %}
+	{% if search_perfomred %}
+	    {% if businesses %}
+	    <table id="searchResults">
+	        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
+	        {% for business in businesses %}
+	            <tr class="data">      
+	                <td><blockquote>{{ business.name|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.city|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.street|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.province|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
+	                {% if business.url %}
+	                <td><blockquote><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></blockquote></td>
+	                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
+	                {% else %}
+	                <td></td>
+	                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
+	                {% endif %}
+	            </tr>
+	            <tr class="input">
+	                <form action="/yellowpagesbussearch" method="post">
+	                    <input type="hidden" name="post_type" value="add">
+	                    <input type="hidden" name="yellowpages_id" value="{{ business.yellowpages_id|escape }}">
+	                    <input type="hidden" name="name" value="{{ search_name }}">
+	                    <input type="hidden" name="city" value="{{ search_city }}">
+	                    <td><blockquote><input type="text" name="url"></blockquote></td>
+	                    <td><input type="submit" value="Update Business "></td>
+	                </form>
+	            </tr>
+	        {% endfor %}
+	    </table>
+		{% else %}
+		<p>Sorry No Businesses found</p>
+	    {% endif %}
+	{% endif %}
 {% endblock %}
