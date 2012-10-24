@@ -13,6 +13,9 @@ handlers:
 - url: /api.*
   script: api.py
 
-- url: /.*
+- url: /
   script: index.py
+  
+- url: /scrapitservices/.*
+  script: scrapitservices.py
   login: admin

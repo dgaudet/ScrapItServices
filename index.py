@@ -15,94 +15,23 @@ from services import BusinessService
 
 class MainPage(webapp.RequestHandler):
     def get(self):
-        businesses = Business_Repository().getAllBusinesses();
-        
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
-
+            
         template_values = {
-            'user': users.get_current_user(),
-            'businesses': businesses,
             'url': url,
-            'url_linktext': url_linktext,
+            'url_linktext': url_linktext
         }
-
-        path = os.path.join(os.path.dirname(__file__), 'test.html')
+        
+        path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, template_values))
-
-class BusinessHandler(webapp.RequestHandler):
-  def post(self):
-    business = Yellowpages_Business()
-
-    business.name = self.request.get('name')
-    business.yellowpages_id = self.request.get('yellowpages_id')
-    business.url = self.request.get('url')
-    Business_Repository().save(business)
-    self.redirect('/')
-
-class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
-    def get(self):
-        if users.get_current_user():
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
-        
-        template_values = {
-            'user': users.get_current_user(),
-            'url_linktext': url_linktext,
-        }
-
-        path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
-        self.response.out.write(template.render(path, template_values))
-
-    def post(self):
-        form_type = cgi.escape(self.request.get('post_type'))
-        if form_type == 'add':
-            yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))
-            url = cgi.escape(self.request.get('url'))
-            BusinessService().updateBusinessUrl(yellowpages_id, url)
-        name = cgi.escape(self.request.get('name'))
-        city = cgi.escape(self.request.get('city'))
-        businesses = BusinessService().getBusinessesByNameInCity(name, city)
-        
-        if users.get_current_user():
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
-        
-        template_values = {
-            'user': users.get_current_user(),
-			'search_perfomred': True,
-            'businesses': businesses,
-            'url': url,
-            'url_linktext': url_linktext,
-            'search_name': name,
-            'search_city': city
-        }
-
-        path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
-        self.response.out.write(template.render(path, template_values))
-
-class AddBusinessDetailsHandler(webapp.RequestHandler):
-    def post(self):
-        name = cgi.escape(self.request.get('name'))
-        city = cgi.escape(self.request.get('city'))
-        
-        self.redirect('/yellowpagesbussearch')
 
 application = webapp.WSGIApplication([
-  ('/', MainPage),
-  ('/business', BusinessHandler),
-  ('/yellowpagesbussearch', YellowpagesBusinessSearchHandler),
-  ('/addbusinessdetails', AddBusinessDetailsHandler)
+  ('/', MainPage)
   
 ], debug=True)
 

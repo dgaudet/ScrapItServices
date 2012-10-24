@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/yellowpagesbussearch" method="post">
+    <form action="/scrapitservices/yellowpagesbussearch" method="post">
         <input type="hidden" name="post_type" value="search">
         <table>
             <tr><td>Business Name:</td><td><input type="text" name="name"></td></tr>
@@ -29,7 +29,7 @@
 	                {% endif %}
 	            </tr>
 	            <tr class="input">
-	                <form action="/yellowpagesbussearch" method="post">
+	                <form action="/scrapitservices/yellowpagesbussearch" method="post">
 	                    <input type="hidden" name="post_type" value="add">
 	                    <input type="hidden" name="yellowpages_id" value="{{ business.yellowpages_id|escape }}">
 	                    <input type="hidden" name="name" value="{{ search_name }}">

@@ -4,7 +4,7 @@
 <html>
   <body>
     <p>Hello, {{ user.nickname|escape }} </br>Enter Business information</p>
-    <form action="/business" method="post">
+    <form action="/scrapitservices/business" method="post">
       <div>Business Name:<input type="text" name="name"></div>
       <div>Yellow pages id:<input type="text" name="yellowpages_id"></div>
       <div>Website address:<input type="text" name="url"></div>
@@ -21,6 +21,6 @@
     
     <a href="{{ url }}">{{ url_linktext }}</a>
     <a href="/">Home</a>
-    <a href="/yellowpagesbussearch">Search for Business to edit</a>
+    <a href="/scrapitservices/yellowpagesbussearch">Search for Business to edit</a>
   </body>
 </html>
