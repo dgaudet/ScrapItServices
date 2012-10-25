@@ -1,9 +1,7 @@
-<head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-<html>
-  <body>
-    <p>Hello, {{ user.nickname|escape }} </br>Enter Business information</p>
+{% extends "base.html" %}
+
+{% block content %}
+	<p>Businesses</p>
     <form action="/scrapitservices/business" method="post">
       <div>Business Name:<input type="text" name="name"></div>
       <div>Yellow pages id:<input type="text" name="yellowpages_id"></div>
@@ -18,9 +16,4 @@
       <blockquote>{{ business.url|escape }}</blockquote>
       <blockquote><a href="/api/business/{{ business.yellowpages_id|escape }}">Json</a></blockquote>
     {% endfor %}
-    
-    <a href="{{ url }}">{{ url_linktext }}</a>
-    <a href="/">Home</a>
-    <a href="/scrapitservices/yellowpagesbussearch">Search for Business to edit</a>
-  </body>
-</html>
+{% endblock %}

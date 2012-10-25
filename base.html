@@ -7,11 +7,12 @@
   </head>
 <html>
   <body>
-    <p>Hello, {{ user.nickname|escape }} </br>Search for Business</p>
+    <p>Hello, {{ user.nickname|escape }}</p>
     {% block content %}{% endblock %}
     </br>
     <a href="{{ url }}">{{ url_linktext }}</a>
     <a href="/">Home</a>
+	<a href="/scrapitservices/">Businesses</a>
     <a href="/scrapitservices/yellowpagesbussearch">Search for Business to edit</a>
   </body>
 </html>
