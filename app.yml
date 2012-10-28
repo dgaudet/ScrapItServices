@@ -1,12 +1,18 @@
 application: scrapitservices
-version: 9
+version: 10
 runtime: python
 api_version: 1
 
 handlers:
+- url: /bootstrap
+  static_dir: bootstrap
+  
 - url: /stylesheets
   static_dir: stylesheets
-  
+
+- url: /images
+  static_dir: images  
+
 - url: /scripts
   static_dir: scripts
 
