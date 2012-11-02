@@ -2,3 +2,8 @@ body {
   font-family: Helvetica, sans-serif;
   background-color: #DDDDDD;
 }
+
+.hero-unit.custom {
+	background:purple;
+	color:white;
+}

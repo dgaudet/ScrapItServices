@@ -1,24 +1,45 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html>
 	<head>
-		<!-- <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" /> -->
+		<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
 		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css">
 		<title></title>
 	</head>
 	<body>
-		</br>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+	      <div class="navbar-inner">
+	        <div class="container">
+	          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	            <span class="icon-bar"></span>
+	          </a>
+	          <a class="brand" href="#">DeanGaudet.com</a>
+	          <div class="nav-collapse collapse">
+	            <ul class="nav">
+	              <li class="active"><a href="#">Home</a></li>	              
+	              <li><a href="mailto:support@deangaudet.com">Support</a></li>
+				  <li><a href="{{ url }}">{{ url_linktext }}</a></li>
+	            </ul>
+	          </div><!--/.nav-collapse -->
+	        </div>
+	      </div>
+		</div>
+	</br>
+	</br>
+	</br>
 		<div class="container">
-			<div class="hero-unit">
+			<div class="hero-unit custom">
 				<div class="row">
-					<div class="span6">
-						<h2>
+					<div class="span5 offset1">
+						<h1 class="work">
 							Find Scraps!
-						</h2>
+						</h1>
 						<p>
 							"Find Scraps" is an app that will help you locate Scrapbooking supply stores quickly on your iPhone and iPod touch.
-						</p>
+						</p>						
 					</div>
 					<div class="span2">
 						<img src="/images/BookIcon@2x.png" alt="Find Scraps Icon">
@@ -26,31 +47,37 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="span4">
-					<h2>
+				<div class="span5 offset1">
+					<h1>
 						Find Stores
-					</h2>
-					<p>It's all about finding Scrapbooking supply stores where you want.</p>
+					</h1>
+					<p class="lead">It's all about finding Scrapbooking supply stores where you want.</p>
 					<p>
 						<ul>
-							<li>Find them by entering a city</li>
-							<li>or by your current location</li>
+							<li class="lead">Find them by entering a city</li>
+							<li class="lead">or by your current location</li>
 						</ul>
-					</p>
+					</p>					
 				</div>
-				<div class="span8">
-					Column 2
+				<div class="span6">
+					<img src="/images/iPhone_4SHome.png" alt="Find Scraps Launch Screen" height="219" width="270"/>
 				</div>
+				<div class="span12">
+					<hr class="bs-docs-separator"/>
+				</div>				
 			</div>
 			<div class="row">
-				<div class="span8">
-					Column 2
+				<div class="span3 offset1">
+					<img src="/images/iPhone_4SMap.png" alt="Find Scraps Launch Screen" height="190" width="270"/>
+				</div>
+				<div class="span3">
+					<img src="/images/iPhone_4SDetails.png" alt="Find Scraps Launch Screen" height="219" width="270"/>
 				</div>
 				<div class="span4">
-					<h2>
+					<h1>
 						View Stores
-					</h2>
-					<p>You can see all the stores plotted on a map</p>
+					</h1>
+					<p class="lead">You can see all the stores plotted on a map</p>
 					<p>
 						<ul>
 							<li>then you can view details about the store</li>
@@ -58,9 +85,18 @@
 							<li>or view the store in maps where you can get directions</li>
 						</ul>
 					</p>
-				</div>				
+				</div>
+				<div class="span12">
+					<hr class="bs-docs-separator"/>
+				</div>
 			</div>
-			<a href="mailto:support@deangaudet.com">Support</a> <a href="{{ url }}">{{ url_linktext }}</a>
+			<div class="row">				
+				<div class="span8 offset4">
+					<p class="lead">
+						Available in the Appstore... Soon!
+					</p>
+				</div>
+			</div>
 		</div>
 	</body>
 </html>
