@@ -13,3 +13,11 @@ body {
   font-weight: 200;
   line-height: 30px;
 }
+
+.center {
+	text-align:center;
+}
+
+.description {
+	padding-top:100px;
+}
