@@ -10,12 +10,18 @@ API_KEY = '9k5g4bqucenr9ztnh9x693cw'
 SEARCH_TERM = 'scrapbook'
 
 class YellowpagesBusinessSearchService:
+	def getBusinessByIdWithNameInProvince(self, businesId, name, provice):
+		return 'test'
+             
+	def getBusinessesByLocation(self, latitude, longitude):
+		test = 'hello world'
+    
 	def getBusinessesByNameInCity(self, name, city):
 		# http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
 		encodedName = urllib.quote(name)
 		encodedCity = urllib.quote(city)
 		businesses = []
-		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=10&apikey=' + API_KEY + '&UID=127.0.0.1'
+		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		if 'listings' in result:
@@ -44,7 +50,7 @@ class YellowpagesBusinessSearchService:
 		# http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
 		encodedCity = urllib.quote(city)
 		businesses = []
-		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=10&apikey=' + API_KEY + '&UID=127.0.0.1'
+		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		if 'listings' in result:
@@ -103,10 +109,20 @@ class JsonService:
 		business = BusinessService().getBusinessByYellowPagesId(yellowpages_id)
 		return BusinessEncoder().encode(business)
 		
+	def getJsonForBusinessesInCity(self, city):
+		businesses = BusinessService().getBusinessesByNameInCity('',city)
+		jsonData = []
+		for business in businesses:
+			encodedBusiness = BusinessEncoder().encode(business)
+			jsonData.append(encodedBusiness)
+		return jsonData
+		
 class BusinessEncoder(simplejson.JSONEncoder):
 	# json serialization example: http://stackoverflow.com/questions/1531501/json-serialization-of-google-app-engine-models
 	def default(self, business):
 		if not isinstance (business, Business):
 			print 'You cannot use the JSON custom MyClassEncoder for a non-MyClass object.'
 			return
-		return {'url': business.url, 'yellowpages_id': business.yellowpages_id}
+		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': {'province': business.province
+		, 'country': business.country, 'city': business.city, 'street': business.street}, 'phoneNumber': business.phonenumber, 
+		'geoCode': {'latitude': business.city, 'longitude': business.name} }
