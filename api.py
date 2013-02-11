@@ -23,8 +23,10 @@ class BusinessByCity(webapp.RequestHandler):
 		self.response.out.write(json)
 
 class BusinessByLocation(webapp.RequestHandler):
-	def get(self, city):
-		json = JsonService().getJsonForBusinessesInGeoLocation(52.1300528023, -106.597655886 )
+	def get(self):
+		latitude = cgi.escape(self.request.get('latitude'))
+		longitude = cgi.escape(self.request.get('longitude'))
+		json = JsonService().getJsonForBusinessesInGeoLocation(latitude, longitude)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
@@ -38,7 +40,7 @@ application = webapp.WSGIApplication([
   ('/api/business/(.*)', businessById),
   ('/api/businessById/(.*)', businessById),
   ('/api/businessByCity/(.*)', BusinessByCity),
-  ('/api/businessByGeoLocation/(.*)', BusinessByCity),
+  ('/api/businessByGeoLocation', BusinessByLocation),
   ('/api/businessByDetails/(.*)', BusinessByCity)
 ], debug=True)
 

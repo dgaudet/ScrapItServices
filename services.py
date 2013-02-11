@@ -15,8 +15,8 @@ class YellowpagesBusinessSearchService:
 		return 'test'
              
 	def getBusinessesByGeoLocation(self, latitude, longitude):
-		location = urllib.quote(longitude + "," + latitude)
-		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + location + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
+		location = 'cZ' + str(longitude) + ',' + str(latitude)
+		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)		
@@ -87,7 +87,7 @@ class BusinessService:
 		
 	def getBusinessesByNameInCity(self, name, city):
 		if not name:
-			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByCityFile(city)
+			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByCity(city)
 		else:
 			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city)
 		return self.combineBusinesses(yellowpages_businesses)
@@ -136,9 +136,11 @@ class BusinessEncoder(simplejson.JSONEncoder):
 		if not isinstance (business, Business):
 			print 'You cannot use the JSON custom MyClassEncoder for a non-MyClass object.'
 			return
+		geolocationString = None
+		if business.geolocation:
+			geolocationString = {'latitude': business.geolocation.lat, 'longitude': business.geolocation.lon }
 		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': {'province': business.province
-		, 'country': business.country, 'city': business.city, 'street': business.street}, 'phoneNumber': business.phonenumber, 
-		'geoCode': {'latitude': 52.1300528023, 'longitude': -106.597655886 } }
+		, 'country': business.country, 'city': business.city, 'street': business.street}, 'phoneNumber': business.phonenumber, 'geoCode': geolocationString }
 		
 class JsonListEncoder(simplejson.JSONEncoder):
 	def default(self, o):
