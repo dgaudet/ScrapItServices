@@ -100,6 +100,10 @@ class YellowpagesBusinessSearchService:
 							phoneType = phone['type']
 							if phoneType == 'primary':
 								business.phonenumber = phone['dispNum']
+			if 'merchantUrl' in json:
+				if json['merchantUrl']:
+					url = json['merchantUrl']
+					business.url = url
 			return business
 		else:
 			return None
@@ -133,16 +137,20 @@ class BusinessService:
 		
 	def getBusinessByDetails(self, yellowpages_id, name, provice):
 		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessByIdWithNameInProvince(yellowpages_id, name, provice)
-		return yellowpages_businesses
+		return self.combineBusiness(yellowpages_businesses)
 		
 	def combineBusinesses(self, yellowpages_businesses):
 		combined_businesses = []
 		for business in yellowpages_businesses:
-			repo_business = Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
-			if repo_business:
-				business.url = repo_business.url
-			combined_businesses.append(business)
+			combinedBusiness = self.combineBusiness(business)
+			combined_businesses.append(combinedBusiness)
 		return combined_businesses
+		
+	def combineBusiness(self, business):
+		repo_business = Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
+		if repo_business:
+			business.url = repo_business.url
+		return business
 
 class JsonService:
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
