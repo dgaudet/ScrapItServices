@@ -31,8 +31,11 @@ class BusinessByLocation(webapp.RequestHandler):
 		self.response.out.write(json)
 
 class BusinessByDetails(webapp.RequestHandler):
-	def get(self, city):
-		json = JsonService().getJsonForBusinessWithDetails("scrapbook-studio", "saskatchewan", "7746716" )
+	def get(self):
+		yellowpages_id = cgi.escape(self.request.get('id'))
+		province = cgi.escape(self.request.get('province'))
+		name = cgi.escape(self.request.get('name'))
+		json = JsonService().getJsonForBusinessWithDetails(yellowpages_id, province, name)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
@@ -41,7 +44,7 @@ application = webapp.WSGIApplication([
   ('/api/businessById/(.*)', businessById),
   ('/api/businessByCity/(.*)', BusinessByCity),
   ('/api/businessByGeoLocation', BusinessByLocation),
-  ('/api/businessByDetails/(.*)', BusinessByCity)
+  ('/api/businessByDetails', BusinessByDetails)
 ], debug=True)
 
 
