@@ -10,42 +10,43 @@ API_KEY = '9k5g4bqucenr9ztnh9x693cw'
 SEARCH_TERM = 'scrapbook'
 
 class YellowpagesBusinessSearchService:         
-	def getBusinessesByGeoLocation(self, latitude, longitude):
+	def getBusinessesByGeoLocation(self, latitude, longitude, clientIP):
 		location = 'cZ' + str(longitude) + ',' + str(latitude)
-		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
+		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)		
     
-	def getBusinessesByNameInCity(self, name, city):
+	def getBusinessesByNameInCity(self, name, city, clientIP):
 		# http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
-		encodedName = urllib.quote(name)
-		encodedCity = urllib.quote(city)
-		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
+		encodedName = urllib.quote(name.encode("utf-8"))
+		encodedCity = urllib.quote(city.encode("utf-8"))
+		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 
-	def getBusinessesByCity(self, city):
-		encodedCity = urllib.quote(city)		
-		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
+	def getBusinessesByCity(self, city, clientIP):
+		encodedCity = urllib.quote(city.encode("utf-8"))		
+		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 		
 	def getBusinessesByCityFile(self, city):
-		encodedCity = urllib.quote(city)		
+		encodedCity = urllib.quote(city.encode("utf-8"))		
 		url = '/Users/Dean/Documents/Code/ScrapItServices/testJson.json'
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(open(url, 'r'))
 		return self.buildBusinessFromJson(result)
 		
-	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province):
+	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province, clientIP):
 		#http://api.yellowapi.com/GetBusinessDetails/?prov=Saskatchewan&city=Saskatoon&bus-name=just-scrap-it&listingId=4436892fmt=XML&apikey=a1s2d3f4g5h6j7k8l9k6j5j4&UID=127.0.0.1	
-		encodedProvince = urllib.quote(province)
-		encodedId = urllib.quote(yellowpages_id)
-		encodedName = urllib.quote(name)
-		url = BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=127.0.0.1'
+		encodedProvince = urllib.quote(province.encode("utf-8"))
+		encodedId = urllib.quote(yellowpages_id.encode("utf-8"))
+		logging.info("name: " + name)
+		encodedName = urllib.quote(name.encode("utf-8"))
+		url = BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessDetailsFromJson(result)
@@ -124,19 +125,19 @@ class BusinessService:
 	def getBusinessByYellowPagesId(self, yellowpages_id):
 		return Business_Repository().getBusinessByYellowPagesId(yellowpages_id)
 		
-	def getBusinessesByNameInCity(self, name, city):
+	def getBusinessesByNameInCity(self, name, city, clientIP):
 		if not name:
-			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByCity(city)
+			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByCity(city, clientIP)
 		else:
-			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city)
+			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByNameInCity(name, city, cientIP)
 		return self.combineBusinesses(yellowpages_businesses)
 	
-	def getBusinessesByGeoLocation(self, latitude, longitude):
-		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByGeoLocation(latitude, longitude)
+	def getBusinessesByGeoLocation(self, latitude, longitude, clientIP):
+		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByGeoLocation(latitude, longitude, clientIP)
 		return self.combineBusinesses(yellowpages_businesses)
 		
-	def getBusinessByDetails(self, yellowpages_id, name, provice):
-		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessByIdWithNameInProvince(yellowpages_id, name, provice)
+	def getBusinessByDetails(self, yellowpages_id, name, provice, clientIP):
+		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessByIdWithNameInProvince(yellowpages_id, name, provice, clientIP)
 		return self.combineBusiness(yellowpages_businesses)
 		
 	def combineBusinesses(self, yellowpages_businesses):
@@ -157,16 +158,16 @@ class JsonService:
 		business = BusinessService().getBusinessByYellowPagesId(yellowpages_id)
 		return BusinessEncoder().encode(business)
 		
-	def getJsonForBusinessesInCity(self, city):
-		businesses = BusinessService().getBusinessesByNameInCity('',city)
+	def getJsonForBusinessesInCity(self, city, clientIP):
+		businesses = BusinessService().getBusinessesByNameInCity('',city, clientIP)
 		return self.encodeBusinesses(businesses)
 		
-	def getJsonForBusinessesInGeoLocation(self, latitude, longitude):
-		businesses = BusinessService().getBusinessesByGeoLocation(latitude, longitude)
+	def getJsonForBusinessesInGeoLocation(self, latitude, longitude, clientIP):
+		businesses = BusinessService().getBusinessesByGeoLocation(latitude, longitude, clientIP)
 		return self.encodeBusinesses(businesses)
 	
-	def getJsonForBusinessWithDetails(self, yellowpages_id, province, name):
-		business = BusinessService().getBusinessByDetails(yellowpages_id, name, province)
+	def getJsonForBusinessWithDetails(self, yellowpages_id, province, name, clientIP):
+		business = BusinessService().getBusinessByDetails(yellowpages_id, name, province, clientIP)
 		return BusinessEncoder().encode(business)
 	
 	def encodeBusinesses(self, businesses):

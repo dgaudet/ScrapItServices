@@ -18,7 +18,8 @@ class businessById(webapp.RequestHandler):
         
 class BusinessByCity(webapp.RequestHandler):
 	def get(self, city):
-		json = JsonService().getJsonForBusinessesInCity(city)
+		clientIP = self.request.remote_addr
+		json = JsonService().getJsonForBusinessesInCity(city, clientIP)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
@@ -26,7 +27,8 @@ class BusinessByLocation(webapp.RequestHandler):
 	def get(self):
 		latitude = cgi.escape(self.request.get('latitude'))
 		longitude = cgi.escape(self.request.get('longitude'))
-		json = JsonService().getJsonForBusinessesInGeoLocation(latitude, longitude)
+		clientIP = self.request.remote_addr
+		json = JsonService().getJsonForBusinessesInGeoLocation(latitude, longitude, clientIP)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
@@ -35,7 +37,8 @@ class BusinessByDetails(webapp.RequestHandler):
 		yellowpages_id = cgi.escape(self.request.get('id'))
 		province = cgi.escape(self.request.get('province'))
 		name = cgi.escape(self.request.get('name'))
-		json = JsonService().getJsonForBusinessWithDetails(yellowpages_id, province, name)
+		clientIP = self.request.remote_addr
+		json = JsonService().getJsonForBusinessWithDetails(yellowpages_id, province, name, clientIP)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
