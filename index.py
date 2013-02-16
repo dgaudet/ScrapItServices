@@ -5,6 +5,7 @@ import wsgiref.handlers
 import os
 import logging
 
+from appsettings import AppSettingsService
 from domain import Yellowpages_Business
 from repository import Business_Repository
 from google.appengine.ext.webapp import template
@@ -33,7 +34,7 @@ class MainPage(webapp.RequestHandler):
 application = webapp.WSGIApplication([
   ('/', MainPage)
   
-], debug=True)
+], debug=AppSettingsService().appInDebugMode())
 
 
 def main():

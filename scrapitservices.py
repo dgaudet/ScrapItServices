@@ -5,6 +5,7 @@ import wsgiref.handlers
 import os
 import logging
 
+from appsettings import AppSettingsService
 from domain import Yellowpages_Business
 from repository import Business_Repository
 from google.appengine.ext.webapp import template
@@ -104,7 +105,7 @@ application = webapp.WSGIApplication([
   ('/scrapitservices/yellowpagesbussearch', YellowpagesBusinessSearchHandler),
   ('/scrapitservices/addbusinessdetails', AddBusinessDetailsHandler)
   
-], debug=True)
+], debug=AppSettingsService().appInDebugMode())
 
 
 def main():

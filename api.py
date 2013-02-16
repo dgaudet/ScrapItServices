@@ -6,6 +6,7 @@ import os
 import logging
 
 from services import JsonService
+from appsettings import AppSettingsService
 from google.appengine.ext.webapp import template
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
@@ -48,7 +49,7 @@ application = webapp.WSGIApplication([
   ('/api/businessByCity/(.*)', BusinessByCity),
   ('/api/businessByGeoLocation', BusinessByLocation),
   ('/api/businessByDetails', BusinessByDetails)
-], debug=True)
+], debug=AppSettingsService().appInDebugMode())
 
 
 def main():

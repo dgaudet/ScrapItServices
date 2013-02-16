@@ -44,7 +44,6 @@ class YellowpagesBusinessSearchService:
 		#http://api.yellowapi.com/GetBusinessDetails/?prov=Saskatchewan&city=Saskatoon&bus-name=just-scrap-it&listingId=4436892fmt=XML&apikey=a1s2d3f4g5h6j7k8l9k6j5j4&UID=127.0.0.1	
 		encodedProvince = urllib.quote(province.encode("utf-8"))
 		encodedId = urllib.quote(yellowpages_id.encode("utf-8"))
-		logging.info("name: " + name)
 		encodedName = urllib.quote(name.encode("utf-8"))
 		url = BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
 		logging.info("called simplejson.load " + url)
