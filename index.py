@@ -1,18 +1,13 @@
-import cgi
-import datetime
 import urllib
-import wsgiref.handlers
 import os
+import wsgiref.handlers
 import logging
 
 from appsettings import AppSettingsService
-from domain import Yellowpages_Business
-from repository import Business_Repository
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from services import BusinessService
 
 class MainPage(webapp.RequestHandler):
     def get(self):
