@@ -25,5 +25,5 @@ class AppSettingsService:
 	def applicationID(self):
 		return os.environ['APPLICATION_ID']
 		
-	def yellowPagesApiVersion(self):
-		return "not set"
+	def yellowPagesBaseUrl(self):
+		return 'http://api.sandbox.yellowapi.com'

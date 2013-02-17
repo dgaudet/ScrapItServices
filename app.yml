@@ -25,3 +25,7 @@ handlers:
 - url: /scrapitservices/.*
   script: scrapitservices.py
   login: admin
+
+- url: /status
+  script: status.py
+  login: admin
