@@ -4,17 +4,16 @@ import logging
 from domain import Business
 from repository import Business_Repository
 from appsettings import AppSettingsService
-from google.appengine.ext import db
 
-BASE_URL = AppSettingsService().yellowPagesBaseUrl()
-API_KEY = '9k5g4bqucenr9ztnh9x693cw'
-SEARCH_TERM = 'scrapbook'
-
-class YellowpagesBusinessSearchService:         
+class YellowpagesBusinessSearchService:
+	BASE_URL = AppSettingsService().yellowPagesBaseUrl()
+	API_KEY = AppSettingsService().yellowPagesApiKey()
+	SEARCH_TERM = 'scrapbook'
+	
 	def getBusinessesByGeoLocation(self, latitude, longitude):
 		location = 'cZ' + str(longitude) + ',' + str(latitude)
-		clientIP = AppSettingsService().clientIP();
-		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
+		url = self.BASE_URL + '/FindBusiness/?what=' + self.SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100'
+		url = self.addRequiredParamsToUrl(url)
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)		
@@ -23,16 +22,16 @@ class YellowpagesBusinessSearchService:
 		# http://api.sandbox.yellowapi.com/FindBusiness/?what=scrapbook%20studio&where=saskatoon&fmt=JSON&pgLen=10&apikey=9k5g4bqucenr9ztnh9x693cw&UID=127.0.0.1
 		encodedName = urllib.quote(name.encode("utf-8"))
 		encodedCity = urllib.quote(city.encode("utf-8"))
-		clientIP = AppSettingsService().clientIP()
-		url = BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
+		url = self.BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100'
+		url = self.addRequiredParamsToUrl(url)
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 
 	def getBusinessesByCity(self, city):
 		encodedCity = urllib.quote(city.encode("utf-8"))
-		clientIP = AppSettingsService().clientIP()
-		url = BASE_URL + '/FindBusiness/?what=' + SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
+		url = self.BASE_URL + '/FindBusiness/?what=' + self.SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100'
+		url = self.addRequiredParamsToUrl(url)
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
@@ -49,8 +48,8 @@ class YellowpagesBusinessSearchService:
 		encodedProvince = urllib.quote(province.encode("utf-8"))
 		encodedId = urllib.quote(yellowpages_id.encode("utf-8"))
 		encodedName = urllib.quote(name.encode("utf-8"))
-		clientIP = AppSettingsService().clientIP()
-		url = BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100&apikey=' + API_KEY + '&UID=' + clientIP
+		url = self.BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100'
+		url = self.addRequiredParamsToUrl(url)
 		logging.info("called simplejson.load " + url)
 		result = simplejson.load(urllib.urlopen(url))
 		return self.buildBusinessDetailsFromJson(result)
@@ -112,6 +111,12 @@ class YellowpagesBusinessSearchService:
 			return business
 		else:
 			return None
+			
+	def addRequiredParamsToUrl(self, url):
+		apiKey = '&apikey=' + self.API_KEY
+		clientIP = AppSettingsService().clientIP()
+		clientParams = '&UID=' + clientIP
+		return url + apiKey + clientParams
 
 class BusinessService:
 	def updateBusinessUrl(self, yellowpages_id, url):

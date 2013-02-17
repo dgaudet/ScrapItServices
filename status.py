@@ -12,6 +12,7 @@ class StatusHandler(webapp.RequestHandler):
 		self.printVariableToPage("Server_Name", AppSettingsService().serverName())		
 		self.printVariableToPage("Application_ID", AppSettingsService().applicationID())
 		self.printVariableToPage("YellowPages_Base_URL", AppSettingsService().yellowPagesBaseUrl())
+		self.printVariableToPage("YellowPages_API_Key", AppSettingsService().yellowPagesApiKey())
 		self.printVariableToPage("Request_IP", AppSettingsService().clientIP())
 		
 	def printVariableToPage(self, variableName, variableValue):

@@ -24,3 +24,6 @@ class AppSettingsService:
 		
 	def yellowPagesBaseUrl(self):
 		return 'http://api.sandbox.yellowapi.com'
+		
+	def yellowPagesApiKey(self):
+		return '9k5g4bqucenr9ztnh9x693cw'
