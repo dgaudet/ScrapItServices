@@ -19,9 +19,6 @@ class AppSettingsService:
 	def clientIP(self):
 		return os.environ['REMOTE_ADDR']
 		
-	def SDKVersion(self):
-		return os.environ['SDK_VERSION']
-		
 	def applicationID(self):
 		return os.environ['APPLICATION_ID']
 		
