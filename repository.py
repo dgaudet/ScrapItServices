@@ -1,5 +1,4 @@
 import logging
-from domain import Yellowpages_Business
 from google.appengine.ext import db
 
 class Business_Repository:

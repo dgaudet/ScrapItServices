@@ -1,6 +1,4 @@
 import cgi
-import datetime
-import urllib
 import wsgiref.handlers
 import os
 import logging
