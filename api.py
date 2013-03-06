@@ -41,7 +41,12 @@ application = webapp.WSGIApplication([
   ('/api/businessById/(.*)', businessById),
   ('/api/businessByCity/(.*)', BusinessByCity),
   ('/api/businessByGeoLocation', BusinessByLocation),
-  ('/api/businessByDetails', BusinessByDetails)
+  ('/api/businessByDetails', BusinessByDetails),
+  ('/api/v1/business/(.*)', businessById),
+  ('/api/v1/businessById/(.*)', businessById),
+  ('/api/v1/businessByCity/(.*)', BusinessByCity),
+  ('/api/v1/businessByGeoLocation', BusinessByLocation),
+  ('/api/v1/businessByDetails', BusinessByDetails)
 ], debug=AppSettingsService().appInDebugMode())
 
 
