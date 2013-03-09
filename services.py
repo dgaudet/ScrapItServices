@@ -5,6 +5,10 @@ from domain import Business
 from repository import Business_Repository
 from appsettings import AppSettingsService
 
+# when encoding business for json need to return id in format yellowpages:id
+# when the api is called remove the yellowpages:id if it's there
+# then the app can decide wether to go to yellow pages or to the db based on the id
+
 class YellowpagesBusinessSearchService:
 	BASE_URL = AppSettingsService().yellowPagesBaseUrl()
 	API_KEY = AppSettingsService().yellowPagesApiKey()
@@ -196,8 +200,9 @@ class BusinessEncoder(simplejson.JSONEncoder):
 		geolocationString = None
 		if business.geolocation:
 			geolocationString = {'latitude': business.geolocation.lat, 'longitude': business.geolocation.lon }
-		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': {'province': business.province
-		, 'country': business.country, 'city': business.city, 'street': business.street}, 'phoneNumber': business.phonenumber, 'geoCode': geolocationString }
+		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': 
+		{'province': business.province, 'country': business.country, 'city': business.city, 'street': business.street}, 
+		'phoneNumber': business.phonenumber, 'geoCode': geolocationString }
 		
 class JsonListEncoder(simplejson.JSONEncoder):
 	def default(self, o):
