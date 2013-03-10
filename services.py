@@ -13,6 +13,7 @@ class YellowpagesBusinessSearchService:
 	BASE_URL = AppSettingsService().yellowPagesBaseUrl()
 	API_KEY = AppSettingsService().yellowPagesApiKey()
 	SEARCH_TERM = 'scrapbook'
+	ID_PREFIX = 'yellowPagesId:'
 	
 	def getBusinessesByGeoLocation(self, latitude, longitude):
 		location = 'cZ' + str(longitude) + ',' + str(latitude)
@@ -50,7 +51,8 @@ class YellowpagesBusinessSearchService:
 	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province):
 		#http://api.yellowapi.com/GetBusinessDetails/?prov=Saskatchewan&city=Saskatoon&bus-name=just-scrap-it&listingId=4436892fmt=XML&apikey=a1s2d3f4g5h6j7k8l9k6j5j4&UID=127.0.0.1	
 		encodedProvince = urllib.quote(province.encode("utf-8"))
-		encodedId = urllib.quote(yellowpages_id.encode("utf-8"))
+		idWithoutPrefix = self.removePrefixFromId(yellowpages_id)
+		encodedId = urllib.quote(idWithoutPrefix.encode("utf-8"))
 		encodedName = urllib.quote(name.encode("utf-8"))
 		url = self.BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100'
 		url = self.addRequiredParamsToUrl(url)
@@ -64,7 +66,7 @@ class YellowpagesBusinessSearchService:
 			listings = json['listings']		
 			for listing in listings:
 				business = Business()
-				business.yellowpages_id = listing['id']
+				business.yellowpages_id = self.formatId(listing['id'])
 				business.name = listing['name']
 				if 'address' in listing:
 					if listing['address']:
@@ -121,6 +123,13 @@ class YellowpagesBusinessSearchService:
 		clientIP = AppSettingsService().clientIP()
 		clientParams = '&UID=' + clientIP
 		return url + apiKey + clientParams
+	
+	def formatId(self, id):
+		return self.ID_PREFIX + id
+		
+	def removePrefixFromId(self, id):
+		result = id.split(self.ID_PREFIX)
+		return result[1]
 
 class BusinessService:
 	def updateBusinessUrl(self, yellowpages_id, url):
@@ -202,7 +211,7 @@ class BusinessEncoder(simplejson.JSONEncoder):
 			geolocationString = {'latitude': business.geolocation.lat, 'longitude': business.geolocation.lon }
 		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': 
 		{'province': business.province, 'country': business.country, 'city': business.city, 'street': business.street}, 
-		'phoneNumber': business.phonenumber, 'geoCode': geolocationString }
+		'phoneNumber': business.phonenumber, 'geoCode': geolocationString, 'business_id': business.yellowpages_id }
 		
 class JsonListEncoder(simplejson.JSONEncoder):
 	def default(self, o):
