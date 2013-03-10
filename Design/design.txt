@@ -36,3 +36,10 @@
 -- name - string
 -- code - string
 - Log all users who have logged in
+
+- New Stuff -
+- Yellowpages_repository
+- Yellowpages_service
+-- converts them into Business domain objects
+- Business_Facade
+-- searches both business and yellowpages_services to get all businesses

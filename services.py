@@ -2,7 +2,7 @@ from django.utils import simplejson
 import urllib
 import logging
 from domain import Business
-from repository import Business_Repository
+from repository import Yellow_Pages_Business_Repository, Yellowpages_Business
 from appsettings import AppSettingsService
 
 # when encoding business for json need to return id in format yellowpages:id
@@ -51,7 +51,7 @@ class YellowpagesBusinessSearchService:
 	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province):
 		#http://api.yellowapi.com/GetBusinessDetails/?prov=Saskatchewan&city=Saskatoon&bus-name=just-scrap-it&listingId=4436892fmt=XML&apikey=a1s2d3f4g5h6j7k8l9k6j5j4&UID=127.0.0.1	
 		encodedProvince = urllib.quote(province.encode("utf-8"))
-		idWithoutPrefix = self.removePrefixFromId(yellowpages_id)
+		idWithoutPrefix = Business().removePrefixFromId(yellowpages_id)
 		encodedId = urllib.quote(idWithoutPrefix.encode("utf-8"))
 		encodedName = urllib.quote(name.encode("utf-8"))
 		url = self.BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100'
@@ -66,7 +66,7 @@ class YellowpagesBusinessSearchService:
 			listings = json['listings']		
 			for listing in listings:
 				business = Business()
-				business.yellowpages_id = self.formatId(listing['id'])
+				business.yellowpages_id = business.formatYellowPagesId(listing['id'])
 				business.name = listing['name']
 				if 'address' in listing:
 					if listing['address']:
@@ -87,7 +87,7 @@ class YellowpagesBusinessSearchService:
 	def buildBusinessDetailsFromJson(self, json):	
 		if 'id' in json:	
 			business = Business()
-			business.yellowpages_id = json['id']
+			business.yellowpages_id = business.formatYellowPagesId(json['id'])
 			business.name = json['name']
 			if 'address' in json:
 				if json['address']:
@@ -123,29 +123,22 @@ class YellowpagesBusinessSearchService:
 		clientIP = AppSettingsService().clientIP()
 		clientParams = '&UID=' + clientIP
 		return url + apiKey + clientParams
-	
-	def formatId(self, id):
-		return self.ID_PREFIX + id
-		
-	def removePrefixFromId(self, id):
-		result = id.split(self.ID_PREFIX)
-		return result[1]
 
 class BusinessService:
 	def updateBusinessUrl(self, yellowpages_id, url):
-		business = Business()
+		business = Yellowpages_Business()
 		business.yellowpages_id = yellowpages_id
 		business.url = url
-		Business_Repository().save(business)
+		Yellow_Pages_Business_Repository().save(business)
 	
 	def getBusinesses(self):
-		businesses = Business_Repository().getAllBusinesses()
+		businesses = Yellow_Pages_Business_Repository().getAllBusinesses()
 		for business in businesses:
 			logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
 		return businesses
 		
 	def getBusinessByYellowPagesId(self, yellowpages_id):
-		return Business_Repository().getBusinessByYellowPagesId(yellowpages_id)
+		return Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(yellowpages_id)
 		
 	def getBusinessesByNameInCity(self, name, city):
 		if not name:
@@ -170,7 +163,7 @@ class BusinessService:
 		return combined_businesses
 		
 	def combineBusiness(self, business):
-		repo_business = Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
+		repo_business = Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
 		if repo_business:
 			business.url = repo_business.url
 		return business
