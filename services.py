@@ -124,7 +124,7 @@ class YellowpagesBusinessSearchService:
 		clientParams = '&UID=' + clientIP
 		return url + apiKey + clientParams
 
-class BusinessService:
+class YellowPages_BusinessService:
 	def updateBusinessUrl(self, yellowpages_id, url):
 		business = Yellowpages_Business()
 		business.yellowpages_id = yellowpages_id
@@ -170,19 +170,19 @@ class BusinessService:
 
 class JsonService:
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
-		business = BusinessService().getBusinessByYellowPagesId(yellowpages_id)
+		business = YellowPages_BusinessService().getBusinessByYellowPagesId(yellowpages_id)
 		return BusinessEncoder().encode(business)
 		
 	def getJsonForBusinessesInCity(self, city):
-		businesses = BusinessService().getBusinessesByNameInCity('', city)
+		businesses = YellowPages_BusinessService().getBusinessesByNameInCity('', city)
 		return self.encodeBusinesses(businesses)
 		
 	def getJsonForBusinessesInGeoLocation(self, latitude, longitude):
-		businesses = BusinessService().getBusinessesByGeoLocation(latitude, longitude)
+		businesses = YellowPages_BusinessService().getBusinessesByGeoLocation(latitude, longitude)
 		return self.encodeBusinesses(businesses)
 	
 	def getJsonForBusinessWithDetails(self, yellowpages_id, province, name):
-		business = BusinessService().getBusinessByDetails(yellowpages_id, name, province)
+		business = YellowPages_BusinessService().getBusinessByDetails(yellowpages_id, name, province)
 		return BusinessEncoder().encode(business)
 	
 	def encodeBusinesses(self, businesses):

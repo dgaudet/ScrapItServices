@@ -43,7 +43,7 @@ class Business:
 		
 	def removePrefixFromId(self, id):
 		result = id.split(self.YELLOW_PAGES_ID_PREFIX)
-		if result.count == 2:
+		if len(result) == 2:
 			return result[1]
 		else:
 			return id
