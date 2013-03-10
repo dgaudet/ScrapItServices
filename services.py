@@ -1,7 +1,7 @@
 from django.utils import simplejson
 import urllib
 import logging
-from domain import Business
+from domain import Business, GeoLocation
 from repository import Yellow_Pages_Business_Repository, Yellowpages_Business
 from appsettings import AppSettingsService
 
@@ -80,7 +80,7 @@ class YellowpagesBusinessSearchService:
 						geolocation = listing['geoCode']
 						lat = geolocation['latitude']
 						lon = geolocation['longitude']
-						business.geolocation = str(lat) + ', ' + str(lon)
+						business.geolocation = GeoLocation(lat, lon)
 				businesses.append(business)
 		return businesses
 		
@@ -101,7 +101,7 @@ class YellowpagesBusinessSearchService:
 					geolocation = json['geoCode']
 					lat = geolocation['latitude']
 					lon = geolocation['longitude']
-					business.geolocation = str(lat) + ', ' + str(lon)
+					business.geolocation = GeoLocation(lat, lon)
 			if 'phones' in json:
 				if json['phones']:
 					phones = json['phones']
@@ -201,7 +201,7 @@ class BusinessEncoder(simplejson.JSONEncoder):
 			return
 		geolocationString = None
 		if business.geolocation:
-			geolocationString = {'latitude': business.geolocation.lat, 'longitude': business.geolocation.lon }
+			geolocationString = {'latitude': business.geolocation.latitude, 'longitude': business.geolocation.longitude }
 		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': 
 		{'province': business.province, 'country': business.country, 'city': business.city, 'street': business.street}, 
 		'phoneNumber': business.phonenumber, 'geoCode': geolocationString, 'business_id': business.yellowpages_id }

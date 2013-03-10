@@ -1,18 +1,42 @@
 import logging
-from google.appengine.ext import db
 
-class Business(db.Model):
+class GeoLocation:
+	latitude = float
+	longitude = float
+
+	def __init__(self, latitude = None, longitude = None):
+		if latitude:
+			self.latitude = float(latitude)
+		else:
+			self.latitude = None
+		if longitude:
+			self.longitude = float(longitude)
+		else:
+			self.longitude = None
+
+class Business:
 	YELLOW_PAGES_ID_PREFIX = 'yellowPagesId:'
 	
-	name = db.StringProperty(multiline=False)
-	country = db.StringProperty(multiline=False)
-	province = db.StringProperty(multiline=False)
-	city = db.StringProperty(multiline=False)
-	street = db.StringProperty(multiline=False)
-	geolocation = db.GeoPtProperty()
-	phonenumber = db.StringProperty(multiline=False)
-	url = db.StringProperty(multiline=False)
-	yellowpages_id = db.StringProperty(multiline=False)
+	name = str
+	country = str
+	province = str
+	city = str
+	street = str
+	geolocation = GeoLocation()
+	phonenumber = str
+	url = str
+	yellowpages_id = str
+	
+	def __init__(self):
+		self.name = None
+		self.country = None
+		self.province = None
+		self.city = None
+		self.street = None
+		self.geolocation = None
+		self.phonenumber = None
+		self.url = None
+		yellowpages_id = None
 	
 	def formatYellowPagesId(self, id):
 		return self.YELLOW_PAGES_ID_PREFIX + id

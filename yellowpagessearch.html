@@ -23,10 +23,10 @@
 	                <td><blockquote>{{ business.yellowpages_id|escape }}</blockquote></td>
 	                {% if business.url %}
 	                <td><blockquote><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></blockquote></td>
-	                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}</blockquote></td>
 	                {% else %}
 	                <td></td>
-	                <td><blockquote>{{ business.geolocation|escape }}</blockquote></td>
+	                <td><blockquote>{{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}</blockquote></td>
 	                {% endif %}
 	            </tr>
 	            <tr class="input">
