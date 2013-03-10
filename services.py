@@ -66,7 +66,7 @@ class YellowpagesBusinessSearchService:
 			listings = json['listings']		
 			for listing in listings:
 				business = Business()
-				business.yellowpages_id = business.formatYellowPagesId(listing['id'])
+				business.business_id = business.formatYellowPagesId(listing['id'])
 				business.name = listing['name']
 				if 'address' in listing:
 					if listing['address']:
@@ -87,7 +87,7 @@ class YellowpagesBusinessSearchService:
 	def buildBusinessDetailsFromJson(self, json):	
 		if 'id' in json:	
 			business = Business()
-			business.yellowpages_id = business.formatYellowPagesId(json['id'])
+			business.business_id = business.formatYellowPagesId(json['id'])
 			business.name = json['name']
 			if 'address' in json:
 				if json['address']:
@@ -163,7 +163,7 @@ class YellowPages_BusinessService:
 		return combined_businesses
 		
 	def combineBusiness(self, business):
-		repo_business = Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(business.yellowpages_id)
+		repo_business = Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(business.business_id)
 		if repo_business:
 			business.url = repo_business.url
 		return business
@@ -202,9 +202,9 @@ class BusinessEncoder(simplejson.JSONEncoder):
 		geolocationString = None
 		if business.geolocation:
 			geolocationString = {'latitude': business.geolocation.latitude, 'longitude': business.geolocation.longitude }
-		return {'url': business.url, 'yellowpages_id': business.yellowpages_id, 'name': business.name, 'address': 
+		return {'url': business.url, 'yellowpages_id': business.business_id, 'name': business.name, 'address': 
 		{'province': business.province, 'country': business.country, 'city': business.city, 'street': business.street}, 
-		'phoneNumber': business.phonenumber, 'geoCode': geolocationString, 'business_id': business.yellowpages_id }
+		'phoneNumber': business.phonenumber, 'geoCode': geolocationString, 'business_id': business.business_id }
 		
 class JsonListEncoder(simplejson.JSONEncoder):
 	def default(self, o):

@@ -25,7 +25,7 @@ class Business:
 	geolocation = GeoLocation()
 	phonenumber = str
 	url = str
-	yellowpages_id = str
+	business_id = str
 	
 	def __init__(self):
 		self.name = None
@@ -36,7 +36,7 @@ class Business:
 		self.geolocation = None
 		self.phonenumber = None
 		self.url = None
-		yellowpages_id = None
+		self.business_id = None
 	
 	def formatYellowPagesId(self, id):
 		return self.YELLOW_PAGES_ID_PREFIX + id

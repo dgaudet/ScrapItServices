@@ -12,8 +12,8 @@
     {% for business in businesses %}
       item:
       <blockquote>{{ business.name|escape }}</blockquote>
-      <blockquote>{{ business.yellowpages_id|escape }}</blockquote>
+      <blockquote>{{ business.business_id|escape }}</blockquote>
       <blockquote>{{ business.url|escape }}</blockquote>
-      <blockquote><a href="/api/business/{{ business.yellowpages_id|escape }}">Json</a></blockquote>
+      <blockquote><a href="/api/business/{{ business.business_id|escape }}">Json</a></blockquote>
     {% endfor %}
 {% endblock %}
