@@ -1,13 +1,9 @@
-from django.utils import simplejson
+import json
 import urllib
 import logging
 from domain import Business, GeoLocation
-from repository import Yellow_Pages_Business_Repository, Yellowpages_Business
+from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model
 from appsettings import AppSettingsService
-
-# when encoding business for json need to return id in format yellowpages:id
-# when the api is called remove the yellowpages:id if it's there
-# then the app can decide wether to go to yellow pages or to the db based on the id
 
 class YellowpagesBusinessSearchService:
 	BASE_URL = AppSettingsService().yellowPagesBaseUrl()
@@ -19,8 +15,8 @@ class YellowpagesBusinessSearchService:
 		location = 'cZ' + str(longitude) + ',' + str(latitude)
 		url = self.BASE_URL + '/FindBusiness/?what=' + self.SEARCH_TERM + '&where=' + location + '&fmt=JSON&pgLen=100'
 		url = self.addRequiredParamsToUrl(url)
-		logging.info("called simplejson.load " + url)
-		result = simplejson.load(urllib.urlopen(url))
+		logging.info("called json.load " + url)
+		result = json.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)		
     
 	def getBusinessesByNameInCity(self, name, city):
@@ -29,23 +25,23 @@ class YellowpagesBusinessSearchService:
 		encodedCity = urllib.quote(city.encode("utf-8"))
 		url = self.BASE_URL + '/FindBusiness/?what=' + encodedName + '&where=' + encodedCity + '&fmt=JSON&pgLen=100'
 		url = self.addRequiredParamsToUrl(url)
-		logging.info("called simplejson.load " + url)
-		result = simplejson.load(urllib.urlopen(url))
+		logging.info("called json.load " + url)
+		result = json.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 
 	def getBusinessesByCity(self, city):
 		encodedCity = urllib.quote(city.encode("utf-8"))
 		url = self.BASE_URL + '/FindBusiness/?what=' + self.SEARCH_TERM + '&where=' + encodedCity + '&fmt=JSON&pgLen=100'
 		url = self.addRequiredParamsToUrl(url)
-		logging.info("called simplejson.load " + url)
-		result = simplejson.load(urllib.urlopen(url))
+		logging.info("called json.load " + url)
+		result = json.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 		
 	def getBusinessesByCityFile(self, city):
 		encodedCity = urllib.quote(city.encode("utf-8"))		
 		url = '/Users/Dean/Documents/Code/ScrapItServices/testJson.json'
-		logging.info("called simplejson.load " + url)
-		result = simplejson.load(open(url, 'r'))
+		logging.info("called json.load " + url)
+		result = json.load(open(url, 'r'))
 		return self.buildBusinessFromJson(result)
 		
 	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province):
@@ -56,8 +52,8 @@ class YellowpagesBusinessSearchService:
 		encodedName = urllib.quote(name.encode("utf-8"))
 		url = self.BASE_URL + '/GetBusinessDetails/?prov=' + encodedProvince + '&listingId=' + encodedId + '&bus-name=' + encodedName + '&fmt=JSON&pgLen=100'
 		url = self.addRequiredParamsToUrl(url)
-		logging.info("called simplejson.load " + url)
-		result = simplejson.load(urllib.urlopen(url))
+		logging.info("called json.load " + url)
+		result = json.load(urllib.urlopen(url))
 		return self.buildBusinessDetailsFromJson(result)
 		
 	def buildBusinessFromJson(self, json):	
@@ -168,6 +164,18 @@ class YellowPages_BusinessService:
 			business.url = repo_business.url
 		return business
 
+class BusinessService:
+	def saveBusiness(self, business):
+		dbBusiness = Business_Model()
+		dbBusiness.Name = business.name
+		Business_Model_Repository().save(dbBusiness)
+	
+	def getBusinesses(self):
+		dbBusinesses = Business_Model_Repository().getAllBusinesses()
+		business = Business()
+		business.name = dbBusinesses[0].name
+		return business
+
 class JsonService:
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
 		business = YellowPages_BusinessService().getBusinessByYellowPagesId(yellowpages_id)
@@ -189,11 +197,11 @@ class JsonService:
 		jsonData = []
 		for business in businesses:
 			encodedBusiness = BusinessEncoder().encode(business)
-			jsonData.append(simplejson.loads(encodedBusiness))
+			jsonData.append(json.loads(encodedBusiness))
 		jsonBusinesses = JsonListEncoder().encode(jsonData)
 		return '{ "items": ' + jsonBusinesses + '}'
 		
-class BusinessEncoder(simplejson.JSONEncoder):
+class BusinessEncoder(json.JSONEncoder):
 	# json serialization example: http://stackoverflow.com/questions/1531501/json-serialization-of-google-app-engine-models
 	def default(self, business):
 		if not isinstance (business, Business):
@@ -206,7 +214,7 @@ class BusinessEncoder(simplejson.JSONEncoder):
 		{'province': business.province, 'country': business.country, 'city': business.city, 'street': business.street}, 
 		'phoneNumber': business.phonenumber, 'geoCode': geolocationString, 'business_id': business.business_id }
 		
-class JsonListEncoder(simplejson.JSONEncoder):
+class JsonListEncoder(json.JSONEncoder):
 	def default(self, o):
 		try:
 			iterable = iter(o)
