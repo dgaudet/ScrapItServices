@@ -30,33 +30,33 @@ class Yellowpages_Business(db.Model):
 	name = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)
 	
-# class Business_Repository:
-# 	# need to modify getBusinessById to get by the db key
-#	# need to add a method to getBusinessByName so that we don't insert duplicates, maybe we can check if the key is null
-#     def save(self, business):
-#         existingBusiness = self.getBusinessById(business.yellowpages_id)
-#         if existingBusiness:
-#             existingBusiness.url = business.url
-#             existingBusiness.put()
-#             logging.info('********************* updating entity with yellow id: ' + business.yellowpages_id)
-#         else:
-#             business.put()
-#             logging.info('********************* new entity with yellow id: ' + business.yellowpages_id)
-#         
-#     def getAllBusinesses(self):
-#         """return all DB_Businesses"""
-#         return db.GqlQuery("SELECT * FROM DB_Business");
-#         
-#     def getBusinessById(self, id):        
-#         query = db.GqlQuery("SELECT * FROM DB_Business where id = :1", id)
-#         business = query.get()
-#         if business:
-#             logging.info('bus 1 id: ' + business.name + ' url: ' + business.url)            
-#         else:
-#             logging.info('id: ' + id + ' not found')
-#         return business
+class Business_Model_Repository:
+	# need to modify getBusinessById to get by the db key
+	# need to add a method to getBusinessByName so that we don't insert duplicates, maybe we can check if the key is null
+    def save(self, business):
+        existingBusiness = self.getBusinessById(business.yellowpages_id)
+        if existingBusiness:
+            existingBusiness.url = business.url
+            existingBusiness.put()
+            logging.info('********************* updating entity with yellow id: ' + business.yellowpages_id)
+        else:
+            business.put()
+            logging.info('********************* new entity with yellow id: ' + business.yellowpages_id)
+        
+    def getAllBusinesses(self):
+        """return all Business_Model"""
+        return db.GqlQuery("SELECT * FROM Business_Model");
+        
+    def getBusinessById(self, id):        
+        query = db.GqlQuery("SELECT * FROM Business_Model where id = :1", id)
+        business = query.get()
+        if business:
+            logging.info('bus 1 id: ' + business.name + ' url: ' + business.url)            
+        else:
+            logging.info('id: ' + id + ' not found')
+        return business
 		
-class DB_Business:
+class Business_Model:
 	name = db.StringProperty(multiline=False)
 	country = db.StringProperty(multiline=False)
 	province = db.StringProperty(multiline=False)
