@@ -29,34 +29,35 @@ class Yellowpages_Business(db.Model):
 	yellowpages_id = db.StringProperty(multiline=False)
 	name = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)
-	
+
 class Business_Model_Repository:
 	# need to modify getBusinessById to get by the db key
 	# need to add a method to getBusinessByName so that we don't insert duplicates, maybe we can check if the key is null
     def save(self, business):
-        existingBusiness = self.getBusinessById(business.yellowpages_id)
+        existingBusiness = self.getBusinessById(business.name)
         if existingBusiness:
             existingBusiness.url = business.url
             existingBusiness.put()
-            logging.info('********************* updating entity with yellow id: ' + business.yellowpages_id)
+            logging.info('********************* updating entity with name: ' + business.name)
         else:
             business.put()
-            logging.info('********************* new entity with yellow id: ' + business.yellowpages_id)
+            logging.info('********************* new entity with name: ' + business.name)
         
     def getAllBusinesses(self):
         """return all Business_Model"""
         return db.GqlQuery("SELECT * FROM Business_Model");
         
-    def getBusinessById(self, id):        
-        query = db.GqlQuery("SELECT * FROM Business_Model where id = :1", id)
+    def getBusinessById(self, name):
+        logging.info('name search: ' + name)
+        query = db.GqlQuery("SELECT * FROM Business_Model where name = :1", name)
         business = query.get()
         if business:
             logging.info('bus 1 id: ' + business.name + ' url: ' + business.url)            
         else:
-            logging.info('id: ' + id + ' not found')
+            logging.info('id: ' + name + ' not found')
         return business
-		
-class Business_Model:
+
+class Business_Model(db.Model):
 	name = db.StringProperty(multiline=False)
 	country = db.StringProperty(multiline=False)
 	province = db.StringProperty(multiline=False)
