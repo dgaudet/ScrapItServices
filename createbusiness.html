@@ -2,17 +2,19 @@
 
 {% block content %}
 	<p>Businesses</p>
-    <form action="/scrapitservices/business" method="post">
+    <form action="/businessservice/business" method="post">
       <div>Business Name:<input type="text" name="name"></div>
       <div>Website address:<input type="text" name="url"></div>
       <div><input type="submit" value="Save Business"></div>
     </form>    
     
-    {% for business in businesses %}
-      item:
-      <blockquote>{{ business.name|escape }}</blockquote>
-      <blockquote>{{ business.business_id|escape }}</blockquote>
-      <blockquote>{{ business.url|escape }}</blockquote>
-      <blockquote><a href="/api/business/{{ business.business_id|escape }}">Json</a></blockquote>
-    {% endfor %}
+	{% if businesses %}
+	    {% for business in businesses %}
+	      item:
+	      <blockquote>{{ business.name|escape }}</blockquote>
+	      <blockquote>{{ business.business_id|escape }}</blockquote>
+	      <blockquote>{{ business.url|escape }}</blockquote>
+	      <blockquote><a href="/api/business/{{ business.business_id|escape }}">Json</a></blockquote>
+	    {% endfor %}
+	{% endif %}
 {% endblock %}
