@@ -167,14 +167,20 @@ class YellowPages_BusinessService:
 class BusinessService:
 	def saveBusiness(self, business):
 		dbBusiness = Business_Model()
-		dbBusiness.Name = business.name
+		dbBusiness.name = business.name
+		dbBusiness.url = business.url
 		Business_Model_Repository().save(dbBusiness)
 	
 	def getBusinesses(self):
 		dbBusinesses = Business_Model_Repository().getAllBusinesses()
-		business = Business()
-		business.name = dbBusinesses[0].name
-		return business
+		businesses = []
+		for dbBusiness in dbBusinesses:
+			business = Business()
+			business.name = dbBusiness.name
+			business.url = dbBusiness.url
+			business.business_id = dbBusiness.key().id()
+			businesses.append(business)
+		return businesses
 
 class JsonService:
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
