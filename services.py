@@ -169,6 +169,11 @@ class BusinessService:
 		dbBusiness = Business_Model()
 		dbBusiness.name = business.name
 		dbBusiness.url = business.url
+		dbBusiness.country = 'CA'
+		dbBusiness.province = business.province
+		dbBusiness.city = business.city
+		dbBusiness.street = business.street
+		dbBusiness.phonenumber = business.phone
 		Business_Model_Repository().save(dbBusiness)
 	
 	def getBusinesses(self):
@@ -178,6 +183,11 @@ class BusinessService:
 			business = Business()
 			business.name = dbBusiness.name
 			business.url = dbBusiness.url
+			business.country = dbBusiness.country
+			business.province = dbBusiness.province
+			business.city = dbBusiness.city
+			business.street = dbBusiness.street
+			business.phone = dbBusiness.phonenumber
 			business.business_id = dbBusiness.key().id()
 			businesses.append(business)
 		return businesses

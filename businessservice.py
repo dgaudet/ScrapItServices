@@ -46,6 +46,10 @@ class BusinessHandler(webapp.RequestHandler):
 
 		business.name = self.request.get('name')
 		business.url = self.request.get('url')
+		business.province = self.request.get('province')
+		business.city = self.request.get('city')
+		business.street = self.request.get('street')
+		business.phone = self.request.get('phone')
 		BusinessService().saveBusiness(business);
 		self.redirect('/businessservice/')
 

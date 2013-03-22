@@ -1,20 +1,75 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<p>Businesses</p>
-    <form action="/businessservice/business" method="post">
-      <div>Business Name:<input type="text" name="name"></div>
-      <div>Website address:<input type="text" name="url"></div>
-      <div><input type="submit" value="Save Business"></div>
+    <form action="/businessservice/business" method="post" class="form-horizontal">
+		<div class="control-group">
+			<label class="control-label">Business Name:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="name"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Website address:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="url"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Province:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="province"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">City:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="city"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Street:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="street"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Phone:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="phone"/>
+			</div>
+			<button type="submit" class="btn">Save Business</button>
+		</div>		
     </form>    
     
 	{% if businesses %}
-	    {% for business in businesses %}
-	      item:
-	      <blockquote>{{ business.name|escape }}</blockquote>
-	      <blockquote>{{ business.business_id|escape }}</blockquote>
-	      <blockquote>{{ business.url|escape }}</blockquote>
-	      <blockquote><a href="/api/business/{{ business.business_id|escape }}">Json</a></blockquote>
-	    {% endfor %}
+		<p>Businesses</p>
+		<div class="span10">
+			<table class="table table-hover">
+				<thead>
+					<th class="rounded-company" scope="col">Name</th>
+					<th scope="col">ID</th>
+					<th scope="col">Website Address</th>			
+					<th scope="col">Province</th>
+					<th scope="col">City</th>
+					<th scope="col">Street</th>
+					<th scope="col">Phone</th>
+					<th scope="col">Json</th>
+				</thead>
+				<tbody>
+				    {% for business in businesses %}
+						<tr>
+					      <td>{{ business.name|escape }}</td>
+					      <td>{{ business.business_id|escape }}</td>
+					      <td>{{ business.url|escape }}</td>
+					      <td>{{ business.province|escape }}</td>
+						  <td>{{ business.city|escape }}</td>
+					      <td>{{ business.street|escape }}</td>
+						  <td>{{ business.phone|escape }}</td>
+					      <td><a href="/api/business/{{ business.business_id|escape }}">Json</a></td>
+					    </tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 	{% endif %}
 {% endblock %}
