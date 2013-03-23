@@ -1,23 +1,22 @@
-<head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-	<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-	<link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>
-	<link type="text/css" rel="stylesheet" href="/stylesheets/businessservice.css" />
-    <head>                                                                  
-        <script type="text/javascript" src="/scripts/jquery.js"></script>
-        <script type="text/javascript" src="/scripts/custom.js"></script>                                                          
-     </head>
-  </head>
 <html>
-  <body>
-    <p>Hello, {{ user.nickname|escape }}</p>
-    {% block content %}{% endblock %}
-    </br>
-	<div class="span12">
-	    <a href="{{ url }}">{{ url_linktext }}</a>
-	    <a href="/">Home</a>
-		<a href="/scrapitservices/">Businesses</a>
-	    <a href="/scrapitservices/yellowpagesbussearch">Search for Business to edit</a>
-	</div>
-  </body>
+	<head>
+		<link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+		<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet" type="text/css"/>
+		<link type="text/css" rel="stylesheet" href="/stylesheets/businessservice.css" />
+	</head>
+	<body>
+		<p>Hello, {{ user.nickname|escape }}</p>
+		{% block content %}{% endblock %}
+		</br>
+		<div id="footer" class="span12">
+			<a href="{{ url }}">{{ url_linktext }}</a>
+			<a href="/">Home</a>
+			<a href="/scrapitservices/">Businesses</a>
+			<a href="/scrapitservices/yellowpagesbussearch">Search for Business to edit</a>
+		</div>
+		<script type="text/javascript" src="/scripts/jquery.js"></script>
+		<script type="text/javascript" src="/bootstrap/js/bootstrap.js"></script>		
+		<script type="text/javascript" src="/scripts/custom.js"></script>                                                          
+	</body>
 </html>

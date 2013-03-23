@@ -34,7 +34,7 @@ class CreateBusiness(webapp.RequestHandler):
             'url_linktext': url_linktext,
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'test.html')
+        path = os.path.join(os.path.dirname(__file__), 'createyellowpagesbusiness.html')
         self.response.out.write(template.render(path, template_values))
 
 class BusinessHandler(webapp.RequestHandler):
