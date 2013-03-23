@@ -1,46 +1,57 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="/businessservice/business" method="post" class="form-horizontal">
-		<div class="control-group">
-			<label class="control-label">Business Name:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="name"/>
-			</div>
+	<a href="#createBusinessModal" role="button" class="btn" data-toggle="modal">Create New Business</a>
+	<div id="createBusinessModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Create New Business:</h3>
 		</div>
-		<div class="control-group">
-			<label class="control-label">Website address:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="url"/>
-			</div>
+		<div class="modal-body">
+		    <form action="/businessservice/business" name="create_business_form" method="post" class="form-horizontal">
+				<div class="control-group">
+					<label class="control-label">Business Name:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="name"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Website address:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="url"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Province:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="province"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">City:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="city"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Street:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="street"/>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">Phone:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="phone"/>
+					</div>
+				</div>		
+		    </form>
 		</div>
-		<div class="control-group">
-			<label class="control-label">Province:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="province"/>
-			</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+			<button class="btn btn-primary" onclick="javascript: submitform()">Save Business</button>
 		</div>
-		<div class="control-group">
-			<label class="control-label">City:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="city"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">Street:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="street"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">Phone:</label>
-			<div class="controls">
-				<input type="text" class="input-large block" name="phone"/>
-			</div>
-			<button type="submit" class="btn">Save Business</button>
-		</div>		
-    </form>    
-    
+	</div>
 	{% if businesses %}
 		<p>Businesses</p>
 		<div class="span10">
@@ -72,4 +83,10 @@
 			</table>
 		</div>
 	{% endif %}
+	<script type="text/javascript">
+	function submitform()
+	{
+	  document.create_business_form.submit();
+	}
+	</script>
 {% endblock %}
