@@ -53,34 +53,40 @@
 		</div>
 	</div>
 	{% if businesses %}
-		<p>Businesses</p>
-		<div class="span10">
-			<table class="table table-hover">
-				<thead>
-					<th class="rounded-company" scope="col">Name</th>
-					<th scope="col">ID</th>
-					<th scope="col">Website Address</th>			
-					<th scope="col">Province</th>
-					<th scope="col">City</th>
-					<th scope="col">Street</th>
-					<th scope="col">Phone</th>
-					<th scope="col">Json</th>
-				</thead>
-				<tbody>
-				    {% for business in businesses %}
-						<tr>
-					      <td>{{ business.name|escape }}</td>
-					      <td>{{ business.business_id|escape }}</td>
-					      <td>{{ business.url|escape }}</td>
-					      <td>{{ business.province|escape }}</td>
-						  <td>{{ business.city|escape }}</td>
-					      <td>{{ business.street|escape }}</td>
-						  <td>{{ business.phone|escape }}</td>
-					      <td><a href="/api/business/{{ business.business_id|escape }}">Json</a></td>
-					    </tr>
-					{% endfor %}
-				</tbody>
-			</table>
+		<div class="row">
+			<div class="span12">
+				<hr class="bs-docs-separator"/>
+			</div>
+			<div class="span10">
+				<table class="table table-hover">
+					<thead>
+						<th class="rounded-company" scope="col">Name</th>
+						<th scope="col">ID</th>
+						<th scope="col">Website Address</th>			
+						<th scope="col">Province</th>
+						<th scope="col">City</th>
+						<th scope="col">Street</th>
+						<th scope="col">Phone</th>
+						<th scope="col">Map</th>
+						<th scope="col">Json</th>
+					</thead>
+					<tbody>
+					    {% for business in businesses %}
+							<tr>
+						      <td>{{ business.name|escape }}</td>
+						      <td>{{ business.business_id|escape }}</td>
+						      <td>{{ business.url|escape }}</td>
+						      <td>{{ business.province|escape }}</td>
+							  <td>{{ business.city|escape }}</td>
+						      <td>{{ business.street|escape }}</td>
+							  <td>{{ business.phone|escape }}</td>
+							  <td></td>
+						      <td><a href="/api/business/{{ business.business_id|escape }}">Json</a></td>
+						    </tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
 		</div>
 	{% endif %}
 	<script type="text/javascript">

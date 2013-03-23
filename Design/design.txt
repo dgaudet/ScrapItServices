@@ -1,19 +1,3 @@
-- Need a way to update a business that already exists in Yellow pages
--- sequence id - int - automatically assigned
--- yellow pages id - int
--- url - string
-- -Create Domain object class-
-- Create repository class to save the domain objects
--- don't allow duplicate yellow pages id's
-- Create service to add business to db
-- Create template for adding business
-
-- Need a way to retrieve a business url by yellow pages id
--- Search for Yellow pages business by business name
--- add website url
--- verify it
--- save it
-
 - Need a way to input completely new business
 -- sequence id - int
 -- Business name - string 
@@ -37,6 +21,10 @@
 -- code - string
 - Log all users who have logged in
 
-- New Stuff -
 - Business_Facade
 -- searches both business and yellowpages_services to get all businesses
+
+- Python stuff
+-- use base.html in index.html
+-- modify business and yellow pages links to only display if you are logged in
+-- find a way to share logged in or not code, which will make it easier to show hide business links
