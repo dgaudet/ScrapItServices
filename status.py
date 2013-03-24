@@ -14,6 +14,8 @@ class StatusHandler(webapp.RequestHandler):
 		self.printVariableToPage("YellowPages_Base_URL", AppSettingsService().yellowPagesBaseUrl())
 		self.printVariableToPage("YellowPages_API_Key", AppSettingsService().yellowPagesApiKey())
 		self.printVariableToPage("Request_IP", AppSettingsService().clientIP())
+		#display the fact that I am using I think jinja2 - whatever the default is for the templating language
+		#also using webapp2 for the web application framework
 		
 	def printVariableToPage(self, variableName, variableValue):
 		self.response.out.write("%s = %s<br />\n" % (variableName, variableValue))

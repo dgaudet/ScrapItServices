@@ -31,10 +31,12 @@ class Yellowpages_Business(db.Model):
 	url = db.StringProperty(multiline=False)
 
 class Business_Model_Repository:
+	# doing a put then a getAllBusinesses does not return the data imediately, due to google's high replication data store
+	# if I want it too I would need to use strong conistency and ancestor queries https://developers.google.com/appengine/docs/python/datastore/structuring_for_strong_consistency
 	# need to modify getBusinessById to get by the db key
 	# need to add a method to getBusinessByName so that we don't insert duplicates, maybe we can check if the key is null
     def save(self, business):
-        existingBusiness = self.getBusinessById(business.name)
+        existingBusiness = self.getBusinessByName(business.name)
         if existingBusiness:
             existingBusiness.url = business.url
             existingBusiness.put()
@@ -45,16 +47,16 @@ class Business_Model_Repository:
         
     def getAllBusinesses(self):
         """return all Business_Model"""
-        return db.GqlQuery("SELECT * FROM Business_Model");
+        return Business_Model.all().order("name");
         
-    def getBusinessById(self, name):
+    def getBusinessByName(self, name):
         logging.info('name search: ' + name)
-        query = db.GqlQuery("SELECT * FROM Business_Model where name = :1", name)
+        query = Business_Model.gql("WHERE name = :1", name)
         business = query.get()
         if business:
-            logging.info('bus 1 id: ' + business.name + ' url: ' + business.url)            
+            logging.info('bus 1 name: ' + business.name + ' url: ' + business.url)            
         else:
-            logging.info('id: ' + name + ' not found')
+            logging.info('busness with name: ' + name + ' not found')
         return business
 
 class Business_Model(db.Model):
@@ -66,3 +68,4 @@ class Business_Model(db.Model):
 	geolocation = db.GeoPtProperty()
 	phonenumber = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)
+	created_date = db.DateTimeProperty(auto_now_add=True)

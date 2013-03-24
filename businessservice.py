@@ -44,13 +44,14 @@ class BusinessHandler(webapp.RequestHandler):
 	def post(self):
 		business = Business()
 
-		business.name = self.request.get('name')
-		business.url = self.request.get('url')
-		business.province = self.request.get('province')
-		business.city = self.request.get('city')
-		business.street = self.request.get('street')
-		business.phone = self.request.get('phone')
+		business.name = cgi.escape(self.request.get('name'))
+		business.url = cgi.escape(self.request.get('url'))
+		business.province = cgi.escape(self.request.get('province'))
+		business.city = cgi.escape(self.request.get('city'))
+		business.street = cgi.escape(self.request.get('street'))
+		business.phone = cgi.escape(self.request.get('phone'))
 		BusinessService().saveBusiness(business);
+		
 		self.redirect('/businessservice/')
 
 application = webapp.WSGIApplication([
