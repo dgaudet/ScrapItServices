@@ -13,9 +13,9 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from services import YellowPages_BusinessService, BusinessService
 from domain import Business
 
-#get geo coordinates by address
-#108 20103rd st, saskatoon, sk
-#http://maps.googleapis.com/maps/api/geocode/json?address=108%20103rd%20St%20E%2C%20Saskatoon%2C%20SK&sensor=true&region=ca
+# allow users to enter postal code
+# add a dropdown for province selection
+# use googleservice to get the proper url instead of hardcoding it into the html page
 
 class BusinessHandler(webapp.RequestHandler):
     def get(self):

@@ -38,4 +38,11 @@ class GoogleGeoCodeService:
 								geolocation = GeoLocation(location['lat'], location['lng'])
 		
 		return geolocation
-			
+
+class GoogleMapsService:
+	# https://maps.google.com/maps?q=52.13024309999999,+-106.5980011&hl=en&sll=37.0625,-95.677068&sspn=35.821085,79.013672&t=m&z=16
+	def getMapUrlForGeoLocation(self, geolocation):
+		if geolocation:
+			return "https://maps.google.com/maps?q=" + str(geolocation.latitude) + ",+" + str(geolocation.longitude) + "&hl=en&sll=37.0625,-95.677068&sspn=35.821085,79.013672&t=m&z=16"
+		
+		return "http://maps.google.com"

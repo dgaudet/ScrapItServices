@@ -57,7 +57,7 @@
 			<div class="span12">
 				<hr class="bs-docs-separator"/>
 			</div>
-			<div class="span10">
+			<div class="span12">
 				<table class="table table-hover">
 					<thead>
 						<th class="rounded-company" scope="col">Name</th>
@@ -80,8 +80,13 @@
 							  <td>{{ business.city|escape }}</td>
 						      <td>{{ business.street|escape }}</td>
 							  <td>{{ business.phone|escape }}</td>
-							  <td>{{ business.geolocation.latitude|escape }}, {{ business.geolocation.longitude|escape }}</td>
-						      <td><a href="/api/business/{{ business.business_id|escape }}">Json</a></td>
+							  {% if business.geolocation %}
+								  <td><a target="_blank"  href="https://maps.google.com/maps?q={{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}&hl=en&sll=37.0625,-95.677068&sspn=35.821085,79.013672&t=m&z=16">Map</a></td>
+								  <!-- <td>{{ business.geolocation.latitude|escape }}, {{ business.geolocation.longitude|escape }}</td> -->
+							  {% else %}
+								  <td></td>
+							  {% endif %}
+						      <td><a target="_blank" href="/api/business/{{ business.business_id|escape }}">Json</a></td>
 						    </tr>
 						{% endfor %}
 					</tbody>
