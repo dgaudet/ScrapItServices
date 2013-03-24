@@ -13,13 +13,11 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from services import YellowPages_BusinessService, BusinessService
 from domain import Business
 
-#add a way to create a business probably a new page is needed
-# need to figure out how this class works exaclty to add new businesses
 #get geo coordinates by address
 #108 20103rd st, saskatoon, sk
 #http://maps.googleapis.com/maps/api/geocode/json?address=108%20103rd%20St%20E%2C%20Saskatoon%2C%20SK&sensor=true&region=ca
 
-class CreateBusiness(webapp.RequestHandler):
+class BusinessHandler(webapp.RequestHandler):
     def get(self):
         businesses = BusinessService().getBusinesses();
         
@@ -40,7 +38,7 @@ class CreateBusiness(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'createbusiness.html')
         self.response.out.write(template.render(path, template_values))
 
-class BusinessHandler(webapp.RequestHandler):
+class CreateBusiness(webapp.RequestHandler):
 	def post(self):
 		business = Business()
 
@@ -55,8 +53,8 @@ class BusinessHandler(webapp.RequestHandler):
 		self.redirect('/businessservice/')
 
 application = webapp.WSGIApplication([
-  ('/businessservice/', CreateBusiness),
-  ('/businessservice/business', BusinessHandler)
+  ('/businessservice/create', CreateBusiness),
+  ('/businessservice/', BusinessHandler)
   
 ], debug=AppSettingsService().appInDebugMode())
 
