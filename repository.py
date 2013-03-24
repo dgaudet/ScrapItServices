@@ -65,6 +65,7 @@ class Business_Model(db.Model):
 	province = db.StringProperty(multiline=False)
 	city = db.StringProperty(multiline=False)
 	street = db.StringProperty(multiline=False)
+	postalcode = db.StringProperty(multiline=False)
 	geolocation = db.GeoPtProperty()
 	phonenumber = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)

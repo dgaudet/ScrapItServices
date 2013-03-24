@@ -80,7 +80,7 @@
 							  <td>{{ business.city|escape }}</td>
 						      <td>{{ business.street|escape }}</td>
 							  <td>{{ business.phone|escape }}</td>
-							  <td></td>
+							  <td>{{ business.geolocation.latitude|escape }}, {{ business.geolocation.longitude|escape }}</td>
 						      <td><a href="/api/business/{{ business.business_id|escape }}">Json</a></td>
 						    </tr>
 						{% endfor %}

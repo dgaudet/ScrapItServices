@@ -22,6 +22,7 @@ class Business:
 	province = str
 	city = str
 	street = str
+	postalcode = str
 	geolocation = GeoLocation()
 	phonenumber = str
 	url = str
@@ -33,6 +34,7 @@ class Business:
 		self.province = None
 		self.city = None
 		self.street = None
+		self.postalcode = None
 		self.geolocation = None
 		self.phonenumber = None
 		self.url = None

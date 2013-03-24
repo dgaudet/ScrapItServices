@@ -4,6 +4,8 @@ import logging
 from domain import Business, GeoLocation
 from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model
 from appsettings import AppSettingsService
+from googleservices import GoogleGeoCodeService
+from google.appengine.ext import db
 
 class YellowpagesBusinessSearchService:
 	BASE_URL = AppSettingsService().yellowPagesBaseUrl()
@@ -165,16 +167,34 @@ class YellowPages_BusinessService:
 		return business
 
 class BusinessService:
+	DEFAULT_COUNTRY_CODE = 'CA'
+	
 	def saveBusiness(self, business):
+		business.country = self.DEFAULT_COUNTRY_CODE
+		geolocation = GoogleGeoCodeService().getGeoLocationByAddress(business)
+		
 		dbBusiness = Business_Model()
 		dbBusiness.name = business.name
 		dbBusiness.url = business.url
-		dbBusiness.country = 'CA'
+		dbBusiness.country = business.country
 		dbBusiness.province = business.province
 		dbBusiness.city = business.city
+		dbBusiness.postalcode = business.postalcode
 		dbBusiness.street = business.street
 		dbBusiness.phonenumber = business.phone
+		if geolocation:
+			dbBusiness.geolocation = self.convertGeoLocaitonToGeoPT(geolocation)
 		Business_Model_Repository().save(dbBusiness)
+		
+	def convertGeoLocaitonToGeoPT(self, geolocation):
+		if geolocation:
+			return "%.10f,%.10f" % (geolocation.latitude, geolocation.longitude)
+		return None
+	
+	def convertGeoPTToGeoLocation(self, geoPt):
+		if geoPt:
+			return GeoLocation(geoPt.lat, geoPt.lon)
+		return None
 	
 	def getBusinesses(self):
 		dbBusinesses = Business_Model_Repository().getAllBusinesses()
@@ -187,7 +207,9 @@ class BusinessService:
 			business.province = dbBusiness.province
 			business.city = dbBusiness.city
 			business.street = dbBusiness.street
+			business.postalcode = dbBusiness.postalcode
 			business.phone = dbBusiness.phonenumber
+			business.geolocation = self.convertGeoPTToGeoLocation(dbBusiness.geolocation)
 			business.business_id = dbBusiness.key().id()
 			businesses.append(business)
 		return businesses
