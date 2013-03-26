@@ -18,25 +18,25 @@ from domain import Business
 # use googleservice to get the proper url instead of hardcoding it into the html page
 
 class BusinessHandler(webapp.RequestHandler):
-    def get(self):
-        businesses = BusinessService().getBusinesses();
-        
-        if users.get_current_user():
-            url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Logout'
-        else:
-            url = users.create_login_url(self.request.uri)
-            url_linktext = 'Login'
+	def get(self):
+		businesses = BusinessService().getBusinesses();
 
-        template_values = {
-            'user': users.get_current_user(),
-            'businesses': businesses,
-            'url': url,
-            'url_linktext': url_linktext,
-        }
+		if users.get_current_user():
+			url = users.create_logout_url(self.request.uri)
+			url_linktext = 'Logout'
+		else:
+			url = users.create_login_url(self.request.uri)
+			url_linktext = 'Login'
 
-        path = os.path.join(os.path.dirname(__file__), 'businesses.html')
-        self.response.out.write(template.render(path, template_values))
+		template_values = {
+			'user': users.get_current_user(),
+			'businesses': businesses,
+			'url': url,
+			'url_linktext': url_linktext,	
+		}
+		
+		path = os.path.join(os.path.dirname(__file__), 'businesses.html')
+		self.response.out.write(template.render(path, template_values))
 
 class CreateBusiness(webapp.RequestHandler):
 	def post(self):
