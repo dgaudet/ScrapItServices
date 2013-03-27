@@ -1,15 +1,13 @@
+import webapp2
 import cgi
-import wsgiref.handlers
 import os
 import logging
 
+from google.appengine.ext.webapp import template
+from google.appengine.api import users
 from appsettings import AppSettingsService
 from repository import Yellowpages_Business
 from repository import Yellow_Pages_Business_Repository
-from google.appengine.ext.webapp import template
-from google.appengine.api import users
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from services import YellowPages_BusinessService, BusinessService
 from domain import Business
 
@@ -17,7 +15,7 @@ from domain import Business
 # add a dropdown for province selection
 # use googleservice to get the proper url instead of hardcoding it into the html page
 
-class BusinessHandler(webapp.RequestHandler):
+class BusinessHandler(webapp2.RequestHandler):
 	def get(self):
 		businesses = BusinessService().getBusinesses();
 
@@ -38,7 +36,7 @@ class BusinessHandler(webapp.RequestHandler):
 		path = os.path.join(os.path.dirname(__file__), 'businesses.html')
 		self.response.out.write(template.render(path, template_values))
 
-class CreateBusiness(webapp.RequestHandler):
+class CreateBusiness(webapp2.RequestHandler):
 	def post(self):
 		business = Business()
 
@@ -52,16 +50,8 @@ class CreateBusiness(webapp.RequestHandler):
 		
 		self.redirect('/businessservice/')
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/businessservice/create', CreateBusiness),
   ('/businessservice/', BusinessHandler)
   
 ], debug=AppSettingsService().appInDebugMode())
-
-
-def main():
-  run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-  main()

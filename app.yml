@@ -21,14 +21,14 @@ handlers:
   script: api.py
 
 - url: /
-  script: index.py
+  script: index.app
   
 - url: /scrapitservices/.*
   script: scrapitservices.py
   login: admin
 
 - url: /businessservice/.*
-  script: businessservice.py
+  script: businessservice.app
   login: admin
 
 - url: /status

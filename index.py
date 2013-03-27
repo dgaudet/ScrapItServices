@@ -5,7 +5,6 @@ import logging
 from appsettings import AppSettingsService
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
-from google.appengine.ext.webapp.util import run_wsgi_app
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -24,15 +23,7 @@ class MainPage(webapp2.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, template_values))
 
-application = webapp2.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/', MainPage)
   
 ], debug=AppSettingsService().appInDebugMode())
-
-
-def main():
-  run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-  main()
