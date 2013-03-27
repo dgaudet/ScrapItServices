@@ -24,7 +24,7 @@ handlers:
   script: index.app
   
 - url: /scrapitservices/.*
-  script: scrapitservices.py
+  script: scrapitservices.app
   login: admin
 
 - url: /businessservice/.*

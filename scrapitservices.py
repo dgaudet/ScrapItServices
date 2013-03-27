@@ -1,22 +1,20 @@
+import webapp2
 import cgi
-import wsgiref.handlers
 import os
 import logging
 
+from google.appengine.ext.webapp import template
+from google.appengine.api import users
 from appsettings import AppSettingsService
 from repository import Yellowpages_Business
 from repository import Yellow_Pages_Business_Repository
-from google.appengine.ext.webapp import template
-from google.appengine.api import users
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 from services import YellowPages_BusinessService
 
 #get geo coordinates by address
 #108 20103rd st, saskatoon, sk
 #http://maps.googleapis.com/maps/api/geocode/json?address=108%20103rd%20St%20E%2C%20Saskatoon%2C%20SK&sensor=true&region=ca
 
-class CreateBusiness(webapp.RequestHandler):
+class CreateBusiness(webapp2.RequestHandler):
     def get(self):
         businesses = Yellow_Pages_Business_Repository().getAllBusinesses();
         
@@ -37,7 +35,7 @@ class CreateBusiness(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'createyellowpagesbusiness.html')
         self.response.out.write(template.render(path, template_values))
 
-class BusinessHandler(webapp.RequestHandler):
+class BusinessHandler(webapp2.RequestHandler):
   def post(self):
     business = Yellowpages_Business()
 
@@ -47,7 +45,7 @@ class BusinessHandler(webapp.RequestHandler):
     Yellow_Pages_Business_Repository().save(business)
     self.redirect('/scrapitservices/')
 
-class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
+class YellowpagesBusinessSearchHandler(webapp2.RequestHandler):
     def get(self):
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -94,25 +92,17 @@ class YellowpagesBusinessSearchHandler(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
         self.response.out.write(template.render(path, template_values))
 
-class AddBusinessDetailsHandler(webapp.RequestHandler):
+class AddBusinessDetailsHandler(webapp2.RequestHandler):
     def post(self):
         name = cgi.escape(self.request.get('name'))
         city = cgi.escape(self.request.get('city'))
         
         self.redirect('/scrapitservices/yellowpagesbussearch')
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/scrapitservices/', CreateBusiness),
   ('/scrapitservices/business', BusinessHandler),
   ('/scrapitservices/yellowpagesbussearch', YellowpagesBusinessSearchHandler),
   ('/scrapitservices/addbusinessdetails', AddBusinessDetailsHandler)
   
 ], debug=AppSettingsService().appInDebugMode())
-
-
-def main():
-  run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-  main()
