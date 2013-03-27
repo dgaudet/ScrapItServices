@@ -1,25 +1,23 @@
+import webapp2
 import cgi
-import wsgiref.handlers
 import logging
 
 from services import JsonService
 from appsettings import AppSettingsService
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 
-class businessById(webapp.RequestHandler):
+class businessById(webapp2.RequestHandler):
 	def get(self, yellowpages_id):
 		json = JsonService().getJsonForBusinessWithYellowPagesId(yellowpages_id)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
         
-class BusinessByCity(webapp.RequestHandler):
+class BusinessByCity(webapp2.RequestHandler):
 	def get(self, city):
 		json = JsonService().getJsonForBusinessesInCity(city)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
-class BusinessByLocation(webapp.RequestHandler):
+class BusinessByLocation(webapp2.RequestHandler):
 	def get(self):
 		latitude = cgi.escape(self.request.get('latitude'))
 		longitude = cgi.escape(self.request.get('longitude'))
@@ -27,7 +25,7 @@ class BusinessByLocation(webapp.RequestHandler):
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
-class BusinessByDetails(webapp.RequestHandler):
+class BusinessByDetails(webapp2.RequestHandler):
 	def get(self):
 		yellowpages_id = cgi.escape(self.request.get('id'))
 		province = cgi.escape(self.request.get('province'))
@@ -36,7 +34,7 @@ class BusinessByDetails(webapp.RequestHandler):
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/api/business/(.*)', businessById),
   ('/api/businessById/(.*)', businessById),
   ('/api/businessByCity/(.*)', BusinessByCity),
@@ -48,11 +46,3 @@ application = webapp.WSGIApplication([
   ('/api/v1/businessByGeoLocation', BusinessByLocation),
   ('/api/v1/businessByDetails', BusinessByDetails)
 ], debug=AppSettingsService().appInDebugMode())
-
-
-def main():
-  run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-  main()

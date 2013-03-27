@@ -1,11 +1,9 @@
-import wsgiref.handlers
+import webapp2
 import logging
 
 from appsettings import AppSettingsService
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
 
-class StatusHandler(webapp.RequestHandler):
+class StatusHandler(webapp2.RequestHandler):
 	def get(self):
 		self.printVariableToPage("App_Engine_Type", AppSettingsService().appEngineType())
 		self.printVariableToPage("App_Version", AppSettingsService().appVersion())
@@ -20,15 +18,7 @@ class StatusHandler(webapp.RequestHandler):
 	def printVariableToPage(self, variableName, variableValue):
 		self.response.out.write("%s = %s<br />\n" % (variableName, variableValue))
 
-application = webapp.WSGIApplication([
+app = webapp2.WSGIApplication([
   ('/status', StatusHandler)
   
 ], debug=AppSettingsService().appInDebugMode())
-
-
-def main():
-  run_wsgi_app(application)
-
-
-if __name__ == '__main__':
-  main()
