@@ -1,15 +1,13 @@
-import urllib
+import webapp2
 import os
-import wsgiref.handlers
 import logging
 
 from appsettings import AppSettingsService
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
-from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
-class MainPage(webapp.RequestHandler):
+class MainPage(webapp2.RequestHandler):
     def get(self):
         if users.get_current_user():
             url = users.create_logout_url(self.request.uri)
@@ -26,7 +24,7 @@ class MainPage(webapp.RequestHandler):
         path = os.path.join(os.path.dirname(__file__), 'index.html')
         self.response.out.write(template.render(path, template_values))
 
-application = webapp.WSGIApplication([
+application = webapp2.WSGIApplication([
   ('/', MainPage)
   
 ], debug=AppSettingsService().appInDebugMode())
