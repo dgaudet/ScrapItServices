@@ -6,18 +6,49 @@ import logging
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from appsettings import AppSettingsService
-from repository import Yellowpages_Business
-from repository import Yellow_Pages_Business_Repository
-from services import YellowPages_BusinessService, BusinessService
-from domain import Business
+from services import BusinessService
+from domain import Business, GeoLocation
+from googleservices import GoogleMapsService
 
 # allow users to enter postal code
 # add a dropdown for province selection
 # use googleservice to get the proper url instead of hardcoding it into the html page
 
+class BusinessViewModel:
+	name = str
+	country = str
+	province = str
+	city = str
+	street = str
+	postalcode = str
+	geolocation = GeoLocation()
+	mapurl = str
+	phonenumber = str
+	url = str
+	business_id = str
+	
+	def __init__(self, business = None):
+		if business:
+			mapService = GoogleMapsService()
+			self.name = business.name
+			self.country = business.country
+			self.province = business.province
+			self.city = business.city
+			self.street = business.street
+			self.postalcode = business.postalcode
+			self.geolocation = business.geolocation
+			self.mapurl = mapService.getMapUrlForGeoLocation(business.geolocation)
+			self.phonenumber = business.phonenumber
+			self.url = business.url
+			self.business_id = business.business_id
+
 class BusinessHandler(webapp2.RequestHandler):
 	def get(self):
 		businesses = BusinessService().getBusinesses();
+		businessViewModels = []
+		for business in businesses:
+			businessViewModel = BusinessViewModel(business)			
+			businessViewModels.append(businessViewModel)
 
 		if users.get_current_user():
 			url = users.create_logout_url(self.request.uri)
@@ -28,7 +59,7 @@ class BusinessHandler(webapp2.RequestHandler):
 
 		template_values = {
 			'user': users.get_current_user(),
-			'businesses': businesses,
+			'businesses': businessViewModels,
 			'url': url,
 			'url_linktext': url_linktext,	
 		}
@@ -49,7 +80,7 @@ class CreateBusiness(webapp2.RequestHandler):
 		BusinessService().saveBusiness(business);
 		
 		self.redirect('/businessservice/')
-
+			
 app = webapp2.WSGIApplication([
   ('/businessservice/create', CreateBusiness),
   ('/businessservice/', BusinessHandler)

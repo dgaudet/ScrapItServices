@@ -81,7 +81,7 @@
 						      <td>{{ business.street|escape }}</td>
 							  <td>{{ business.phone|escape }}</td>
 							  {% if business.geolocation %}
-								  <td><a target="_blank"  href="https://maps.google.com/maps?q={{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}&hl=en&sll=37.0625,-95.677068&sspn=35.821085,79.013672&t=m&z=16">Map</a></td>
+								  <td><a target="_blank"  href="{{ business.mapurl }}">Map</a></td>
 								  <!-- <td>{{ business.geolocation.latitude|escape }}, {{ business.geolocation.longitude|escape }}</td> -->
 							  {% else %}
 								  <td></td>
