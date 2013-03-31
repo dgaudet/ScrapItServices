@@ -21,7 +21,7 @@ class BusinessByLocation(webapp2.RequestHandler):
 	def get(self):
 		latitude = cgi.escape(self.request.get('latitude'))
 		longitude = cgi.escape(self.request.get('longitude'))
-		json = JsonService().getJsonForBusinessesInGeoLocation(latitude, longitude)
+		json = JsonService().getJsonForBusinessesByGeoLocation(latitude, longitude)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 

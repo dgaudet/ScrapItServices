@@ -213,6 +213,21 @@ class BusinessService:
 			business.business_id = dbBusiness.key().id()
 			businesses.append(business)
 		return businesses
+		
+	def getBusinessesByGeolocation(self, GeoLocation):
+		return self.getBusinesses()
+
+class BusinessFacade:
+	def getBusinessesByGeoLocation(self, latitude, longitude):
+		businesses = []
+		yellowBusinesses = YellowPages_BusinessService().getBusinessesByGeoLocation(latitude, longitude)
+		if yellowBusinesses:
+			businesses.extend(yellowBusinesses)
+			
+		# manualBusinesses = BusinessService().getBusinessesByGeolocation(GeoLocation())
+# 		if manualBusinesses:
+# 			businesses.extend(manualBusinesses)
+		return businesses
 
 class JsonService:
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
@@ -223,8 +238,8 @@ class JsonService:
 		businesses = YellowPages_BusinessService().getBusinessesByNameInCity('', city)
 		return self.encodeBusinesses(businesses)
 		
-	def getJsonForBusinessesInGeoLocation(self, latitude, longitude):
-		businesses = YellowPages_BusinessService().getBusinessesByGeoLocation(latitude, longitude)
+	def getJsonForBusinessesByGeoLocation(self, latitude, longitude):
+		businesses = BusinessFacade().getBusinessesByGeoLocation(latitude, longitude)
 		return self.encodeBusinesses(businesses)
 	
 	def getJsonForBusinessWithDetails(self, yellowpages_id, province, name):
