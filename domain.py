@@ -15,8 +15,6 @@ class GeoLocation:
 			self.longitude = None
 
 class Business:
-	YELLOW_PAGES_ID_PREFIX = 'yellowPagesId:'
-	
 	name = str
 	country = str
 	province = str
@@ -39,13 +37,3 @@ class Business:
 		self.phonenumber = None
 		self.url = None
 		self.business_id = None
-	
-	def formatYellowPagesId(self, id):
-		return self.YELLOW_PAGES_ID_PREFIX + id
-		
-	def removePrefixFromId(self, id):
-		result = id.split(self.YELLOW_PAGES_ID_PREFIX)
-		if len(result) == 2:
-			return result[1]
-		else:
-			return id

@@ -27,10 +27,10 @@ class BusinessByLocation(webapp2.RequestHandler):
 
 class BusinessByDetails(webapp2.RequestHandler):
 	def get(self):
-		yellowpages_id = cgi.escape(self.request.get('id'))
+		business_id = cgi.escape(self.request.get('id'))
 		province = cgi.escape(self.request.get('province'))
 		name = cgi.escape(self.request.get('name'))
-		json = JsonService().getJsonForBusinessWithDetails(yellowpages_id, province, name)
+		json = JsonService().getJsonForBusinessWithDetails(business_id, province, name)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		
 		self.response.out.write(json)
 

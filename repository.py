@@ -58,6 +58,15 @@ class Business_Model_Repository:
         else:
             logging.info('busness with name: ' + name + ' not found')
         return business
+		
+    def getBusinessById(self, business_id):
+        logging.info('id search: ' + str(business_id))
+        business = Business_Model.get_by_id(business_id)
+        if business:
+            logging.info('bus 1 name: ' + business.name + ' url: ' + business.url)            
+        else:
+            logging.info('busness with id: ' + str(business_id) + ' not found')
+        return business
 
 class Business_Model(db.Model):
 	name = db.StringProperty(multiline=False)
