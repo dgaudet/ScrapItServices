@@ -76,7 +76,7 @@ class CreateBusiness(webapp2.RequestHandler):
 		business.province = cgi.escape(self.request.get('province'))
 		business.city = cgi.escape(self.request.get('city'))
 		business.street = cgi.escape(self.request.get('street'))
-		business.phone = cgi.escape(self.request.get('phone'))
+		business.phonenumber = cgi.escape(self.request.get('phone'))
 		BusinessService().saveBusiness(business);
 		
 		self.redirect('/businessservice/')

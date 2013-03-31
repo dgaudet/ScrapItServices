@@ -198,7 +198,7 @@ class BusinessService:
 		dbBusiness.city = business.city
 		dbBusiness.postalcode = business.postalcode
 		dbBusiness.street = business.street
-		dbBusiness.phonenumber = business.phone
+		dbBusiness.phonenumber = business.phonenumber
 		if geolocation:
 			dbBusiness.geolocation = self.convertGeoLocationToGeoPT(geolocation)
 		Business_Model_Repository().save(dbBusiness)	
@@ -238,9 +238,9 @@ class BusinessService:
 			business.city = dbBusiness.city
 			business.street = dbBusiness.street
 			business.postalcode = dbBusiness.postalcode
-			business.phone = dbBusiness.phonenumber
+			business.phonenumber = dbBusiness.phonenumber
 			business.geolocation = self.convertGeoPTToGeoLocation(dbBusiness.geolocation)
-			business.business_id = dbBusiness.key().id()
+			business.business_id = str(dbBusiness.key().id())
 		return business
 
 class BusinessFacade:
