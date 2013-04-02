@@ -2,10 +2,18 @@ import json
 import urllib
 import logging
 from domain import Business, GeoLocation
-from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model
+from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model, Province_Repository
 from appsettings import AppSettingsService
 from googleservices import GoogleGeoCodeService
 from google.appengine.ext import db
+
+class ProvinceService:
+	__province_repo = Province_Repository()
+	def save(self, province):
+		self.__province_repo.save(province)
+	
+	def getAllProvinces(self):
+		return self.__province_repo.getAllProvinces()
 
 class YellowpagesBusinessSearchService:
 	BASE_URL = AppSettingsService().yellowPagesBaseUrl()

@@ -37,3 +37,11 @@ class Business:
 		self.phonenumber = None
 		self.url = None
 		self.business_id = None
+		
+class Province:
+	name = str
+	code = str
+	
+	def __init__(self, name = None, code = None):
+		self.name = name
+		self.code = code

@@ -1,4 +1,5 @@
 import logging
+from domain import Province
 from google.appengine.ext import db
 
 class Yellow_Pages_Business_Repository:
@@ -68,6 +69,33 @@ class Business_Model_Repository:
 		else:
 			logging.info('busness with id: ' + str(business_id) + ' not found')
 		return business
+		
+class Province_Repository:
+	__provinces = []
+	
+	def __init__(self):
+		province = Province('Alberta', 'ab')
+		self.save(province)
+		province = Province('British Columbia', 'bc')
+		self.save(province)
+		province = Province('Saskatchewan', 'sk')
+		self.save(province)
+		province = Province('Manitoba', 'mb')
+		self.save(province)
+		province = Province('Ontario', 'on')
+		self.save(province)
+		province = Province('Quebec', 'qb')
+		self.save(province)
+		province = Province('Nova Scotia', 'ns')
+		self.save(province)
+		province = Province('Northwest Territories', 'nw')
+		self.save(province)
+	
+	def save(self, province):
+		self.__provinces.append(province)
+	
+	def getAllProvinces(self):
+		return self.__provinces
 
 class Business_Model(db.Model):
 	name = db.StringProperty(multiline=False)

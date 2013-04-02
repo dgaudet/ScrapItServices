@@ -6,7 +6,7 @@ import logging
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from appsettings import AppSettingsService
-from services import BusinessService
+from services import BusinessService, ProvinceService
 from domain import Business, GeoLocation
 from googleservices import GoogleMapsService
 
@@ -57,11 +57,13 @@ class BusinessHandler(webapp2.RequestHandler):
 			url = users.create_login_url(self.request.uri)
 			url_linktext = 'Login'
 
+		provinces = ProvinceService().getAllProvinces()
 		template_values = {
 			'user': users.get_current_user(),
 			'businesses': businessViewModels,
 			'url': url,
-			'url_linktext': url_linktext,	
+			'url_linktext': url_linktext,
+			'provinces': provinces,
 		}
 		
 		path = os.path.join(os.path.dirname(__file__), 'businesses.html')

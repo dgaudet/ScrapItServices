@@ -24,7 +24,15 @@
 				<div class="control-group">
 					<label class="control-label">Province:</label>
 					<div class="controls">
-						<input type="text" class="input-large block" name="province"/>
+						<!-- <input type="text" class="input-large block" name="province"/> -->
+						{% if provinces %}
+							<select name="province">
+								{% for province in provinces %}		
+									<option value="{{ province.code }}">{{ province.name }}</option>
+								{% endfor %}
+							</select>
+						{% endif %}
+						
 					</div>
 				</div>
 				<div class="control-group">
@@ -92,7 +100,7 @@
 				</table>
 			</div>
 		</div>
-	{% endif %}
+	{% endif %}	
 	<script type="text/javascript">
 	function submitform()
 	{
