@@ -2,7 +2,7 @@
 
 {% block content %}
 	<p>Search for Business</p>
-    <form action="/scrapitservices/yellowpagesbussearch" method="post">
+    <form action="/scrapitservices/" method="post">
         <input type="hidden" name="post_type" value="search">
         <table>
             <tr><td>Business Name:</td><td><input type="text" name="name"></td></tr>
@@ -30,7 +30,7 @@
 	                {% endif %}
 	            </tr>
 	            <tr class="input">
-	                <form action="/scrapitservices/yellowpagesbussearch" method="post">
+	                <form action="/scrapitservices/update" method="post">
 	                    <input type="hidden" name="post_type" value="add">
 	                    <input type="hidden" name="yellowpages_id" value="{{ business.business_id|escape }}">
 	                    <input type="hidden" name="name" value="{{ search_name }}">
