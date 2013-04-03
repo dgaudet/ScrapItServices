@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<p>Search for Business</p>
-    <form action="/scrapitservices/" method="post">
-        <input type="hidden" name="post_type" value="search">
-        <table>
-            <tr><td>Business Name:</td><td><input type="text" name="name"></td></tr>
-            <tr><td>City:</td><td><input type="text" name="city"></td></tr>
-        </table>
-      <div><input type="submit" class="btn" value="Search"></div>
+	<legend>Search for Business</legend>
+    <form action="/scrapitservices/" name="search_business_form" method="post" class="form-horizontal">
+		<input type="hidden" name="post_type" value="search">
+		<div class="control-group">
+			<label class="control-label">Business Name:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="name"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">City:</label>
+			<div class="controls">
+				<input type="text" class="input-large block" name="city"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<button type="submit" class="btn">Search</button>
+			</div>
+		</div>
     </form>
 	{% if search_perfomred %}
 	    {% if businesses %}
