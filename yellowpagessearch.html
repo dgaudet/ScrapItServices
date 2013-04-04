@@ -24,37 +24,55 @@
     </form>
 	{% if search_perfomred %}
 	    {% if businesses %}
-	    <table id="searchResults">
-	        <th>Business Name</th><th>city</th><th>street</th><th>province</th><th>id</th><th>url</th><th>geolocation</th>
-	        {% for business in businesses %}
-	            <tr class="data">      
-	                <td><blockquote>{{ business.name|escape }}</blockquote></td>
-	                <td><blockquote>{{ business.city|escape }}</blockquote></td>
-	                <td><blockquote>{{ business.street|escape }}</blockquote></td>
-	                <td><blockquote>{{ business.province|escape }}</blockquote></td>
-	                <td><blockquote>{{ business.business_id|escape }}</blockquote></td>
-	                {% if business.url %}
-	                <td><blockquote><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></blockquote></td>
-	                <td><blockquote>{{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}</blockquote></td>
-	                {% else %}
-	                <td></td>
-	                <td><blockquote>{{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}</blockquote></td>
-	                {% endif %}
-	            </tr>
-	            <tr class="input">
-	                <form action="/scrapitservices/update" method="post">
-	                    <input type="hidden" name="post_type" value="add">
-	                    <input type="hidden" name="yellowpages_id" value="{{ business.business_id|escape }}">
-	                    <input type="hidden" name="name" value="{{ search_name }}">
-	                    <input type="hidden" name="city" value="{{ search_city }}">
-	                    <td><blockquote><input type="text" name="url"></blockquote></td>
-	                    <td><input type="submit" value="Update Business "></td>
-	                </form>
-	            </tr>
-	        {% endfor %}
-	    </table>
+			<div class="row">
+				<div class="span12">
+					<hr class="bs-docs-separator"/>
+				</div>
+				<div class="span12">
+					<table id="searchResults" class="table table-hover">
+						<thead>
+							<th class="rounded-company" scope="col">Name</th>
+							<th scope="col">ID</th>
+							<th scope="col">Website Address</th>			
+							<th scope="col">Province</th>
+							<th scope="col">City</th>
+							<th scope="col">Street</th>
+							<th scope="col">Geo Location</th>
+							<th scope="col">Json</th>
+						</thead>
+						<tbody>
+						    {% for business in businesses %}
+								<tr class="data">
+							      <td>{{ business.name|escape }}</td>
+							      <td>{{ business.business_id|escape }}</td>
+							      <td><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></td>
+							      <td>{{ business.province|escape }}</td>
+								  <td>{{ business.city|escape }}</td>
+							      <td>{{ business.street|escape }}</td>
+								  {% if business.geolocation %}
+									  <td>{{ business.geolocation.latitude|escape }},{{ business.geolocation.longitude|escape }}</td>
+								  {% else %}
+									  <td></td>
+								  {% endif %}
+							      <td><a target="_blank" href="/api/business/{{ business.business_id|escape }}">Json</a></td>
+							    </tr>
+					            <tr class="input">
+					                <form action="/scrapitservices/update" method="post">
+					                    <input type="hidden" name="post_type" value="add">
+					                    <input type="hidden" name="yellowpages_id" value="{{ business.business_id|escape }}">
+					                    <input type="hidden" name="name" value="{{ search_name }}">
+					                    <input type="hidden" name="city" value="{{ search_city }}">
+					                    <td><input class="input-mini"  type="text" name="url"></td>
+					                    <td><input type="submit" value="Update Business "></td>
+					                </form>
+					            </tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
 		{% else %}
-		<p>Sorry No Businesses found</p>
-	    {% endif %}
+			<p>Sorry No Businesses found</p>
+	    {% endif %}		
 	{% endif %}
 {% endblock %}
