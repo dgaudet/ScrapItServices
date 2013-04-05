@@ -11,7 +11,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">City:</label>
+			<label class="control-label">Website Url:</label>
 			<div class="controls">
 				<input type="text" class="input-large block" name="city"/>
 			</div>
@@ -22,6 +22,36 @@
 			</div>
 		</div>
     </form>
+	<div id="updateBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 id="myModalLabel">Update Business:</h3>
+		</div>
+		<div class="modal-body">
+		    <form action="/scrapitservices/update" name="update_business_form" method="post" class="form-horizontal">
+                <input type="hidden" name="post_type" value="add">
+                <input type="hidden" id="yellowpages_id" name="yellowpages_id" value="">
+                <input type="hidden" name="name" value="{{ search_name }}">
+                <input type="hidden" name="city" value="{{ search_city }}">
+				<div class="control-group">
+					<label class="control-label">Business:</label>
+					<div class="controls">
+						<p id="businessNameLabel">Business Test</p>
+					</div>
+				</div>
+				<div class="control-group">					
+					<label class="control-label">Website address:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="url"/>
+					</div>
+				</div>					
+		    </form>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			<button class="btn btn-primary" onclick="javascript: submitform()">Save Business</button>
+		</div>
+	</div>
 	{% if search_perfomred %}
 	    {% if businesses %}
 			<div class="row">
@@ -31,7 +61,8 @@
 				<div class="span12">
 					<table id="searchResults" class="table table-hover">
 						<thead>
-							<th class="rounded-company" scope="col">Name</th>
+							<th scope="col">Edit</th>
+							<th scope="col">Name</th>
 							<th scope="col">ID</th>
 							<th scope="col">Website Address</th>			
 							<th scope="col">Province</th>
@@ -42,7 +73,8 @@
 						</thead>
 						<tbody>
 						    {% for business in businesses %}
-								<tr class="data">
+								<tr>
+								  <td><a href="#updateBusiness" role="button" class="btn editBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: editBusinessClick()">Edit</a></td>
 							      <td>{{ business.name|escape }}</td>
 							      <td>{{ business.business_id|escape }}</td>
 							      <td><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></td>
@@ -56,16 +88,6 @@
 								  {% endif %}
 							      <td><a target="_blank" href="/api/business/{{ business.business_id|escape }}">Json</a></td>
 							    </tr>
-					            <tr class="input">
-					                <form action="/scrapitservices/update" method="post">
-					                    <input type="hidden" name="post_type" value="add">
-					                    <input type="hidden" name="yellowpages_id" value="{{ business.business_id|escape }}">
-					                    <input type="hidden" name="name" value="{{ search_name }}">
-					                    <input type="hidden" name="city" value="{{ search_city }}">
-					                    <td><input class="input-mini"  type="text" name="url"></td>
-					                    <td><input type="submit" value="Update Business "></td>
-					                </form>
-					            </tr>
 							{% endfor %}
 						</tbody>
 					</table>
@@ -75,4 +97,10 @@
 			<p>Sorry No Businesses found</p>
 	    {% endif %}		
 	{% endif %}
+	<script type="text/javascript">
+	function submitform()
+	{
+	  document.update_business_form.submit();
+	}
+	</script>
 {% endblock %}
