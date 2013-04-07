@@ -43,9 +43,11 @@ class Business_Model_Repository:
 		if existingBusiness:
 			existingBusiness.url = business.url
 			existingBusiness.phonenumber = business.phonenumber
+			existingBusiness.update_location()
 			existingBusiness.put()
 			logging.info('********************* updating entity with name: ' + business.name + ' phone: ' + business.phonenumber)
 		else:
+			business.update_location() #calls update_location on GeoModel, to set the location_geocells property for searching
 			business.put()
 			logging.info('********************* new entity with name: ' + business.name)
 
@@ -73,7 +75,6 @@ class Business_Model_Repository:
 		return business
 	
 	def getBusinessByLatLon(self, latitude, longitude, max_distance):
-		logging.info('lat %s lon %s' % (latitude, longitude))
 		max_results = 100		
 		center = geotypes.Point(latitude, longitude)
 		base_query = Business_Model.all()
@@ -81,7 +82,6 @@ class Business_Model_Repository:
 		results = Business_Model.proximity_fetch(
 		            base_query,
 		            center, max_results=max_results, max_distance=max_distance)
-		logging.info('results: %s' %', '.join(map(str, results)))
 		return results
 	
 class Business_Model(GeoModel):
