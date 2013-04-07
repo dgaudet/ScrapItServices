@@ -5,7 +5,7 @@
 	<div id="createBusinessModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3 id="myModalLabel">Create New Business:</h3>
+			<h3>Create New Business:</h3>
 		</div>
 		<div class="modal-body">
 		    <form action="/businessservice/create" name="create_business_form" method="post" class="form-horizontal">
@@ -60,6 +60,21 @@
 			<button class="btn btn-primary" onclick="javascript: submitform()">Save Business</button>
 		</div>
 	</div>
+	<div id="removeBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3>Remove Business:</h3>
+		</div>
+		<div class="modal-body">
+		    <p>Sorry nothing to see here yet!</p>
+			<div class="controls">
+				<p class="businessNameLabel">Business Test</p>
+			</div>			
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		</div>
+	</div>
 	{% if businesses %}
 		<div class="row">
 			<div class="span12">
@@ -68,7 +83,8 @@
 			<div class="span12">
 				<table class="table table-hover">
 					<thead>
-						<th class="rounded-company" scope="col">Name</th>
+						<th scope="col">Edit</th>
+						<th scope="col">Name</th>
 						<th scope="col">ID</th>
 						<th scope="col">Website Address</th>			
 						<th scope="col">Province</th>
@@ -81,30 +97,51 @@
 					<tbody>
 					    {% for business in businesses %}
 							<tr>
-						      <td>{{ business.name|escape }}</td>
-						      <td>{{ business.business_id|escape }}</td>
-						      <td><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></td>
-						      <td>{{ business.province|escape }}</td>
-							  <td>{{ business.city|escape }}</td>
-						      <td>{{ business.street|escape }}</td>
-							  <td>{{ business.phonenumber|escape }}</td>
-							  {% if business.geolocation %}
-								  <td><a target="_blank"  href="{{ business.mapurl }}">Map</a></td>
-							  {% else %}
-								  <td></td>
-							  {% endif %}
-						      <td><a target="_blank" href="/api/business/{{ business.business_id|escape }}">Json</a></td>
-						    </tr>
+								<td>
+									<div class="btn-group">
+										<a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" href="#">
+										Edit
+										<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu">
+											<li><a href="#updateBusiness" role="button" class="editBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: editBusinessClick()"><i class="icon-pencil"></i> Update</a></li>
+											<li><a href="#removeBusiness" role="button" class="removeBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: removeBusinessClick()"><i class="icon-trash"></i> Delete</a></li>
+										</ul>
+									</div>
+								</td>
+								<td>{{ business.name|escape }}</td>
+								<td>{{ business.business_id|escape }}</td>
+								<td><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></td>
+								<td>{{ business.province|escape }}</td>
+								<td>{{ business.city|escape }}</td>
+								<td>{{ business.street|escape }}</td>
+								<td>{{ business.phonenumber|escape }}</td>
+								{% if business.geolocation %}
+									<td><a target="_blank"  href="{{ business.mapurl }}">Map</a></td>
+								{% else %}
+									<td></td>
+								{% endif %}
+								<td><a target="_blank" href="/api/business/{{ business.business_id|escape }}">Json</a></td>
+							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
 			</div>
 		</div>
-	{% endif %}	
+	{% endif %}
+{% endblock %}
+{% block scripts %}
 	<script type="text/javascript">
-	function submitform()
-	{
-	  document.create_business_form.submit();
-	}
+		function submitform()
+		{
+		  document.create_business_form.submit();
+		}
+		$(document).ready(function(){		
+		   $(".removeBusiness").click(function(){
+		     $("#removeBusiness .business_id").val($(this).data('id'));
+			 $('#removeBusiness .businessNameLabel').text($(this).data('name'));
+		     $('#removeBusiness').modal('show');
+		   });
+		});
 	</script>
 {% endblock %}

@@ -50,6 +50,22 @@ class Business_Model_Repository:
 			business.update_location() #calls update_location on GeoModel, to set the location_geocells property for searching
 			business.put()
 			logging.info('********************* new entity with name: ' + business.name)
+			
+	def updateBusiness(self, business_id, business):
+		existingBusiness = self.getBusinessById(business_id)
+		if existingBusiness:
+			existingBusiness.name = business.name
+			existingBusiness.country = business.country
+			existingBusiness.province = business.province
+			existingBusiness.city = business.city
+			existingBusiness.street = business.street
+			existingBusiness.postalcode = business.postalcode
+			existingBusiness.phonenumber = business.phonenumber
+			existingBusiness.url = business.url
+			existingBusiness.location = business.location
+			existingBusiness.update_location()
+			existingBusiness.put()
+			logging.info('********************* updating entity with name: ' + business.name)
 
 	def getAllBusinesses(self):
 		"""return all Business_Model"""
