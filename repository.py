@@ -72,10 +72,9 @@ class Business_Model_Repository:
 			logging.info('busness with id: ' + str(business_id) + ' not found')
 		return business
 	
-	def getBusinessByLatLon(self, latitude, longitude):
+	def getBusinessByLatLon(self, latitude, longitude, max_distance):
 		logging.info('lat %s lon %s' % (latitude, longitude))
-		max_results = 100
-		max_distance = 80000 # 80 km ~ 50 mi
+		max_results = 100		
 		center = geotypes.Point(latitude, longitude)
 		base_query = Business_Model.all()
 		base_query.order('name')

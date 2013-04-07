@@ -219,7 +219,8 @@ class BusinessService:
 		return businesses
 		
 	def getBusinessesByGeolocation(self, geoLocation):
-		dbBusinesses = Business_Model_Repository().getBusinessByLatLon(geoLocation.latitude, geoLocation.longitude)
+		max_distance = 50000 # 80 km ~ 50 mi
+		dbBusinesses = Business_Model_Repository().getBusinessByLatLon(geoLocation.latitude, geoLocation.longitude, max_distance)
 		businesses = []
 		for dbBusiness in dbBusinesses:
 			businesses.append(self.convertDbBusinessToBusiness(dbBusiness))
