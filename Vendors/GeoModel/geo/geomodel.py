@@ -184,7 +184,7 @@ class GeoModel(db.Model):
       # Run query on the next set of geocells.
       cur_resolution = len(cur_geocells[0])
       temp_query = copy.deepcopy(query)  # TODO(romannurik): is this safe?
-      temp_query.filter('location_geocells IN', cur_geocells_unique)
+      # temp_query.filter('location_geocells IN', cur_geocells_unique)
 
       # Update results and sort.
       new_results = temp_query.fetch(1000)

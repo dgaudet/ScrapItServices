@@ -1,6 +1,8 @@
 import logging
 from domain import Province
 from google.appengine.ext import db
+from geo.geomodel import GeoModel
+from geo import geotypes
 
 class Yellow_Pages_Business_Repository:
     def save(self, business):
@@ -69,7 +71,31 @@ class Business_Model_Repository:
 		else:
 			logging.info('busness with id: ' + str(business_id) + ' not found')
 		return business
-		
+	
+	def getBusinessByLatLon(self, latitude, longitude):
+		logging.info('lat %s lon %s' % (latitude, longitude))
+		max_results = 100
+		max_distance = 80000 # 80 km ~ 50 mi
+		center = geotypes.Point(latitude, longitude)
+		base_query = Business_Model.all()
+		base_query.order('name')
+		results = Business_Model.proximity_fetch(
+		            base_query,
+		            center, max_results=max_results, max_distance=max_distance)
+		logging.info('results: %s' %', '.join(map(str, results)))
+		return results
+	
+class Business_Model(GeoModel):
+	name = db.StringProperty(multiline=False)
+	country = db.StringProperty(multiline=False)
+	province = db.StringProperty(multiline=False)
+	city = db.StringProperty(multiline=False)
+	street = db.StringProperty(multiline=False)
+	postalcode = db.StringProperty(multiline=False)
+	phonenumber = db.StringProperty(multiline=False)
+	url = db.StringProperty(multiline=False)
+	created_date = db.DateTimeProperty(auto_now_add=True)
+	
 class Province_Repository:
 	__provinces = []
 	
@@ -96,15 +122,3 @@ class Province_Repository:
 	
 	def getAllProvinces(self):
 		return self.__provinces
-
-class Business_Model(db.Model):
-	name = db.StringProperty(multiline=False)
-	country = db.StringProperty(multiline=False)
-	province = db.StringProperty(multiline=False)
-	city = db.StringProperty(multiline=False)
-	street = db.StringProperty(multiline=False)
-	postalcode = db.StringProperty(multiline=False)
-	geolocation = db.GeoPtProperty()
-	phonenumber = db.StringProperty(multiline=False)
-	url = db.StringProperty(multiline=False)
-	created_date = db.DateTimeProperty(auto_now_add=True)

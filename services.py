@@ -208,7 +208,7 @@ class BusinessService:
 		dbBusiness.street = business.street
 		dbBusiness.phonenumber = business.phonenumber
 		if geolocation:
-			dbBusiness.geolocation = self.convertGeoLocationToGeoPT(geolocation)
+			dbBusiness.location = self.convertGeoLocationToGeoPT(geolocation)
 		Business_Model_Repository().save(dbBusiness)	
 	
 	def getBusinesses(self):
@@ -218,8 +218,12 @@ class BusinessService:
 			businesses.append(self.convertDbBusinessToBusiness(dbBusiness))
 		return businesses
 		
-	def getBusinessesByGeolocation(self, GeoLocation):
-		return self.getBusinesses()
+	def getBusinessesByGeolocation(self, geoLocation):
+		dbBusinesses = Business_Model_Repository().getBusinessByLatLon(geoLocation.latitude, geoLocation.longitude)
+		businesses = []
+		for dbBusiness in dbBusinesses:
+			businesses.append(self.convertDbBusinessToBusiness(dbBusiness))
+		return businesses
 		
 	def getBusinessById(self, business_id):
 		dbBusiness = Business_Model_Repository().getBusinessById(long(business_id))
@@ -247,7 +251,7 @@ class BusinessService:
 			business.street = dbBusiness.street
 			business.postalcode = dbBusiness.postalcode
 			business.phonenumber = dbBusiness.phonenumber
-			business.geolocation = self.convertGeoPTToGeoLocation(dbBusiness.geolocation)
+			business.geolocation = self.convertGeoPTToGeoLocation(dbBusiness.location)
 			business.business_id = str(dbBusiness.key().id())
 		return business
 
@@ -258,9 +262,9 @@ class BusinessFacade:
 		if yellowBusinesses:
 			businesses.extend(yellowBusinesses)
 			
-		# manualBusinesses = BusinessService().getBusinessesByGeolocation(GeoLocation())
-# 		if manualBusinesses:
-# 			businesses.extend(manualBusinesses)
+		manualBusinesses = BusinessService().getBusinessesByGeolocation(GeoLocation(latitude, longitude))
+		if manualBusinesses:
+			businesses.extend(manualBusinesses)
 		return businesses
 	
 	def getBusinessByDetails(self, business_id, province, name):
