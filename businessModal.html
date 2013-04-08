@@ -1,0 +1,71 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h3>Create New Business:</h3>
+</div>
+<div class="modal-body">
+	{% if error %}
+		<h4>{{ error }}</h4>
+	{% else %}
+	    <form action="/businessservice/createOrUpdate" name="createOrUpdate_business_form" method="post" class="form-horizontal">
+			{% if business.business_id %}
+				<input type="hidden" name="createOrUpdate" value="update">
+				<input type="hidden" class="yellowpages_id" name="business_id" value="{{ business.business_id }}">
+			{% else %}			
+				<input type="hidden" name="createOrUpdate" value="create">
+			{% endif %}
+			<div class="control-group">
+				<label class="control-label">Business Name:</label>
+				<div class="controls">
+					<input type="text" class="input-large block" name="name" value="{{ business.name}}"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Website address:</label>
+				<div class="controls">
+					<input type="text" class="input-large block" name="url" value="{{ business.url}}"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Province:</label>
+				<div class="controls">
+					{% if provinces %}
+						<select name="province">
+							{% for province in provinces %}
+								{% if province.code == business.province %}
+									<option value="{{ province.code }}" selected="true">{{ province.name }}</option>
+								{% else %}
+									<option value="{{ province.code }}">{{ province.name }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					{% endif %}
+				
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">City:</label>
+				<div class="controls">
+					<input type="text" class="input-large block" name="city" value="{{ business.city}}"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Street:</label>
+				<div class="controls">
+					<input type="text" class="input-large block" name="street" value="{{ business.street}}"/>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Phone:</label>
+				<div class="controls">
+					<input type="text" class="input-large block" name="phone" value="{{ business.phonenumber}}"/>
+				</div>
+			</div>		
+	    </form>
+	{% endif %}
+</div>
+<div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	{% if not error %}
+		<button class="btn btn-primary" onclick="javascript: submitform()">Save Business</button>
+	{% endif %}
+</div>
