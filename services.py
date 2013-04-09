@@ -196,20 +196,19 @@ class BusinessService:
 	
 	def saveBusiness(self, business):
 		business.country = self.DEFAULT_COUNTRY_CODE
-		geolocation = GoogleGeoCodeService().getGeoLocationByAddress(business)
+		business.geolocation = GoogleGeoCodeService().getGeoLocationByAddress(business)
 		
-		dbBusiness = Business_Model()
-		dbBusiness.name = business.name
-		dbBusiness.url = business.url
-		dbBusiness.country = business.country
-		dbBusiness.province = business.province
-		dbBusiness.city = business.city
-		dbBusiness.postalcode = business.postalcode
-		dbBusiness.street = business.street
-		dbBusiness.phonenumber = business.phonenumber
-		if geolocation:
-			dbBusiness.location = self.convertGeoLocationToGeoPT(geolocation)
-		Business_Model_Repository().save(dbBusiness)	
+		dbBusiness = self.convertBusinessToDbBusiness(business)
+		if dbBusiness:		
+			Business_Model_Repository().save(dbBusiness)
+	
+	def updateBusiness(self, business):
+		business.country = self.DEFAULT_COUNTRY_CODE
+		business.geolocation = GoogleGeoCodeService().getGeoLocationByAddress(business)
+		
+		dbBusiness = self.convertBusinessToDbBusiness(business)
+		if dbBusiness:
+			Business_Model_Repository().updateBusiness(long(business.business_id), dbBusiness)
 	
 	def getBusinesses(self):
 		dbBusinesses = Business_Model_Repository().getAllBusinesses()
@@ -240,6 +239,22 @@ class BusinessService:
 			return GeoLocation(geoPt.lat, geoPt.lon)
 		return None
 		
+	def convertBusinessToDbBusiness(self, business):
+		dbBusiness = None
+		if business:
+			dbBusiness = Business_Model()
+			dbBusiness.name = business.name
+			dbBusiness.url = business.url
+			dbBusiness.country = business.country
+			dbBusiness.province = business.province
+			dbBusiness.city = business.city
+			dbBusiness.postalcode = business.postalcode
+			dbBusiness.street = business.street
+			dbBusiness.phonenumber = business.phonenumber
+			if business.geolocation:
+				dbBusiness.location = self.convertGeoLocationToGeoPT(business.geolocation)
+		return dbBusiness
+			
 	def convertDbBusinessToBusiness(self, dbBusiness):
 		business = None
 		if dbBusiness:

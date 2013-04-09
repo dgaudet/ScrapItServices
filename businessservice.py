@@ -68,9 +68,40 @@ class BusinessHandler(webapp2.RequestHandler):
 		
 		path = os.path.join(os.path.dirname(__file__), 'businesses.html')
 		self.response.out.write(template.render(path, template_values))
+		
+class BusinessModalHandler(webapp2.RequestHandler):
+	def get(self):
+		business = None
+		businessViewModel = None
+		error = None
+		modal_type = 'create'
+		
+		business_id = cgi.escape(self.request.get('business_id'))
+		
+		if business_id:
+			business = BusinessService().getBusinessById(business_id);		
+			if business:
+				businessViewModel = BusinessViewModel(business)
+				modal_type = 'update'
+			else:
+				error = 'Sorry there was a problem loading the business'
 
-class CreateBusiness(webapp2.RequestHandler):
+		if not users.get_current_user():
+			error = 'Sorry there was a problem loading the business'
+
+		provinces = ProvinceService().getAllProvinces()
+		template_values = {
+			'modal_type': modal_type,
+			'error': error,
+			'business': businessViewModel,
+			'provinces': provinces
+		}
+		
+		path = os.path.join(os.path.dirname(__file__), 'businessModal.html')
+		self.response.out.write(template.render(path, template_values))
+	
 	def post(self):
+		postType = cgi.escape(self.request.get('createOrUpdate'))
 		business = Business()
 
 		business.name = cgi.escape(self.request.get('name'))
@@ -79,12 +110,17 @@ class CreateBusiness(webapp2.RequestHandler):
 		business.city = cgi.escape(self.request.get('city'))
 		business.street = cgi.escape(self.request.get('street'))
 		business.phonenumber = cgi.escape(self.request.get('phone'))
-		BusinessService().saveBusiness(business);
 		
+		if postType == 'update':
+			business.business_id = cgi.escape(self.request.get('business_id'))
+			BusinessService().updateBusiness(business)
+		else:
+			BusinessService().saveBusiness(business);
 		self.redirect('/businessservice/')
 			
 app = webapp2.WSGIApplication([
-  ('/businessservice/create', CreateBusiness),
-  ('/businessservice/', BusinessHandler)
+  ('/businessservice/createOrUpdate', BusinessModalHandler),
+  ('/businessservice/', BusinessHandler),
+  ('/businessservice/loadModal', BusinessModalHandler),
   
 ], debug=AppSettingsService().appInDebugMode())

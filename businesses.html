@@ -1,63 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<a href="#createBusinessModal" role="button" class="btn" data-toggle="modal">Create New Business</a>
-	<div id="createBusinessModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<a href="#updateBusiness" class="updateOrCreateBusiness btn" data-type="create" role="button" onclick="javascript: createBusinessClick()">Create New Business</a>
+	<div id="updateBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3>Create New Business:</h3>
+			<h3>Update Business:</h3>
 		</div>
 		<div class="modal-body">
-		    <form action="/businessservice/create" name="create_business_form" method="post" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label">Business Name:</label>
-					<div class="controls">
-						<input type="text" class="input-large block" name="name"/>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Website address:</label>
-					<div class="controls">
-						<input type="text" class="input-large block" name="url"/>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Province:</label>
-					<div class="controls">
-						<!-- <input type="text" class="input-large block" name="province"/> -->
-						{% if provinces %}
-							<select name="province">
-								{% for province in provinces %}		
-									<option value="{{ province.code }}">{{ province.name }}</option>
-								{% endfor %}
-							</select>
-						{% endif %}
-						
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">City:</label>
-					<div class="controls">
-						<input type="text" class="input-large block" name="city"/>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Street:</label>
-					<div class="controls">
-						<input type="text" class="input-large block" name="street"/>
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">Phone:</label>
-					<div class="controls">
-						<input type="text" class="input-large block" name="phone"/>
-					</div>
-				</div>		
-		    </form>
+		    <p>Sorry nothing to see here yet!</p>
+			<div class="controls">
+				<p class="businessNameLabel">Business Test</p>
+			</div>			
 		</div>
 		<div class="modal-footer">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-			<button class="btn btn-primary" onclick="javascript: submitform()">Save Business</button>
 		</div>
 	</div>
 	<div id="removeBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -104,7 +61,7 @@
 										<span class="caret"></span>
 										</a>
 										<ul class="dropdown-menu">
-											<li><a href="#updateBusiness" role="button" class="editBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: editBusinessClick()"><i class="icon-pencil"></i> Update</a></li>
+											<li><a href="#updateBusiness" role="button" class="updateOrCreateBusiness" data-id="{{ business.business_id|escape }}" data-type="update" onclick="javascript: editBusinessClick()"><i class="icon-pencil"></i> Update</a></li>
 											<li><a href="#removeBusiness" role="button" class="removeBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: removeBusinessClick()"><i class="icon-trash"></i> Delete</a></li>
 										</ul>
 									</div>
@@ -134,7 +91,7 @@
 	<script type="text/javascript">
 		function submitform()
 		{
-		  document.create_business_form.submit();
+		  document.createOrUpdate_business_form.submit();
 		}
 		$(document).ready(function(){		
 		   $(".removeBusiness").click(function(){
@@ -142,6 +99,20 @@
 			 $('#removeBusiness .businessNameLabel').text($(this).data('name'));
 		     $('#removeBusiness').modal('show');
 		   });
+		});
+		$(document).ready(function() {
+			$('.updateOrCreateBusiness').click(function(e) {
+				e.preventDefault();				
+				var modal_type = $(this).data('type')
+				var url = '/businessservice/loadModal'		
+				if (modal_type == 'update') {
+					var business_id = $(this).data('id')
+					var url = '/businessservice/loadModal?business_id=' + business_id;
+				}
+				$.get(url, function(data) {
+					$('<div class="modal hide fade">' + data + '</div>').modal();
+				}).success(function() { $('input:text:visible:first').focus(); });
+			});
 		});
 	</script>
 {% endblock %}
