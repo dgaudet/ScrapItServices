@@ -22,7 +22,7 @@ class YellowpagesBusinessSearch(webapp2.RequestHandler):
             'url_linktext': url_linktext,
         }
 
-        path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
+        path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinessess.html')
         self.response.out.write(template.render(path, template_values))
 
     
@@ -53,7 +53,7 @@ class YellowpagesBusinessSearch(webapp2.RequestHandler):
           'search_name': name,
           'search_city': city
       }
-      path = os.path.join(os.path.dirname(__file__), 'yellowpagessearch.html')
+      path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinessess.html')
       self.response.out.write(template.render(path, template_values))
 
 app = webapp2.WSGIApplication([
