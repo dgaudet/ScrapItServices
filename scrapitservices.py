@@ -85,7 +85,10 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 			yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))
 			url = cgi.escape(self.request.get('url'))
 			hide = cgi.escape(self.request.get('hide'))
-			YellowPages_BusinessService().updateBusinessUrl(yellowpages_id, url=url, hidden=False)
+			hidden = False
+			if hide == 'True':
+				hidden = True			
+			YellowPages_BusinessService().updateBusinessUrl(yellowpages_id, url=url, hidden=hidden)
 		if form_type == 'hide':
 			yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))
 			YellowPages_BusinessService().updateBusinessUrl(yellowpages_id, hidden=True)

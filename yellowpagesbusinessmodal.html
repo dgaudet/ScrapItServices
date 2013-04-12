@@ -24,9 +24,10 @@
 					</div>			
 				</div>
 				<div class="control-group">
-					<label class="control-label">Hide Business:</label>
 					<div class="controls">
-						<input type="text" class="input-large block" name="hide" value="{{ business.hidden }}"/>
+						<label class="checkbox">
+							<input type="checkbox" class="input-large block" name="hide" value="True" {% if business.hidden %}checked{% endif %}/>Hide Business
+						</label>
 					</div>
 				</div>
 			{% else %}
