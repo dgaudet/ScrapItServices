@@ -6,6 +6,7 @@ from services import JsonService
 from appsettings import AppSettingsService
 
 class businessById(webapp2.RequestHandler):
+	#deprecated
 	def get(self, yellowpages_id):
 		json = JsonService().getJsonForBusinessWithYellowPagesId(yellowpages_id)
 		self.response.headers["Content-Type"] = "application/json;charset=UTF-8"		

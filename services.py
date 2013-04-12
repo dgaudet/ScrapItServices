@@ -47,12 +47,17 @@ class YellowpagesBusinessSearchService:
 		result = json.load(urllib.urlopen(url))
 		return self.buildBusinessFromJson(result)
 		
-	def getBusinessesByCityFile(self, city):
-		encodedCity = urllib.quote(city.encode("utf-8"))		
-		url = '/Users/Dean/Documents/Code/ScrapItServices/testJson.json'
+	def getBusinessesByFile(self):
+		url = '/Users/Dean/Documents/Code/scrapitservices/testJson.json'
 		logging.info("called json.load " + url)
 		result = json.load(open(url, 'r'))
 		return self.buildBusinessFromJson(result)
+		
+	def getBusinessDetailsByFile(self):
+		url = '/Users/Dean/Documents/Code/scrapitservices/onelisting.json'
+		logging.info("called json.load " + url)
+		result = json.load(open(url, 'r'))
+		return self.buildBusinessDetailsFromJson(result)
 		
 	def getBusinessByIdWithNameInProvince(self, yellowpages_id, name, province):
 		#http://api.yellowapi.com/GetBusinessDetails/?prov=Saskatchewan&city=Saskatoon&bus-name=just-scrap-it&listingId=4436892fmt=XML&apikey=a1s2d3f4g5h6j7k8l9k6j5j4&UID=127.0.0.1	
@@ -148,22 +153,27 @@ class YellowpagesBusinessSearchService:
 			return False
 
 class YellowPages_BusinessService:
-	def updateBusinessUrl(self, yellowpages_id, url):
+	def updateBusinessUrl(self, yellowpages_id, url=None, hidden=None):
+		logging.info('-------called with id: ' + yellowpages_id + ' hidden ' + str(hidden))
 		business = Yellowpages_Business()
-		business.yellowpages_id = yellowpages_id
-		business.url = url
+		business.yellowpages_id = yellowpages_id		
+		if url != None:
+			business.url = url
+		if hidden != None:
+			business.hidden = hidden
 		Yellow_Pages_Business_Repository().save(business)
 	
+	# deprecated method
 	def getBusinesses(self):
 		businesses = Yellow_Pages_Business_Repository().getAllBusinesses()
-		for business in businesses:
-			logging.info('id: ' + business.yellowpages_id + ' url: ' + business.url)
 		return businesses
 		
 	def getBusinessByYellowPagesId(self, yellowpages_id):
-		return Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(yellowpages_id)
+		yellowpages_business = YellowpagesBusinessSearchService().getBusinessDetailsByFile()
+		return self.combineBusiness(yellowpages_business)
 		
 	def getBusinessesByNameInCity(self, name, city):
+		# yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByFile()
 		if not name:
 			yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByCity(city)
 		else:
@@ -171,6 +181,7 @@ class YellowPages_BusinessService:
 		return self.combineBusinesses(yellowpages_businesses)
 	
 	def getBusinessesByGeoLocation(self, latitude, longitude):
+		# yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByFile()
 		yellowpages_businesses = YellowpagesBusinessSearchService().getBusinessesByGeoLocation(latitude, longitude)
 		return self.combineBusinesses(yellowpages_businesses)
 		
@@ -189,6 +200,8 @@ class YellowPages_BusinessService:
 		repo_business = Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(business.business_id)
 		if repo_business:
 			business.url = repo_business.url
+			if repo_business.hidden != None:
+				business.hidden = repo_business.hidden
 		return business
 
 class BusinessService:
@@ -275,6 +288,7 @@ class BusinessFacade:
 	def getBusinessesByGeoLocation(self, latitude, longitude):
 		businesses = []
 		yellowBusinesses = YellowPages_BusinessService().getBusinessesByGeoLocation(latitude, longitude)
+		yellowBusinesses = self.businessesWithHiddenRemoved(yellowBusinesses)
 		if yellowBusinesses:
 			businesses.extend(yellowBusinesses)
 			
@@ -290,12 +304,21 @@ class BusinessFacade:
 		else:
 			business = BusinessService().getBusinessById(business_id)
 		return business
+		
+	def businessesWithHiddenRemoved(self, businesses):
+		visibileBusinesses = []
+		for business in businesses:
+			if business.hidden == None or business.hidden == False:
+				visibileBusinesses.append(business)
+		return visibileBusinesses
 
 class JsonService:
+	# deprecated method
 	def getJsonForBusinessWithYellowPagesId(self, yellowpages_id):
 		business = YellowPages_BusinessService().getBusinessByYellowPagesId(yellowpages_id)
 		return BusinessEncoder().encode(business)
-		
+	
+	# deprecated method
 	def getJsonForBusinessesInCity(self, city):
 		businesses = YellowPages_BusinessService().getBusinessesByNameInCity('', city)
 		return self.encodeBusinesses(businesses)

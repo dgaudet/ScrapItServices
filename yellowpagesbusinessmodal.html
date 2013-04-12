@@ -1,0 +1,44 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	<h3>{{ form_text }} Business:</h3>
+	{% if business %}
+		<h4 class="text-info">{{ business.name }}</h4>
+	{% endif %}	
+</div>
+<div class="modal-body">
+	{% if error %}
+		<h4>{{ error }}</h4>
+	{% else %}
+	    <form action="/scrapitservices/updateModal" name="update_business_form" method="post" class="form-horizontal">	        
+	        <input type="hidden" class="yellowpages_id" name="yellowpages_id" value="{{ business.business_id }}">
+			{% if form_type == 'update' %}
+				<input type="hidden" name="post_type" value="update">
+				<div class="control-group">
+					<label class="control-label">Website address:</label>
+					<div class="controls">
+						{% if business.url %}
+							<input type="text" class="input-large block" name="url" value="{{ business.url }}"/>
+						{% else %}
+							<input type="text" class="input-large block" name="url"/>
+						{% endif %}
+					</div>			
+				</div>
+				<div class="control-group">
+					<label class="control-label">Hide Business:</label>
+					<div class="controls">
+						<input type="text" class="input-large block" name="hide" value="{{ business.hidden }}"/>
+					</div>
+				</div>
+			{% else %}
+				<input type="hidden" name="post_type" value="hide">
+			    <p>This will hide the Business From App Results</p>
+			{% endif %}
+	    </form>
+	{% endif %}
+</div>
+<div class="modal-footer">
+	<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+	{% if not error %}
+		<button class="btn btn-primary" onclick="javascript: submitUpdateform()">{{ form_text }} Business</button>
+	{% endif %}
+</div>

@@ -1,0 +1,43 @@
+{
+    "id": "4436892",
+    "name": "Just Scrap It",
+    "address": {
+        "street": "108 103rd St E",
+        "city": "Saskatoon",
+        "prov": "SK",
+        "pcode": "S7N1Y7"
+    },
+    "geoCode": {
+        "latitude": "52.1300528023",
+        "longitude": "-106.5976558857"
+    },
+    "distance": "3.4",
+    "parentId": "",
+    "isParent": false,
+    "content": {
+        "Video": {
+            "avail": false,
+            "inMkt": false
+        },
+        "Photo": {
+            "avail": false,
+            "inMkt": false
+        },
+        "Profile": {
+            "avail": false,
+            "inMkt": false
+        },
+        "DspAd": {
+            "avail": false,
+            "inMkt": false
+        },
+        "Logo": {
+            "avail": false,
+            "inMkt": false
+        },
+        "Url": {
+            "avail": true,
+            "inMkt": true
+        }
+    }
+}

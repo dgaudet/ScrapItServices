@@ -25,6 +25,7 @@ class Business:
 	phonenumber = str
 	url = str
 	business_id = str
+	hidden = bool
 	
 	def __init__(self):
 		self.name = None
@@ -37,6 +38,7 @@ class Business:
 		self.phonenumber = None
 		self.url = None
 		self.business_id = None
+		self.hidden = None
 		
 class Province:
 	name = str

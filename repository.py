@@ -5,33 +5,39 @@ from geo.geomodel import GeoModel
 from geo import geotypes
 
 class Yellow_Pages_Business_Repository:
-    def save(self, business):
-        existingBusiness = self.getBusinessByYellowPagesId(business.yellowpages_id)
-        if existingBusiness:
-            existingBusiness.url = business.url
-            existingBusiness.put()
-            logging.info('********************* updating entity with yellow id: ' + business.yellowpages_id)
-        else:
-            business.put()
-            logging.info('********************* new entity with yellow id: ' + business.yellowpages_id)
-        
-    def getAllBusinesses(self):
-        """return all Yellowpages_Businesses"""
-        return db.GqlQuery("SELECT * FROM Yellowpages_Business");
-        
-    def getBusinessByYellowPagesId(self, yellowpages_id):        
-        query = db.GqlQuery("SELECT * FROM Yellowpages_Business where yellowpages_id = :1", yellowpages_id)
-        business = query.get()
-        if business:
-            logging.info('bus 1 id: ' + business.yellowpages_id + ' url: ' + business.url)            
-        else:
-            logging.info('id: ' + yellowpages_id + ' not found')
-        return business
+	def save(self, business):
+		existingBusiness = self.getBusinessByYellowPagesId(business.yellowpages_id)
+		if existingBusiness:
+			if business.url != None:
+				existingBusiness.url = business.url
+			if business.hidden != None:
+				logging.info('setting hidden to ' + str(business.hidden))
+				existingBusiness.hidden = business.hidden
+				
+			existingBusiness.put()
+			logging.info('********************* updating entity with yellow id: ' + business.yellowpages_id)
+		else:
+			business.put()
+			logging.info('********************* new entity with yellow id: ' + business.yellowpages_id)
+
+	def getAllBusinesses(self):
+		"""return all Yellowpages_Businesses"""
+		return db.GqlQuery("SELECT * FROM Yellowpages_Business");
+
+	def getBusinessByYellowPagesId(self, yellowpages_id):        
+		query = db.GqlQuery("SELECT * FROM Yellowpages_Business where yellowpages_id = :1", yellowpages_id)
+		business = query.get()
+		if business:
+			logging.info('bus 1 id: ' + business.yellowpages_id + ' url: ')            
+		else:
+			logging.info('id: ' + yellowpages_id + ' not found')
+		return business
 
 class Yellowpages_Business(db.Model):
 	yellowpages_id = db.StringProperty(multiline=False)
 	name = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)
+	hidden = db.BooleanProperty()
 
 class Business_Model_Repository:
 	# doing a put then a getAllBusinesses does not return the data imediately, due to google's high replication data store
@@ -41,10 +47,7 @@ class Business_Model_Repository:
 	def save(self, business):
 		existingBusiness = self.getBusinessByName(business.name)
 		if existingBusiness:
-			existingBusiness.url = business.url
-			existingBusiness.phonenumber = business.phonenumber
-			existingBusiness.update_location()
-			existingBusiness.put()
+			self.updateBusiness(existingBusiness.business_id, business)
 			logging.info('********************* updating entity with name: ' + business.name + ' phone: ' + business.phonenumber)
 		else:
 			business.update_location() #calls update_location on GeoModel, to set the location_geocells property for searching
