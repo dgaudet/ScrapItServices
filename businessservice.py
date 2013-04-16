@@ -25,6 +25,7 @@ class BusinessViewModel:
 	mapurl = str
 	phonenumber = str
 	url = str
+	hidden = bool
 	business_id = str
 	
 	def __init__(self, business = None):
@@ -40,6 +41,7 @@ class BusinessViewModel:
 			self.mapurl = mapService.getMapUrlForGeoLocation(business.geolocation)
 			self.phonenumber = business.phonenumber
 			self.url = business.url
+			self.hidden = business.hidden
 			self.business_id = business.business_id
 
 class BusinessHandler(webapp2.RequestHandler):
@@ -102,21 +104,35 @@ class BusinessModalHandler(webapp2.RequestHandler):
 	
 	def post(self):
 		postType = cgi.escape(self.request.get('createOrUpdate'))
-		business = Business()
 
-		business.name = cgi.escape(self.request.get('name'))
-		business.url = cgi.escape(self.request.get('url'))
-		business.province = cgi.escape(self.request.get('province'))
-		business.city = cgi.escape(self.request.get('city'))
-		business.street = cgi.escape(self.request.get('street'))
-		business.phonenumber = cgi.escape(self.request.get('phone'))
-		
-		if postType == 'update':
-			business.business_id = cgi.escape(self.request.get('business_id'))
-			BusinessService().updateBusiness(business)
+		business_id = cgi.escape(self.request.get('business_id'))
+		if postType == 'hide':
+			self.__HideBusiness(business_id)
 		else:
-			BusinessService().saveBusiness(business);
+			business = Business()
+
+			business.name = cgi.escape(self.request.get('name'))
+			business.url = cgi.escape(self.request.get('url'))
+			business.province = cgi.escape(self.request.get('province'))
+			business.city = cgi.escape(self.request.get('city'))
+			business.street = cgi.escape(self.request.get('street'))
+			business.phonenumber = cgi.escape(self.request.get('phone'))
+			hide = cgi.escape(self.request.get('hide'))
+			if hide == 'True':
+				business.hidden = True
+			else:
+				business.hidden = False
+		
+			if postType == 'update':
+				business.business_id = business_id
+				BusinessService().updateBusiness(business)
+			else:
+				BusinessService().saveBusiness(business);
+				
 		self.redirect('/businessservice/')
+		
+	def __HideBusiness(self, business_id):
+		BusinessService().hideBusiness(business_id)
 			
 app = webapp2.WSGIApplication([
   ('/businessservice/createOrUpdate', BusinessModalHandler),

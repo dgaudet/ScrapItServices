@@ -2,35 +2,23 @@
 
 {% block content %}
 	<a href="#updateBusiness" class="updateOrCreateBusiness btn" data-type="create" role="button" onclick="javascript: createBusinessClick()">Create New Business</a>
-	<div id="updateBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3>Update Business:</h3>
-		</div>
-		<div class="modal-body">
-		    <p>Sorry nothing to see here yet!</p>
-			<div class="controls">
-				<p class="businessNameLabel">Business Test</p>
-			</div>			
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		</div>
-	</div>
 	<div id="removeBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-			<h3>Remove Business:</h3>
-		</div>
-		<div class="modal-body">
-		    <p>Sorry nothing to see here yet!</p>
-			<div class="controls">
-				<p class="businessNameLabel">Business Test</p>
-			</div>			
-		</div>
-		<div class="modal-footer">
-			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-		</div>
+		<form action="/businessservice/createOrUpdate" name="update_business_form" method="post" class="form-horizontal">
+			<input type="hidden" class="business_id" name="business_id">
+			<input type="hidden" name="createOrUpdate" value="hide">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h3>Hide Business:</h3>
+				<h4 class="text-info businessNameLabel"></h4>
+			</div>
+			<div class="modal-body">
+			    <p>This will hide the Business From App Results</p>	
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+				<button type="submit" class="btn btn-primary">Hide Business</button>
+			</div>
+		</form>
 	</div>
 	{% if businesses %}
 		<div class="row">
@@ -41,6 +29,7 @@
 				<table class="table table-hover">
 					<thead>
 						<th scope="col">Edit</th>
+						<th scope="col">Hidden</th>
 						<th scope="col">Name</th>
 						<th scope="col">ID</th>
 						<th scope="col">Website Address</th>			
@@ -62,10 +51,11 @@
 										</a>
 										<ul class="dropdown-menu">
 											<li><a href="#updateBusiness" role="button" class="updateOrCreateBusiness" data-id="{{ business.business_id|escape }}" data-type="update" onclick="javascript: editBusinessClick()"><i class="icon-pencil"></i> Update</a></li>
-											<li><a href="#removeBusiness" role="button" class="removeBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: removeBusinessClick()"><i class="icon-trash"></i> Delete</a></li>
+											<li><a href="#removeBusiness" role="button" class="removeBusiness" data-id="{{ business.business_id|escape }}" data-name="{{ business.name|escape }}" onclick="javascript: removeBusinessClick()"><i class="icon-trash"></i> Hide</a></li>
 										</ul>
 									</div>
 								</td>
+								<td>{% if business.hidden %}<i class="icon-remove"></i>{% endif %}</td>
 								<td>{{ business.name|escape }}</td>
 								<td>{{ business.business_id|escape }}</td>
 								<td><a href="{{ business.url|escape }}">{{ business.url|escape }}</a></td>

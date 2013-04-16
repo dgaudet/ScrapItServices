@@ -52,8 +52,8 @@
   										<span class="caret"></span>
   										</a>
   										<ul class="dropdown-menu">
-											<li><a href="#updateBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="update" onclick="javascript: editBusinessClick()"><i class="icon-pencil"></i> Update</a></li>
-											<li><a href="#hideBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="hide" onclick="javascript: editBusinessClick()"><i class="icon-trash"></i> Hide Modal</a></li>
+											<li><a href="#updateBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="update"><i class="icon-pencil"></i> Update</a></li>
+											<li><a href="#hideBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="hide"><i class="icon-trash"></i> Hide</a></li>
   										</ul>
   									</div>
 								  </td>
@@ -84,6 +84,12 @@
 {% block scripts %}
 	<script type="text/javascript">
 		function submitUpdateform(){
+			// var input = document.createElement("input");
+// 			input.setAttribute("type", "hidden");
+// 			input.setAttribute("name", "{{ search_city }}");
+// 			input.setAttribute("value", "{{ search_city }}");
+// 			document.update_business_form.appendChild(input);
+
 			document.update_business_form.submit();
 		}
 		$(document).ready(function() {

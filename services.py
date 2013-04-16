@@ -153,8 +153,7 @@ class YellowpagesBusinessSearchService:
 			return False
 
 class YellowPages_BusinessService:
-	def updateBusinessUrl(self, yellowpages_id, url=None, hidden=None):
-		logging.info('-------called with id: ' + yellowpages_id + ' hidden ' + str(hidden))
+	def updateBusiness(self, yellowpages_id, url=None, hidden=None):
 		business = Yellowpages_Business()
 		business.yellowpages_id = yellowpages_id		
 		if url != None:
@@ -222,6 +221,11 @@ class BusinessService:
 		dbBusiness = self.convertBusinessToDbBusiness(business)
 		if dbBusiness:
 			Business_Model_Repository().updateBusiness(long(business.business_id), dbBusiness)
+			
+	def hideBusiness(self, business_id):
+		business = self.getBusinessById(business_id)
+		business.hidden = True
+		self.updateBusiness(business)
 	
 	def getBusinesses(self):
 		dbBusinesses = Business_Model_Repository().getAllBusinesses()
@@ -264,6 +268,8 @@ class BusinessService:
 			dbBusiness.postalcode = business.postalcode
 			dbBusiness.street = business.street
 			dbBusiness.phonenumber = business.phonenumber
+			if business.hidden != None:
+				dbBusiness.hidden = business.hidden
 			if business.geolocation:
 				dbBusiness.location = self.convertGeoLocationToGeoPT(business.geolocation)
 		return dbBusiness
@@ -280,6 +286,8 @@ class BusinessService:
 			business.street = dbBusiness.street
 			business.postalcode = dbBusiness.postalcode
 			business.phonenumber = dbBusiness.phonenumber
+			if dbBusiness.hidden != None:
+				business.hidden = dbBusiness.hidden
 			business.geolocation = self.convertGeoPTToGeoLocation(dbBusiness.location)
 			business.business_id = str(dbBusiness.key().id())
 		return business
@@ -288,14 +296,13 @@ class BusinessFacade:
 	def getBusinessesByGeoLocation(self, latitude, longitude):
 		businesses = []
 		yellowBusinesses = YellowPages_BusinessService().getBusinessesByGeoLocation(latitude, longitude)
-		yellowBusinesses = self.businessesWithHiddenRemoved(yellowBusinesses)
 		if yellowBusinesses:
 			businesses.extend(yellowBusinesses)
 			
 		manualBusinesses = BusinessService().getBusinessesByGeolocation(GeoLocation(latitude, longitude))
 		if manualBusinesses:
 			businesses.extend(manualBusinesses)
-		return businesses
+		return self.businessesWithHiddenRemoved(businesses)
 	
 	def getBusinessByDetails(self, business_id, province, name):
 		business = None

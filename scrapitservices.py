@@ -72,6 +72,7 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 		template_values = {
 			'error': error,
 			'business': business,
+			'business_id': business_id,
 			'form_type': form_type,
 			'form_text': form_text
 		}
@@ -88,14 +89,13 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 			hidden = False
 			if hide == 'True':
 				hidden = True			
-			YellowPages_BusinessService().updateBusinessUrl(yellowpages_id, url=url, hidden=hidden)
+			YellowPages_BusinessService().updateBusiness(yellowpages_id, url=url, hidden=hidden)
 		if form_type == 'hide':
 			yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))
-			YellowPages_BusinessService().updateBusinessUrl(yellowpages_id, hidden=True)
+			YellowPages_BusinessService().updateBusiness(yellowpages_id, hidden=True)
 
 		name = cgi.escape(self.request.get('name'))
 		city = cgi.escape(self.request.get('city'))
-		logging.info('---------name: ' + str(name) + ' city ' + str(city))
 		businesses = YellowPages_BusinessService().getBusinessesByNameInCity(name, city)
 
 		if users.get_current_user():

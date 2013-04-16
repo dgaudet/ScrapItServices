@@ -11,6 +11,7 @@ class GoogleGeoCodeService:
 	#http://maps.googleapis.com/maps/api/geocode/json?address=108%20103rd%20St%20E%2C%20Saskatoon%2C%20SK&sensor=true&region=ca
 	
 	def getGeoLocationByAddress(self, business):
+		# return GeoLocation(52.1673866163,-106.637346115)		
 		encodedStreet = urllib.quote(business.street.encode("utf-8"))
 		encodedCity = urllib.quote(business.city.encode("utf-8"))
 		# encodedPostalCode = urllib.quote(business.postalcode.encode("utf-8"))

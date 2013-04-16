@@ -11,7 +11,6 @@ class Yellow_Pages_Business_Repository:
 			if business.url != None:
 				existingBusiness.url = business.url
 			if business.hidden != None:
-				logging.info('setting hidden to ' + str(business.hidden))
 				existingBusiness.hidden = business.hidden
 				
 			existingBusiness.put()
@@ -47,7 +46,7 @@ class Business_Model_Repository:
 	def save(self, business):
 		existingBusiness = self.getBusinessByName(business.name)
 		if existingBusiness:
-			self.updateBusiness(existingBusiness.business_id, business)
+			self.updateBusiness(business.business_id, business)
 			logging.info('********************* updating entity with name: ' + business.name + ' phone: ' + business.phonenumber)
 		else:
 			business.update_location() #calls update_location on GeoModel, to set the location_geocells property for searching
@@ -66,6 +65,8 @@ class Business_Model_Repository:
 			existingBusiness.phonenumber = business.phonenumber
 			existingBusiness.url = business.url
 			existingBusiness.location = business.location
+			if business.hidden != None:
+				existingBusiness.hidden = business.hidden
 			existingBusiness.update_location()
 			existingBusiness.put()
 			logging.info('********************* updating entity with name: ' + business.name)
@@ -86,7 +87,7 @@ class Business_Model_Repository:
 
 	def getBusinessById(self, business_id):
 		logging.info('id search: ' + str(business_id))
-		business = Business_Model.get_by_id(business_id)
+		business = Business_Model.get_by_id(long(business_id))
 		if business:
 			logging.info('bus 1 name: ' + business.name + ' url: ' + business.url)            
 		else:
@@ -113,6 +114,7 @@ class Business_Model(GeoModel):
 	phonenumber = db.StringProperty(multiline=False)
 	url = db.StringProperty(multiline=False)
 	created_date = db.DateTimeProperty(auto_now_add=True)
+	hidden = db.BooleanProperty()
 	
 class Province_Repository:
 	__provinces = []

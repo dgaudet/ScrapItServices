@@ -62,6 +62,13 @@
 				<div class="controls">
 					<input type="text" class="input-large block" name="phone" value="{{ business.phonenumber}}"/>
 				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<label class="checkbox">
+						<input type="checkbox" class="input-large block" name="hide" value="True" {% if business.hidden %}checked{% endif %}/>Hide Business
+					</label>
+				</div>
 			</div>		
 	    </form>
 	{% endif %}
