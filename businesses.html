@@ -3,23 +3,23 @@
 {% block content %}
 	<a href="#updateBusiness" class="updateOrCreateBusiness btn" data-type="create" role="button" onclick="javascript: createBusinessClick()">Create New Business</a>
 	<div id="removeBusiness" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3>Hide Business:</h3>
+			<h4 class="text-info businessNameLabel"></h4>
+		</div>
 		<form action="/businessservice/createOrUpdate" name="update_business_form" method="post" class="form-horizontal">
 			<input type="hidden" class="business_id" name="business_id">
-			<input type="hidden" name="createOrUpdate" value="hide">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h3>Hide Business:</h3>
-				<h4 class="text-info businessNameLabel"></h4>
-			</div>
+			<input type="hidden" name="createOrUpdate" value="hide">			
 			<div class="modal-body">
 			    <p>This will hide the Business From App Results</p>	
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-				<button type="submit" class="btn btn-primary">Hide Business</button>
-			</div>
+			</div>			
 		</form>
-	</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			<button type="submit" class="btn btn-primary">Hide Business</button>
+		</div>
+	</div>	
 	{% if businesses %}
 		<div class="row">
 			<div class="span12">
