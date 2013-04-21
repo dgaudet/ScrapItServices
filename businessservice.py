@@ -133,10 +133,10 @@ class BusinessModalHandler(webapp2.RequestHandler):
 		
 	def __HideBusiness(self, business_id):
 		BusinessService().hideBusiness(business_id)
-			
+
 app = webapp2.WSGIApplication([
   ('/businessservice/createOrUpdate', BusinessModalHandler),
   ('/businessservice/', BusinessHandler),
-  ('/businessservice/loadModal', BusinessModalHandler),
+  ('/businessservice/loadModal', BusinessModalHandler)
   
 ], debug=AppSettingsService().appInDebugMode())
