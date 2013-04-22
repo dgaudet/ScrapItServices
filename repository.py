@@ -23,11 +23,11 @@ class Yellow_Pages_Business_Repository:
 		"""return all Yellowpages_Businesses"""
 		return db.GqlQuery("SELECT * FROM Yellowpages_Business");
 
-	def getBusinessByYellowPagesId(self, yellowpages_id):        
+	def getBusinessByYellowPagesId(self, yellowpages_id):
 		query = db.GqlQuery("SELECT * FROM Yellowpages_Business where yellowpages_id = :1", yellowpages_id)
 		business = query.get()
 		if business:
-			logging.info('bus 1 id: ' + business.yellowpages_id + ' url: ')            
+			logging.info('bus 1 id: ' + business.yellowpages_id + ' url: ')
 		else:
 			logging.info('id: ' + yellowpages_id + ' not found')
 		return business

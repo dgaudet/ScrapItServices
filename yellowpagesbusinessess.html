@@ -24,6 +24,18 @@
     </form>
 	{% if search_performed %}
 	    {% if businesses %}
+			<div class="modal hide fade" id="updateModal">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h3>Update Business:</h3>
+				</div>
+				<div class="modal-body">
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+					<button class="btn btn-primary" onclick="javascript: submitUpdateform()">Update Business</button>
+				</div>
+			</div>
 			<div class="row">
 				<div class="span12">
 					<hr class="bs-docs-separator"/>
@@ -52,8 +64,8 @@
   										<span class="caret"></span>
   										</a>
   										<ul class="dropdown-menu">
-											<li><a href="#updateBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="update"><i class="icon-pencil"></i> Update</a></li>
-											<li><a href="#hideBusiness" role="button" class="updateBusiness" data-id="{{ business.business_id|escape }}" data-type="hide"><i class="icon-trash"></i> Hide</a></li>
+											<li><a href="/scrapitservices/loadModal?form_type=update&business_id={{ business.business_id|escape }}" data-target="#updateModal" data-toggle="modal" data-role="button" class="updateBusiness"><i class="icon-pencil"></i> Update</a></li>
+											<li><a href="/scrapitservices/loadModal?form_type=hide&business_id={{ business.business_id|escape }}" data-target="#updateModal" data-toggle="modal" role="button" class="updateBusiness"><i class="icon-trash"></i> Hide</a></li>
   										</ul>
   									</div>
 								  </td>
@@ -92,17 +104,10 @@
 
 			document.update_business_form.submit();
 		}
-		$(document).ready(function() {
-			$('.updateBusiness').click(function(e) {
-				e.preventDefault();				
-				var modal_type = $(this).data('type')
-				var url = '/scrapitservices/loadModal'		
-				var business_id = $(this).data('id')
-				var url = '/scrapitservices/loadModal?business_id=' + business_id + '&form_type=' + modal_type;
-				$.get(url, function(data) {
-					$('<div class="modal hide fade">' + data + '</div>').modal();
-				}).success(function() { $('input:text:visible:first').focus(); });
-			});
+		$('body').on('hidden', '.modal', function () {
+			//this method removes all models when they are hidden, so that they are re-instantiated each time they are loaded
+			//mostly needed for the create/update modal to work, when clicking on them multiple times without a page refresh
+			$(this).removeData('modal');
 		});
 	</script>
 {% endblock %}
