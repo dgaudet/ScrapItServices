@@ -64,8 +64,8 @@
   										<span class="caret"></span>
   										</a>
   										<ul class="dropdown-menu">
-											<li><a href="/scrapitservices/loadModal?form_type=update&business_id={{ business.business_id|escape }}" data-target="#updateModal" data-toggle="modal" data-role="button" class="updateBusiness"><i class="icon-pencil"></i> Update</a></li>
-											<li><a href="/scrapitservices/loadModal?form_type=hide&business_id={{ business.business_id|escape }}" data-target="#updateModal" data-toggle="modal" role="button" class="updateBusiness"><i class="icon-trash"></i> Hide</a></li>
+											<li><a href="/scrapitservices/loadModal?form_type=update&{{ business.loadmodalurl|escape }}" data-target="#updateModal" data-toggle="modal" data-role="button" class="updateBusiness"><i class="icon-pencil"></i> Update</a></li>
+											<li><a href="/scrapitservices/loadModal?form_type=hide&{{ business.loadmodalurl|escape }}" data-target="#updateModal" data-toggle="modal" role="button" class="updateBusiness"><i class="icon-trash"></i> Hide</a></li>
   										</ul>
   									</div>
 								  </td>

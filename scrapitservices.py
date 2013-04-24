@@ -2,14 +2,50 @@ import webapp2
 import cgi
 import os
 import logging
+import urllib
 
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from appsettings import AppSettingsService
 from services import YellowPages_BusinessService
+from domain import GeoLocation
 
 # can I redirect with the original search params, call the handler directly, or just redirict to scrapitservices/?name=&city=
 # need the name and city used to perform the search, when posting the update or hide
+
+class BusinessViewModel:
+	name = str
+	country = str
+	province = str
+	city = str
+	street = str
+	postalcode = str
+	geolocation = GeoLocation()
+	mapurl = str
+	phonenumber = str
+	url = str
+	hidden = bool
+	business_id = str
+	loadmodalurl = str
+	
+	def __init__(self, business = None):
+		if business:
+			self.name = business.name
+			self.country = business.country
+			self.province = business.province
+			self.city = business.city
+			self.street = business.street
+			self.postalcode = business.postalcode
+			self.geolocation = business.geolocation
+			self.phonenumber = business.phonenumber
+			self.url = business.url
+			self.hidden = business.hidden
+			self.business_id = business.business_id
+			self.loadmodalurl = self._ModalUrl(business.business_id, business.name, business.province)
+			
+	def _ModalUrl(self, business_id, name, province):
+		url = 'business_id=%s&name=%s&province=%s' % (urllib.quote(business_id.encode("utf-8")), urllib.quote(name.encode("utf-8")), urllib.quote(province.encode("utf-8")))
+		return url
 
 class YellowpagesBusinessSearch(webapp2.RequestHandler):
 	def get(self):
@@ -32,6 +68,10 @@ class YellowpagesBusinessSearch(webapp2.RequestHandler):
 		name = cgi.escape(self.request.get('name'))
 		city = cgi.escape(self.request.get('city'))
 		businesses = YellowPages_BusinessService().getBusinessesByNameInCity(name, city)
+		businessViewModels = []
+		for business in businesses:
+			viewModel = BusinessViewModel(business)
+			businessViewModels.append(viewModel)
 
 		if users.get_current_user():
 			url = users.create_logout_url(self.request.uri)
@@ -43,7 +83,7 @@ class YellowpagesBusinessSearch(webapp2.RequestHandler):
 		template_values = {
 			'user': users.get_current_user(),
 			'search_performed': True,
-			'businesses': businesses,
+			'businesses': businessViewModels,
 			'search_name': name,
 			'search_city': city
 		}
@@ -56,10 +96,15 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 		error = None
 				
 		business_id = cgi.escape(self.request.get('business_id'))
+		name = cgi.escape(self.request.get('name'))
+		province = cgi.escape(self.request.get('province'))
 		form_type = cgi.escape(self.request.get('form_type'))
 
 		if business_id:
-			business = YellowPages_BusinessService().getBusinessByYellowPagesId(business_id)	
+			business = YellowPages_BusinessService().getBusinessByDetails(business_id, name, province)
+			if 'yellowpages' in business.url:
+				business.url = None
+			logging.info('businesses returned ' + business.business_id)
 		
 		if form_type == 'update':
 			form_text = 'Update'
@@ -88,7 +133,9 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 			hide = cgi.escape(self.request.get('hide'))
 			hidden = False
 			if hide == 'True':
-				hidden = True			
+				hidden = True
+			if url == "":
+				url = None
 			YellowPages_BusinessService().updateBusiness(yellowpages_id, url=url, hidden=hidden)
 		if form_type == 'hide':
 			yellowpages_id = cgi.escape(self.request.get('yellowpages_id'))

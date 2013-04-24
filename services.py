@@ -198,7 +198,9 @@ class YellowPages_BusinessService:
 	def combineBusiness(self, business):
 		repo_business = Yellow_Pages_Business_Repository().getBusinessByYellowPagesId(business.business_id)
 		if repo_business:
-			business.url = repo_business.url
+			if repo_business.url != None:
+				if repo_business.url != "":
+					business.url = repo_business.url
 			if repo_business.hidden != None:
 				business.hidden = repo_business.hidden
 		return business
