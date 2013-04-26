@@ -47,19 +47,28 @@ class BusinessViewModel:
 		url = 'business_id=%s&name=%s&province=%s' % (urllib.quote(business_id.encode("utf-8")), urllib.quote(name.encode("utf-8")), urllib.quote(province.encode("utf-8")))
 		return url
 
-class YellowpagesBusinessSearch(webapp2.RequestHandler):
-	def get(self):
+class UserService:
+	def isUserLoggedIn(self):
 		if users.get_current_user():
-			url = users.create_logout_url(self.request.uri)
+			return True
+		else:
+			return False
+			
+	def teplateData(self, request):
+		if self.isUserLoggedIn():
+			url = users.create_logout_url(request.uri)
 			url_linktext = 'Logout'
 		else:
-			url = users.create_login_url(self.request.uri)
+			url = users.create_login_url(request.uri)
 			url_linktext = 'Login'
+			
+		return { 'user': users.get_current_user(),
+		'url_linktext': url_linktext,
+		'url': url }
 
-		template_values = {
-			'user': users.get_current_user(),
-			'url_linktext': url_linktext,
-		}
+class YellowpagesBusinessSearch(webapp2.RequestHandler):
+	def get(self):
+		template_values = UserService().teplateData(self.request)
 
 		path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesses.html')
 		self.response.out.write(template.render(path, template_values))
@@ -73,20 +82,13 @@ class YellowpagesBusinessSearch(webapp2.RequestHandler):
 			viewModel = BusinessViewModel(business)
 			businessViewModels.append(viewModel)
 
-		if users.get_current_user():
-			url = users.create_logout_url(self.request.uri)
-			url_linktext = 'Logout'
-		else:
-			url = users.create_login_url(self.request.uri)
-			url_linktext = 'Login'
-
 		template_values = {
-			'user': users.get_current_user(),
 			'search_performed': True,
 			'businesses': businessViewModels,
 			'search_name': name,
 			'search_city': city
 		}
+		template_values.update(UserService().teplateData(self.request))
 		path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesses.html')
 		self.response.out.write(template.render(path, template_values))
 		
@@ -111,7 +113,7 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 		else:
 			form_text = 'Hide'
 		
-		if not users.get_current_user():
+		if not UserService().isUserLoggedIn():
 			error = 'Sorry there was a problem loading the business'
 
 		template_values = {
@@ -145,22 +147,13 @@ class YellowPagesBusinessModalHandler(webapp2.RequestHandler):
 		city = cgi.escape(self.request.get('city'))
 		businesses = YellowPages_BusinessService().getBusinessesByNameInCity(name, city)
 
-		if users.get_current_user():
-			url = users.create_logout_url(self.request.uri)
-			url_linktext = 'Logout'
-		else:
-			url = users.create_login_url(self.request.uri)
-			url_linktext = 'Login'
-
 		template_values = {
-			'user': users.get_current_user(),
 			'search_performed': True,
 			'businesses': businesses,
-			'url': url,
-			'url_linktext': url_linktext,
 			'search_name': name,
 			'search_city': city
 		}
+		template_values.update(UserService().teplateData(self.request))
 		path = os.path.join(os.path.dirname(__file__), 'yellowpagesbusinesses.html')
 		self.response.out.write(template.render(path, template_values))
 
