@@ -96,11 +96,17 @@
 {% block scripts %}
 	<script type="text/javascript">
 		function submitUpdateform(){
-			// var input = document.createElement("input");
-// 			input.setAttribute("type", "hidden");
-// 			input.setAttribute("name", "{{ search_city }}");
-// 			input.setAttribute("value", "{{ search_city }}");
-// 			document.update_business_form.appendChild(input);
+			var nameInput = document.createElement("input");
+			nameInput.setAttribute("type", "hidden");
+			nameInput.setAttribute("name", "name");
+			nameInput.setAttribute("value", "{{ search_name }}");			
+			document.update_business_form.appendChild(nameInput);
+			
+			var cityInput = document.createElement("input");
+			cityInput.setAttribute("type", "hidden");
+			cityInput.setAttribute("name", "city");
+			cityInput.setAttribute("value", "{{ search_city }}");			
+			document.update_business_form.appendChild(cityInput);
 
 			document.update_business_form.submit();
 		}
