@@ -5,13 +5,9 @@ import logging
 import urllib
 
 from google.appengine.ext.webapp import template
-from google.appengine.api import users
 from appsettings import AppSettingsService
-from services import YellowPages_BusinessService
+from services import YellowPages_BusinessService, UserService
 from domain import GeoLocation
-
-# can I redirect with the original search params, call the handler directly, or just redirict to scrapitservices/?name=&city=
-# need the name and city used to perform the search, when posting the update or hide
 
 class BusinessViewModel:
 	name = str
@@ -46,25 +42,6 @@ class BusinessViewModel:
 	def _ModalUrl(self, business_id, name, province):
 		url = 'business_id=%s&name=%s&province=%s' % (urllib.quote(business_id.encode("utf-8")), urllib.quote(name.encode("utf-8")), urllib.quote(province.encode("utf-8")))
 		return url
-
-class UserService:
-	def isUserLoggedIn(self):
-		if users.get_current_user():
-			return True
-		else:
-			return False
-			
-	def teplateData(self, request):
-		if self.isUserLoggedIn():
-			url = users.create_logout_url(request.uri)
-			url_linktext = 'Logout'
-		else:
-			url = users.create_login_url(request.uri)
-			url_linktext = 'Login'
-			
-		return { 'user': users.get_current_user(),
-		'url_linktext': url_linktext,
-		'url': url }
 
 class YellowpagesBusinessSearch(webapp2.RequestHandler):
 	def get(self):

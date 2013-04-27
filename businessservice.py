@@ -6,13 +6,9 @@ import logging
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from appsettings import AppSettingsService
-from services import BusinessService, ProvinceService
+from services import BusinessService, ProvinceService, UserService
 from domain import Business, GeoLocation
 from googleservices import GoogleMapsService
-
-# allow users to enter postal code
-# add a dropdown for province selection
-# use googleservice to get the proper url instead of hardcoding it into the html page
 
 class BusinessViewModel:
 	name = str
@@ -52,22 +48,13 @@ class BusinessHandler(webapp2.RequestHandler):
 			businessViewModel = BusinessViewModel(business)			
 			businessViewModels.append(businessViewModel)
 
-		if users.get_current_user():
-			url = users.create_logout_url(self.request.uri)
-			url_linktext = 'Logout'
-		else:
-			url = users.create_login_url(self.request.uri)
-			url_linktext = 'Login'
-
 		provinces = ProvinceService().getAllProvinces()
 		template_values = {
-			'user': users.get_current_user(),
+
 			'businesses': businessViewModels,
-			'url': url,
-			'url_linktext': url_linktext,
 			'provinces': provinces,
 		}
-		
+		template_values.update(UserService().teplateData(self.request))
 		path = os.path.join(os.path.dirname(__file__), 'businesses.html')
 		self.response.out.write(template.render(path, template_values))
 		
@@ -88,7 +75,7 @@ class BusinessModalHandler(webapp2.RequestHandler):
 			else:
 				error = 'Sorry there was a problem loading the business'
 
-		if not users.get_current_user():
+		if not UserService().isUserLoggedIn():
 			error = 'Sorry there was a problem loading the business'
 
 		provinces = ProvinceService().getAllProvinces()

@@ -6,6 +6,26 @@ from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, B
 from appsettings import AppSettingsService
 from googleservices import GoogleGeoCodeService
 from google.appengine.ext import db
+from google.appengine.api import users
+
+class UserService:
+	def isUserLoggedIn(self):
+		if users.get_current_user():
+			return True
+		else:
+			return False
+			
+	def teplateData(self, request):
+		if self.isUserLoggedIn():
+			url = users.create_logout_url(request.uri)
+			url_linktext = 'Logout'
+		else:
+			url = users.create_login_url(request.uri)
+			url_linktext = 'Login'
+			
+		return { 'user': users.get_current_user(),
+		'url_linktext': url_linktext,
+		'url': url }
 
 class ProvinceService:
 	__province_repo = Province_Repository()
