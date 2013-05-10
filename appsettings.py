@@ -26,4 +26,8 @@ class AppSettingsService:
 		return 'http://api.sandbox.yellowapi.com'
 		
 	def yellowPagesApiKey(self):
-		return '9k5g4bqucenr9ztnh9x693cw'
+		if self.appInDebugMode:
+			#Sandbox API key
+			return '9k5g4bqucenr9ztnh9x693cw'
+		#Production API key
+		return 'ycgd3xrz8kxfayety5dpfuzn'
