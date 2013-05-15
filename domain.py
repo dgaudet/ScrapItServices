@@ -47,3 +47,11 @@ class Province:
 	def __init__(self, name = None, code = None):
 		self.name = name
 		self.code = code
+		
+class ApiClient:
+	name = str
+	key = str
+	
+	def __init__(self, name = None, key = None):
+		self.name = name
+		self.key = key

@@ -152,3 +152,16 @@ class Province_Repository:
 	
 	def getAllProvinces(self):
 		return self.__provinces
+		
+class ApiClient_Repository:
+	__clients = []
+	
+	def __init__(self):
+		client = ApiClient('Find Scraps', '53E00A51-6CAD-4E34-B75A-2E2A18957104')
+		self.save(client)
+		
+	def save(self, client):
+		self.__users.append(client)
+	
+	def getAllApiClients(self):
+		return self.__clients
