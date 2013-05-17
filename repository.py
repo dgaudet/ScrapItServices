@@ -159,6 +159,8 @@ class ApiClient_Repository:
 	def __init__(self):
 		client = ApiClient('Find Scraps', '53E00A51-6CAD-4E34-B75A-2E2A18957104')
 		self.save(client)
+		client = ApiClient('Find Scraps - Test', '1B9133B7-42F5-4597-9E5C-3BCF14D69B2D')
+		self.save(client)
 		
 	def save(self, client):
 		self.__users.append(client)

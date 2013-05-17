@@ -1,4 +1,5 @@
 import os
+import logging
 
 class AppSettingsService:
 	def appInDebugMode(self):
@@ -21,14 +22,14 @@ class AppSettingsService:
 		
 	def applicationID(self):
 		return os.environ['APPLICATION_ID']
-		
+			
 	def yellowPagesBaseUrl(self):
-		if self.appInDebugMode:
+		if self.appInDebugMode():
 			return 'http://api.sandbox.yellowapi.com'
 		return 'http://api.yellowapi.com'
 		
 	def yellowPagesApiKey(self):
-		if self.appInDebugMode:
+		if self.appInDebugMode():
 			#Sandbox API key
 			return '9k5g4bqucenr9ztnh9x693cw'
 		#Production API key
