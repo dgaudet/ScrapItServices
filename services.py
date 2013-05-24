@@ -282,14 +282,14 @@ class BusinessService:
 		dbBusiness = None
 		if business:
 			dbBusiness = Business_Model()
-			dbBusiness.name = business.name
-			dbBusiness.url = business.url
-			dbBusiness.country = business.country
-			dbBusiness.province = business.province
-			dbBusiness.city = business.city
-			dbBusiness.postalcode = business.postalcode
-			dbBusiness.street = business.street
-			dbBusiness.phonenumber = business.phonenumber
+			dbBusiness.name = UnEncoder().unescape(business.name)
+			dbBusiness.url = UnEncoder().unescape(business.url)
+			dbBusiness.country = UnEncoder().unescape(business.country)
+			dbBusiness.province = UnEncoder().unescape(business.province)
+			dbBusiness.city = UnEncoder().unescape(business.city)
+			dbBusiness.postalcode = UnEncoder().unescape(business.postalcode)
+			dbBusiness.street = UnEncoder().unescape(business.street)
+			dbBusiness.phonenumber = UnEncoder().unescape(business.phonenumber)
 			if business.hidden != None:
 				dbBusiness.hidden = business.hidden
 			if business.geolocation:
@@ -390,3 +390,12 @@ class JsonListEncoder(json.JSONEncoder):
 		else:
 			return list(iterable)
 		return JSONEncoder.default(self, o)
+		
+class UnEncoder:
+	def unescape(self, s):
+		if s is not None:
+			s = s.replace("&lt;", "<")
+			s = s.replace("&gt;", ">")
+			# this has to be last:
+			s = s.replace("&amp;", "&")
+		return s
