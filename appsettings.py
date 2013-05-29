@@ -34,3 +34,9 @@ class AppSettingsService:
 			return '9k5g4bqucenr9ztnh9x693cw'
 		#Production API key
 		return 'ycgd3xrz8kxfayety5dpfuzn'
+		
+	def appStoreId(self):
+		return '643096718'
+	
+	def appStoreUrl(self):
+		return 'https://itunes.apple.com/ca/app/find-scraps/id643096718?mt=8&uo=4'

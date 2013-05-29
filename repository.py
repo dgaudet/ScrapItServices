@@ -1,5 +1,5 @@
 import logging
-from domain import Province
+from domain import Province, ApiClient
 from google.appengine.ext import db
 from geo.geomodel import GeoModel
 from geo import geotypes
@@ -163,7 +163,7 @@ class ApiClient_Repository:
 		self.save(client)
 		
 	def save(self, client):
-		self.__users.append(client)
+		self.__clients.append(client)
 	
 	def getAllApiClients(self):
 		return self.__clients

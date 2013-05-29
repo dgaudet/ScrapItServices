@@ -1,12 +1,20 @@
 import json
 import urllib
 import logging
-from domain import Business, GeoLocation
-from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model, Province_Repository
+from domain import Business, GeoLocation, ApiClient
+from repository import Yellow_Pages_Business_Repository, Yellowpages_Business, Business_Model_Repository, Business_Model, Province_Repository, ApiClient_Repository
 from appsettings import AppSettingsService
 from googleservices import GoogleGeoCodeService
 from google.appengine.ext import db
 from google.appengine.api import users
+
+class ApiClientService:
+	def isKeyValid(self, key):
+		clients = ApiClient_Repository().getAllApiClients()
+		for client in clients:
+			if client.key == key:
+				return True
+		return False
 
 class UserService:
 	def isUserLoggedIn(self):
