@@ -21,3 +21,12 @@ body {
 .description {
 	padding-top:100px;
 }
+
+@media (max-width: 480px) {
+	.hero-unit .work {
+		font-size: 90%;
+	}
+	p {
+		font-size: 90%;
+	}
+}
