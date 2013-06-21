@@ -1,5 +1,5 @@
 body {
-  font-family: Helvetica, sans-serif;
+/*  font-family: Helvetica, sans-serif;*/
   background-color: #DDDDDD;
 }
 
@@ -24,9 +24,21 @@ body {
 
 @media (max-width: 480px) {
 	.hero-unit .work {
-		font-size: 90%;
+		font-size: 40px;
 	}
-	p {
-		font-size: 90%;
+	h1 {
+		font-size: 25px;
+		line-height: 26px;
+	}
+	.lead {
+		margin-bottom: 13px;
+	}
+	.lead, .list-lead {
+		font-size: 14px;
+		font-weight: 130;
+		line-height: 20px;
+	}
+	.description {
+		padding-top: 20px;
 	}
 }
