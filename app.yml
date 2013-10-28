@@ -23,6 +23,9 @@ handlers:
 - url: /
   script: index.app
   
+- url: /about/.*
+  script: about.app
+  
 - url: /scrapitservices/.*
   script: scrapitservices.app
   login: admin
