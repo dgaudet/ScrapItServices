@@ -18,13 +18,17 @@
 	          <a class="brand" href="/">DeanGaudet.com</a>
 	          <div class="nav-collapse collapse">
 	            <ul class="nav">
-	              <li class="active"><a href="/">Home</a></li>	              
-	              <li><a href="mailto:support@deangaudet.com">Support</a></li>
-				  <li><a href="/businessservice/">Businesses</a></li>
-				  <li><a href="/scrapitservices/">Yellowpages Businesses</a></li>
+	              	<li class="active"><a href="/">Home</a></li>	              
+	              	<li><a href="mailto:support@deangaudet.com">Support</a></li>
+				  	<!-- {% if user %}
+				  		<li><a href="/businessservice/">Businesses</a></li>
+				  		<li><a href="/scrapitservices/">Yellowpages Businesses</a></li>
+				 	{% endif %} -->
 	            </ul>
-				<ul class="nav pull-right">  				  
-  				  <li class="pull-right"><p class="navbar-text pull-right">Hello, {{ user.nickname|escape }}</p></li>
+				<ul class="nav pull-right">
+					{% if user %}
+  				  		<li class="pull-right"><p class="navbar-text pull-right">Hello, {{ user.nickname|escape }}</p></li>
+					{% endif %}
 				  <li><a href="{{ url }}">{{ url_linktext }}</a></li>
 				</ul>
 	          </div><!--/.nav-collapse -->
